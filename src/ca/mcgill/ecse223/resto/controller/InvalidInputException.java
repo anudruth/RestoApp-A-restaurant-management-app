@@ -1,4 +1,8 @@
 package ca.mcgill.ecse223.resto.controller;
+/**
+ * @author anudruth
+ *
+ */
 
 public class InvalidInputException extends Exception {
 	
