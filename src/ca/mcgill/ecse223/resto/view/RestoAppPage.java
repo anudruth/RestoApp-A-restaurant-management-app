@@ -16,6 +16,10 @@ public class RestoAppPage extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = -2702005067769134471L;
 	/**
+	 * 
+	 */
+	
+	/**
      * Creates new form UI
      */
     public RestoAppPage() {
