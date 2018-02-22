@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.mcgill.ecse.resto.view;
+package ca.mcgill.ecse223.resto.view;
 
 /**
  *
@@ -136,7 +136,7 @@ public class RestoAppPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(app_panel, javax.swing.GroupLayout.PREFERRED_SIZE, 564, Short.MAX_VALUE))
+                .addComponent(app_panel, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
 
         pack();
