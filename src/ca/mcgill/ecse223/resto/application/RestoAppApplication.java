@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.resto.application;
 
 
 /**
- * @author anudruth,eliott,paul,pierre,romain,julien
+ * @author anudruth,eliott
  *
  */
 
