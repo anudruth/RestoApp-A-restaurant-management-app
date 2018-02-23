@@ -45,8 +45,8 @@ public class RestoAppController {
 	}
 	
 	public static void removeTable(Table table) throws InvalidInputException {
-		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		if(table == null) throw new InvalidInputException("Invalid Table");
+		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		boolean reserved = table.hasReservations();
 		if(reserved == true) throw new InvalidInputException("Table is reserved"); //if table reserved throw exception
 		try {
