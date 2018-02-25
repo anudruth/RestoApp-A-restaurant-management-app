@@ -6,8 +6,19 @@
 package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 /**
@@ -36,7 +47,9 @@ public class RestoAppPage extends javax.swing.JFrame {
         buttons_panel = new javax.swing.JPanel();
         add_table = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-
+        
+        
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -44,16 +57,39 @@ public class RestoAppPage extends javax.swing.JFrame {
 
         Image_panel.setBackground(java.awt.Color.white);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resto_app/resources/Screen Shot 2018-02-20 at 1.08.07 AM.png"))); // NOI18N
+        //jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resto_app/resources/Screen Shot 2018-02-20 at 1.08.07 AM.png"))); // NOI18N
 
         
         /**************LAYOUT***************/
+        
+        //TABLE POPUP
+        fakeTable = new javax.swing.JButton();
+        final JPopupMenu popupMenu = new JPopupMenu();
+        
+        JMenuItem menuItem = new JMenuItem();
+        menuItem.setText("Table 1");
+
+        popupMenu.add(menuItem);
+        
+
+        fakeTable.setBackground(new java.awt.Color(0, 255, 0));
+        fakeTable.setText("Table 1");
+        fakeTable.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		popupMenu.show(Image_panel, fakeTable.getX(), fakeTable.getY());
+            }
+        });
+        
+        popupMenu.setPopupSize(300, 300);
+        //TABLE POPUP
+        
         javax.swing.GroupLayout Image_panelLayout = new javax.swing.GroupLayout(Image_panel);
         Image_panel.setLayout(Image_panelLayout);
         Image_panelLayout.setHorizontalGroup(
             Image_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Image_panelLayout.createSequentialGroup()
                 .addGap(150, 150, 150)
+                .addComponent(fakeTable)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(118, 118, 118))
         );
@@ -61,6 +97,7 @@ public class RestoAppPage extends javax.swing.JFrame {
             Image_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Image_panelLayout.createSequentialGroup()
                 .addGap(109, 109, 109)
+                .addComponent(fakeTable)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(139, 139, 139))
         );
@@ -75,6 +112,7 @@ public class RestoAppPage extends javax.swing.JFrame {
             }
         });
 
+        
         jButton3.setBackground(new java.awt.Color(255, 255, 0));
         jButton3.setText("Reserve table");
 
@@ -179,8 +217,9 @@ public class RestoAppPage extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     
     // UI elements
-  	private JLabel errorMessage;
+  	private javax.swing.JLabel errorMessage;
   	// table
+  	private javax.swing.JButton fakeTable;
   	//...
 
   	// data elements
