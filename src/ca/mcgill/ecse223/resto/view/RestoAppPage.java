@@ -51,7 +51,7 @@ public class RestoAppPage extends javax.swing.JFrame {
 
         
         /**************LAYOUT***************/
-        //TABLE POPUP 
+        //TABLE POPUP  
         fakeTable = new javax.swing.JButton();
         final JPopupMenu popupMenu = new JPopupMenu();
         
