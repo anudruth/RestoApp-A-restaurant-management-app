@@ -7,7 +7,10 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
 /**
@@ -44,10 +47,31 @@ public class RestoAppPage extends javax.swing.JFrame {
 
         Image_panel.setBackground(java.awt.Color.white);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resto_app/resources/Screen Shot 2018-02-20 at 1.08.07 AM.png"))); // NOI18N
+        //jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resto_app/resources/Screen Shot 2018-02-20 at 1.08.07 AM.png"))); // NOI18N
 
         
         /**************LAYOUT***************/
+      //TABLE POPUP
+        fakeTable = new javax.swing.JButton();
+        final JPopupMenu popupMenu = new JPopupMenu();
+        
+        JMenuItem menuItem = new JMenuItem();
+        menuItem.setText("Table 1");
+
+        popupMenu.add(menuItem);
+        
+
+        fakeTable.setBackground(new java.awt.Color(0, 255, 0));
+        fakeTable.setText("Table 1");
+        fakeTable.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		popupMenu.show(Image_panel, fakeTable.getX(), fakeTable.getY());
+            }
+        });
+        
+        popupMenu.setPopupSize(300, 300);
+        //TABLE POPUP
+        
         javax.swing.GroupLayout Image_panelLayout = new javax.swing.GroupLayout(Image_panel);
         Image_panel.setLayout(Image_panelLayout);
         Image_panelLayout.setHorizontalGroup(
@@ -55,6 +79,7 @@ public class RestoAppPage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Image_panelLayout.createSequentialGroup()
                 .addGap(150, 150, 150)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fakeTable)
                 .addGap(118, 118, 118))
         );
         Image_panelLayout.setVerticalGroup(
@@ -62,6 +87,7 @@ public class RestoAppPage extends javax.swing.JFrame {
             .addGroup(Image_panelLayout.createSequentialGroup()
                 .addGap(109, 109, 109)
                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fakeTable)
                 .addGap(139, 139, 139))
         );
 
@@ -181,6 +207,7 @@ public class RestoAppPage extends javax.swing.JFrame {
     // UI elements
   	private JLabel errorMessage;
   	// table
+  	private JButton fakeTable;
   	//...
 
   	// data elements
