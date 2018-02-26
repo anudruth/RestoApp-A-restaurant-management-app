@@ -6,13 +6,18 @@
 package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -65,11 +70,26 @@ public class RestoAppPage extends javax.swing.JFrame {
         //TABLE POPUP
         fakeTable = new javax.swing.JButton();
         final JPopupMenu popupMenu = new JPopupMenu();
-        
-        JMenuItem menuItem = new JMenuItem();
-        menuItem.setText("Table 1");
+        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
 
-        popupMenu.add(menuItem);
+        JLabel tableName = new JLabel();
+        tableName.setText("Table 1");
+        JButton deleteTableButton = new JButton();
+        deleteTableButton.setText("Delete");
+        JButton moveTableButton = new JButton();
+        moveTableButton.setText("Move");
+        JButton rotateTableButton = new JButton();
+        rotateTableButton.setText("Rotate");
+        JButton inUseButton = new JButton();
+        inUseButton.setText("Used");
+
+        popupMenu.add(tableName);
+        popupMenu.add(deleteTableButton);
+        popupMenu.add(moveTableButton);
+        popupMenu.add(rotateTableButton);
+        popupMenu.add(inUseButton);
+
+
         
 
         fakeTable.setBackground(new java.awt.Color(0, 255, 0));
