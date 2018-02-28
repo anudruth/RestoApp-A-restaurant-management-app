@@ -6,14 +6,20 @@
 package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -71,26 +77,88 @@ public class RestoAppPage extends javax.swing.JFrame {
         fakeTable = new javax.swing.JButton();
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+        JPanel popupMenuItem1 = new JPanel();
+        popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+        JPanel popupMenuItem2 = new JPanel();
+        popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+        JPanel popupMenuItem3 = new JPanel();
+        popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
 
         JLabel tableName = new JLabel();
         tableName.setText("Table 1");
-        JButton deleteTableButton = new JButton();
-        deleteTableButton.setText("Delete");
-        JButton moveTableButton = new JButton();
-        moveTableButton.setText("Move");
-        JButton rotateTableButton = new JButton();
-        rotateTableButton.setText("Rotate");
-        JButton inUseButton = new JButton();
-        inUseButton.setText("Used");
-
-        popupMenu.add(tableName);
-        popupMenu.add(deleteTableButton);
-        popupMenu.add(moveTableButton);
-        popupMenu.add(rotateTableButton);
-        popupMenu.add(inUseButton);
-
-
+        tableName.setBackground(new Color(255,230,153));
+//        tableName.setAlignmentX(Component.TOP_ALIGNMENT);
+//        tableName.setAlignmentY(Component.CENTER_ALIGNMENT);
         
+        RoundButton deleteTableButton = new RoundButton();
+//        deleteTableButton.setText("Delete");
+        deleteTableButton.setBackground(new Color(255,230,153));
+		try {
+			Image img = ImageIO.read(getClass().getResource("delete.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			deleteTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        deleteTableButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+//        deleteTableButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+		RoundButton moveTableButton = new RoundButton();
+//        moveTableButton.setText("Move");
+        moveTableButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("move.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			moveTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        moveTableButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        moveTableButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+        RoundButton rotateTableButton = new RoundButton();
+//        rotateTableButton.setText("Rotate");
+        rotateTableButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("rotate.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			rotateTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+//        rotateTableButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        rotateTableButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+        RoundButton inUseButton = new RoundButton();
+//        inUseButton.setText("Used");
+        inUseButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("inUse.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			inUseButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+//        inUseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        inUseButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+        popupMenuItem1.add(tableName);
+        popupMenuItem2.add(deleteTableButton);
+        popupMenuItem2.add(moveTableButton);
+        popupMenuItem3.add(rotateTableButton);
+        popupMenuItem3.add(inUseButton);
+        popupMenu.add(popupMenuItem1);
+        popupMenu.add(popupMenuItem2);
+        popupMenu.add(popupMenuItem3);
+        
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
 
         fakeTable.setBackground(new java.awt.Color(0, 255, 0));
         fakeTable.setText("Table 1");
@@ -100,7 +168,6 @@ public class RestoAppPage extends javax.swing.JFrame {
             }
         });
         
-        popupMenu.setPopupSize(300, 300);
         //TABLE POPUP
         
         javax.swing.GroupLayout Image_panelLayout = new javax.swing.GroupLayout(Image_panel);
