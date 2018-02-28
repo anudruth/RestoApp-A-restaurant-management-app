@@ -443,6 +443,7 @@ public class RestoApp
 
   public boolean removeCurrentTable(Table aCurrentTable)
   {
+	System.out.println("in removeCurrentTable()");
     boolean wasRemoved = false;
     if (currentTables.contains(aCurrentTable))
     {

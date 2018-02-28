@@ -649,6 +649,19 @@ public class Table
     }
   }
 
+  // line 34 "../../../../../RestoApp.ump"
+   public boolean contains(int x, int y){
+    boolean result = false;
+	   int x_leftBound = this.getX();
+	   int x_rightBound = x_leftBound+this.width;
+	   int y_topBound = this.getY();
+	   int y_bottomBound = this.getY()+this.length;
+	   if((x_leftBound <= x) && (x <= x_rightBound) && (y_topBound <= y) && (y <= y_bottomBound)) {
+		  result = true;
+	   }
+	   return result;
+  }
+
 
   public String toString()
   {

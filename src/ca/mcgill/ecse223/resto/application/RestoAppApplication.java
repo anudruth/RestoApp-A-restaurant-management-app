@@ -28,6 +28,14 @@ public class RestoAppApplication {
 	 */
 	public static void main(String[] args) {
 		// start UI
+		restoapp = new RestoApp();
+		Table table = new Table(1,10,10,10,10,restoapp);
+		restoapp.addCurrentTable(table);
+		System.out.println("1 Current Tables: ");
+		for(Table tabletmp : restoapp.getCurrentTables()) {
+			System.out.println(tabletmp.getNumber());
+
+		}
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RestoAppPage().setVisible(true);
