@@ -116,6 +116,21 @@ public class RestoAppPage extends JFrame {
         		reserveTableButtonActionPerformed(evt);
             }
         });
+		
+		JButton seeTableButton = new JButton();
+		seeTableButton.setBackground(new Color(0,0,0));
+		seeTableButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		System.out.println("see button pressed");
+        		System.out.println("Current Tables: ");
+        		for(Table tabletmp : RestoAppApplication.getRestoapp().getCurrentTables()) {
+        			System.out.println("Table "+tabletmp.getNumber());
+
+        		}
+        		if(RestoAppApplication.getRestoapp().getCurrentTables().size()==0) System.out.println("Empty");
+            }
+        });
+		
         
 		RoundButton billTableButton = new RoundButton();
 		billTableButton.setBackground(new Color(255,255,255));
@@ -201,11 +216,7 @@ public class RestoAppPage extends JFrame {
 
         		int x_click = e.getX(); int y_click = e.getY();
         		System.out.println("Click recorded at x="+x_click+",y="+y_click);
-        		System.out.println("Current Tables: ");
-        		for(Table tabletmp : RestoAppApplication.getRestoapp().getCurrentTables()) {
-        			System.out.println(tabletmp.getNumber());
-
-        		}
+        		
         		for (Table table: RestoAppApplication.getRestoapp().getCurrentTables()) {
         			if(table.contains(x_click, y_click)) {
         				selectedTable = table;
@@ -277,6 +288,7 @@ public class RestoAppPage extends JFrame {
                 .addComponent(addTableButton, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 //                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(reserveTableButton)
+                .addComponent(seeTableButton)
 //            	.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(billTableButton))
         );
@@ -290,6 +302,7 @@ public class RestoAppPage extends JFrame {
                 .addGroup(buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 	.addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                    .addComponent(seeTableButton, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -375,11 +388,9 @@ public class RestoAppPage extends JFrame {
 				System.out.println("passed error test");
 				Table toDelete = null;
 				List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
-				System.out.println("3 Current Tables: ");
 				for(Table table : currentTables) {
-        			System.out.println(table.getNumber());
 					if(table.getNumber() == selectedTable.getNumber()) {
-						System.out.println("Found table "+table.getNumber()+"to delete");
+						System.out.println("Found table "+table.getNumber()+" to delete");
 						toDelete = table;
 					}
 				}

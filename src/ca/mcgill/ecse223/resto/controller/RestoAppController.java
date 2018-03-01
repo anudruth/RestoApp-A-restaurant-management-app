@@ -50,8 +50,8 @@ public class RestoAppController {
 				if(inUse == true) throw new InvalidInputException("Table is in use");
 			}
 			restoApp.removeCurrentTable(table);
-			System.out.println("table"+table.getNumber()+" removed");
-			//RestoAppApplication.save();
+			System.out.println("table "+table.getNumber()+" removed");
+			RestoAppApplication.save();
 		}catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}

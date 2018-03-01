@@ -810,7 +810,7 @@ public class RestoApp implements Serializable
    public void reinitialize(){
     Table.reinitializeUniqueNumber(this.getTables());
     Order.reinitializeAutouniqueNumber(this.getOrders());
-    MenuItem.reinitializeUniqueName(this.getMenuItems()); //Menu Items through Menu
+    MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
   }
   
   //------------------------

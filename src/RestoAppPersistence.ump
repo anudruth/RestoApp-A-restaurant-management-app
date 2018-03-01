@@ -29,7 +29,8 @@ class MenuItem {
   isA Serializable;
   private static final long serialVersionUID = -1776230320092632776L;
   
-  public static void reinitializeUniqueName(List<MenuItem> menuItems) {
+  public static  void reinitializeUniqueName(Menu menu){
+	List <MenuItem> menuItems = menu.getMenuItems();
     menuitemsByName = new HashMap<String, MenuItem>();
     for (MenuItem menuItem : menuItems) {
       menuitemsByName.put(menuItem.getName(), menuItem);

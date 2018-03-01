@@ -284,7 +284,8 @@ public class MenuItem implements Serializable
   }
 
   // line 33 "../../../../../RestoAppPersistence.ump"
-   public static  void reinitializeUniqueName(List<MenuItem> menuItems){
+   public static  void reinitializeUniqueName(Menu menu){
+	List <MenuItem> menuItems = menu.getMenuItems();
     menuitemsByName = new HashMap<String, MenuItem>();
     for (MenuItem menuItem : menuItems) {
       menuitemsByName.put(menuItem.getName(), menuItem);
