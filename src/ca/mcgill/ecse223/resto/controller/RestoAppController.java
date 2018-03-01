@@ -56,8 +56,4 @@ public class RestoAppController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
-
-	public static List<Table> getCurrentTables() {
-		return RestoAppApplication.getRestoapp().getCurrentTables();
-	}
 }

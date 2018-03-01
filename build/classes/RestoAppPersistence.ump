@@ -1,3 +1,5 @@
+namespace ca.mcgill.ecse223.resto.model;
+
 external interface Serializable {}
 
 class RestoApp {
