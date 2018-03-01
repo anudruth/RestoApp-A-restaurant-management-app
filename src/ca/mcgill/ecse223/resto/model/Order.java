@@ -2,11 +2,13 @@
 /*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
 
 package ca.mcgill.ecse223.resto.model;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-// line 37 "../../../../../RestoApp.ump"
-public class Order
+// line 40 "../../../../../RestoAppPersistence.ump"
+// line 52 "../../../../../RestoApp.ump"
+public class Order implements Serializable
 {
 
   //------------------------
@@ -499,6 +501,17 @@ public class Order
     }
   }
 
+  // line 46 "../../../../../RestoAppPersistence.ump"
+   public static  void reinitializeAutouniqueNumber(List<Order> orders){
+    int nextId = 0; 
+    for (Order order : orders) {
+      if (order.getNumber() > nextId) {
+        nextId = order.getNumber();
+      }
+    }
+    nextId++;
+  }
+
 
   public String toString()
   {
@@ -506,5 +519,13 @@ public class Order
             "number" + ":" + getNumber()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "dateTime" + "=" + (getDateTime() != null ? !getDateTime().equals(this)  ? getDateTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 43 "../../../../../RestoAppPersistence.ump"
+  private static final long serialVersionUID = -3900912597282882073L ;
+
+  
 }

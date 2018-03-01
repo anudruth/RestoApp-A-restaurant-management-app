@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
 
 package ca.mcgill.ecse223.resto.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 24 "../../../../../RestoApp.ump"
-public class Table
+// line 80 "../../../../../RestoAppPersistence.ump"
+// line 27 "../../../../../RestoApp.ump"
+public class Table implements Serializable
 {
 
   //------------------------
@@ -649,6 +651,27 @@ public class Table
     }
   }
 
+  // line 86 "../../../../../RestoAppPersistence.ump"
+   public static  void reinitializeUniqueNumber(List<Table> tables){
+    tablesByNumber = new HashMap<Integer, Table>();
+    for (Table table : tables) {
+      tablesByNumber.put(table.getNumber(), table);
+    }
+  }
+
+  // line 37 "../../../../../RestoApp.ump"
+   public boolean contains(int x, int y){
+    boolean result = false;
+	   int x_leftBound = this.getX();
+	   int x_rightBound = x_leftBound+this.width;
+	   int y_topBound = this.getY();
+	   int y_bottomBound = this.getY()+this.length;
+	   if((x_leftBound <= x) && (x <= x_rightBound) && (y_topBound <= y) && (y <= y_bottomBound)) {
+		  result = true;
+	   }
+	   return result;
+  }
+
 
   public String toString()
   {
@@ -659,5 +682,13 @@ public class Table
             "width" + ":" + getWidth()+ "," +
             "length" + ":" + getLength()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 83 "../../../../../RestoAppPersistence.ump"
+  private static final long serialVersionUID = 8896099581655989380L ;
+
+  
 }

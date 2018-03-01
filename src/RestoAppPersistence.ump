@@ -1,65 +1,94 @@
+namespace ca.mcgill.ecse223.resto.model;
+
 external interface Serializable {}
 
 class RestoApp {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ; 
+  private static final long serialVersionUID = -2683593616927798071L; 
   
   public void reinitialize() {
-  
+    Table.reinitializeUniqueNumber(this.getTables());
+    Order.reinitializeAutouniqueNumber(this.getOrders());
+    MenuItem.reinitializeUniqueName(this.getMenuItems()); //Menu Items through Menu
   }
 }
 
 class Bill {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ; 
+  private static final long serialVersionUID = 1301576255893682821L;
 }
 
 class Menu {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = -7403802774454467836L;
 }
 
 class MenuItem {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = -1776230320092632776L;
+  
+  public static  void reinitializeUniqueName(Menu menu){
+	List <MenuItem> menuItems = menu.getMenuItems();
+    menuitemsByName = new HashMap<String, MenuItem>();
+    for (MenuItem menuItem : menuItems) {
+      menuitemsByName.put(menuItem.getName(), menuItem);
+    }
+  }
 }
 
 class Order {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = -3900912597282882073L;
+  
+  public static void reinitializeAutouniqueNumber(List<Order> orders) {
+    int nextId = 0; 
+    for (Order order : orders) {
+      if (order.getNumber() > nextId) {
+        nextId = order.getNumber();
+      }
+    }
+    nextId++;
+  }
 }
 
 class OrderItem {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = 2045406856025012133L;
 }
 
 class PricedMenuItem {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = -4855219931984388104L;
 }
 
 class Reservation {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = 2315072607928790501L;
 }
 
 class Seat {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = 386717977557499839L;
 }
 
 class Table {
   depend java.io.Serializable;
   isA Serializable;
-  private static final long serialVersionUID = ;
+  private static final long serialVersionUID = 8896099581655989380L;
+  
+  public static void reinitializeUniqueNumber(List<Table> tables) {
+    tablesByNumber = new HashMap<Integer, Table>();
+    for (Table table : tables) {
+      tablesByNumber.put(table.getNumber(), table);
+    }
+  }
 }

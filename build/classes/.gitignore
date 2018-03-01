@@ -1,1 +1,14 @@
 /ca/
+<<<<<<< HEAD
+=======
+/Bill.class
+/Menu.class
+/MenuItem.class
+/Order.class
+/OrderItem.class
+/PricedMenuItem.class
+/Reservation.class
+/RestoApp.class
+/Seat.class
+/Table.class
+>>>>>>> refs/heads/Eliott_deleteTable

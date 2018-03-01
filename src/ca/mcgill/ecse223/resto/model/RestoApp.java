@@ -2,11 +2,13 @@
 /*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
 
 package ca.mcgill.ecse223.resto.model;
+import java.io.Serializable;
 import java.util.*;
 import java.sql.Date;
 
-// line 3 "../../../../../RestoApp.ump"
-public class RestoApp
+// line 3 "../../../../../RestoAppPersistence.ump"
+// line 6 "../../../../../RestoApp.ump"
+public class RestoApp implements Serializable
 {
 
   //------------------------
@@ -804,4 +806,19 @@ public class RestoApp
     
   }
 
+  // line 9 "../../../../../RestoAppPersistence.ump"
+   public void reinitialize(){
+    Table.reinitializeUniqueNumber(this.getTables());
+    Order.reinitializeAutouniqueNumber(this.getOrders());
+    MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
+  }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 6 "../../../../../RestoAppPersistence.ump"
+  private static final long serialVersionUID = -2683593616927798071L ;
+
+  
 }
