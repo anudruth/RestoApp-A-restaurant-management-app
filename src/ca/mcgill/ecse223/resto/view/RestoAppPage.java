@@ -47,7 +47,6 @@ public class RestoAppPage extends JFrame {
     // UI elements
   	private JLabel errorMessage;
   	// table
-  	private JLabel fakeTable;
 	private Table selectedTable = null;
   	// data elements
   	private String error = null;
@@ -135,7 +134,6 @@ public class RestoAppPage extends JFrame {
         });
 		
         //elements for popup
-        fakeTable = new JLabel();
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(3,3));
         popupMenu.setBackground(new Color(255,230,153));
@@ -197,17 +195,13 @@ public class RestoAppPage extends JFrame {
 			e.printStackTrace();
 		}
 
-        //Fake table for testing --- TO BE CHANGED
-        fakeTable.setBackground(new java.awt.Color(0, 255, 0));
-        fakeTable.setText("Table 1");
-        fakeTable.setLocation(10, 10);
         scroll_panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
         		int x_click = e.getX(); int y_click = e.getY();
         		System.out.println("Click recorded at x="+x_click+",y="+y_click);
-        		System.out.println("2 Current Tables: ");
+        		System.out.println("Current Tables: ");
         		for(Table tabletmp : RestoAppApplication.getRestoapp().getCurrentTables()) {
         			System.out.println(tabletmp.getNumber());
 
@@ -216,18 +210,22 @@ public class RestoAppPage extends JFrame {
         			if(table.contains(x_click, y_click)) {
         				selectedTable = table;
         				System.out.println("Selected Table now table "+selectedTable.getNumber());
+        				
+        				int selectedTableNumber = -1;
+                		if(selectedTable != null) {
+                			selectedTableNumber = selectedTable.getNumber();
+                		} else {
+                			System.out.println("no table found for click");
+                		}
+        				tableName.setText("Table "+selectedTableNumber);
+
+        				pop(x_click, y_click);
+        				
         				break;
         			}
         		}
-        		int selectedTableNumber = -1;
-        		if(selectedTable != null) {
-        			selectedTableNumber = selectedTable.getNumber();
-        		} else {
-        			System.out.println("no table found for click");
-        		}
-                //Popup layout
-
-        		tableName.setText("Table "+selectedTableNumber);
+			}
+			public void pop(int x, int y) {
         		
                 popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
                 popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
@@ -244,14 +242,11 @@ public class RestoAppPage extends JFrame {
                 popupMenu.add(popupMenuItem2);
                 popupMenu.add(popupMenuItem3);
                 
-        		popupMenu.show(Image_panel, x_click, y_click);
+        		popupMenu.show(Image_panel, x, y);
 			}
         });
         
-        scroll_panel.add(fakeTable);
-
         //TABLE POPUP
-        
         
         GroupLayout Image_panelLayout = new GroupLayout(Image_panel);
         Image_panel.setLayout(Image_panelLayout);
@@ -340,7 +335,6 @@ public class RestoAppPage extends JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(app_panel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
-        //</AUTO-GENERATED>
 
         pack();
     }
