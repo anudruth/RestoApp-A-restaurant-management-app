@@ -56,17 +56,17 @@ public class RestoAppApplication {
 	public static void save() {
 		PersistenceObjectStream.serialize(restoapp);
 		}
-		public static RestoApp load() {
+	
+	public static RestoApp load() {
 		PersistenceObjectStream.setFilename(filename);
 		restoapp = (RestoApp) PersistenceObjectStream.deserialize();
 		// model cannot be loaded - create empty BTMS
 		if (restoapp == null) {
-		restoapp = new RestoApp();
-		}
-		else {
+			restoapp = new RestoApp();
+		}else {
 			restoapp.reinitialize();
-			}
-		return restoapp;
 		}
+		return restoapp;
+	}
 
 }
