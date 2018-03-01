@@ -16,9 +16,7 @@ public class RestoAppController {
 	public static void removeTable(int number) throws InvalidInputException {
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		Table table = Table.getWithNumber(number);
-		
-		System.out.println(table.getNumber());
-		
+				
 		boolean reserved = table.hasReservations();
 		if(reserved == true) throw new InvalidInputException("Table is reserved");
 		try {
@@ -29,15 +27,13 @@ public class RestoAppController {
 				if(inUse == true) throw new InvalidInputException("Table is in use");
 			}
 			restoApp.removeCurrentTable(table);
-			System.out.println("table"+table.getNumber()+" removed");
-			//RestoAppApplication.save();
+			RestoAppApplication.save();
 		}catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
 	
 	public static void removeTable(Table table) throws InvalidInputException {
-		System.out.println("in removeTable()");
 		if(table == null) throw new InvalidInputException("Invalid Table");
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		boolean reserved = table.hasReservations();
@@ -50,7 +46,6 @@ public class RestoAppController {
 				if(inUse == true) throw new InvalidInputException("Table is in use");
 			}
 			restoApp.removeCurrentTable(table);
-			System.out.println("table "+table.getNumber()+" removed");
 			RestoAppApplication.save();
 		}catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());

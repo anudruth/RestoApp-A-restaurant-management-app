@@ -29,12 +29,7 @@ public class RestoAppApplication {
 	public static void main(String[] args) {
 		// start UI
 		restoapp = getRestoapp();
-		//CODE TO TEST PERSISTENCE TODO: REMOVE
-//		Table table1 = new Table(1,250,170,50,50,restoapp);
-//		restoapp.addCurrentTable(table1);
-//		Table table2 = new Table(2,400,370,50,50,restoapp);
-//		restoapp.addCurrentTable(table2);
-		
+
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RestoAppPage().setVisible(true);
