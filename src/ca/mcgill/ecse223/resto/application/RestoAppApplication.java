@@ -21,6 +21,7 @@ import ca.mcgill.ecse223.resto.view.RestoAppPage;
 public class RestoAppApplication {
 	
 	private static RestoApp  restoapp;
+	private static RestoAppPage restoAppPage;
 	private static String filename = "data.restoapp";
 	
 	/**
@@ -28,11 +29,11 @@ public class RestoAppApplication {
 	 */
 	public static void main(String[] args) {
 		// start UI
-		restoapp = getRestoapp();
-
+		
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RestoAppPage().setVisible(true);
+                restoAppPage = new RestoAppPage();
+                restoAppPage.setVisible(true);
             }
         });
 	}
@@ -40,11 +41,15 @@ public class RestoAppApplication {
 	public static RestoApp getRestoapp() {
 		if (restoapp == null) {
 			// load model
-			// TODO
-			// for now, we are just creating an empty BTMS
+			
 			restoapp = load();
+			
 		}
  		return restoapp;
+	}
+	
+	public static RestoAppPage getRestoAppPage() {
+		return restoAppPage;
 	}
 	
 	public static void save() {

@@ -19,8 +19,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
+import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
@@ -32,6 +35,7 @@ import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 public class RestoAppPage extends JFrame {
 
 	private static final long serialVersionUID = -2702005067769134471L;
+	private static final int MAX_SEATS = 8;
 	
     /************DECLARATIONS******************/
     private JPanel Image_panel;
@@ -41,7 +45,8 @@ public class RestoAppPage extends JFrame {
     private JButton reserveTableButton;
     private JLabel jLabel2;
     private JPanel scroll_panel;
-    private JScrollPane scroll_pane;
+    private JScrollPane scroll_layout;
+    private RestoVisualizer restoVisualizer;
     // End of variables declaration//GEN-END:variables
     
     // UI elements
@@ -68,7 +73,9 @@ public class RestoAppPage extends JFrame {
 		
         app_panel = new JPanel();
         scroll_panel = new JPanel();
-        scroll_pane = new JScrollPane(scroll_panel);
+        restoVisualizer = new RestoVisualizer();
+        restoVisualizer.setMinimumSize(new Dimension(10000,10000));
+        scroll_layout = new JScrollPane();
         Image_panel = new JPanel();
         jLabel2 = new JLabel();
         buttons_panel = new JPanel();
@@ -129,113 +136,28 @@ public class RestoAppPage extends JFrame {
         		billTableButtonActionPerformed(evt);
             }
         });
-		
-        //elements for popup
-        final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.setMinimumSize(new Dimension(3,3));
-        popupMenu.setBackground(new Color(255,230,153));
         
-        JPanel popupMenuItem1 = new JPanel();
-        JPanel popupMenuItem2 = new JPanel();
-        JPanel popupMenuItem3 = new JPanel();
-
-        //Table Label
-        JLabel tableName = new JLabel();
-        tableName.setBackground(new Color(255,230,153));
+        GroupLayout scroll_panel_Layout = new GroupLayout(scroll_panel);
+        scroll_panel.setLayout(scroll_panel_Layout);
+        scroll_panel_Layout.setHorizontalGroup(
+        		scroll_panel_Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(scroll_panel_Layout.createSequentialGroup()
+                .addGap(52, 52, 52)
+                .addComponent(restoVisualizer)
+                .addContainerGap(69, Short.MAX_VALUE))
+            );
+        scroll_panel_Layout.setVerticalGroup(
+        		scroll_panel_Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(scroll_panel_Layout.createSequentialGroup()
+                    .addGap(46, 46, 46)
+                    .addComponent(restoVisualizer)
+                    .addContainerGap(179, Short.MAX_VALUE))
+            );
         
-        //Delete Button
-        RoundButton removeTableButton = new RoundButton();
-        removeTableButton.setBackground(new Color(255,230,153));
-		try {
-			Image img = ImageIO.read(getClass().getResource("../resources/remove.bmp"));
-			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			removeTableButton.setIcon(new ImageIcon(scaled));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		removeTableButton.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		removeTableButtonActionPerformed(evt);
-            }
-        });
-		//Move Button
-		RoundButton moveTableButton = new RoundButton();
-        moveTableButton.setBackground(new Color(255,230,153));
-        try {
-			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
-			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			moveTableButton.setIcon(new ImageIcon(scaled));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        scroll_layout.setViewportView(scroll_panel);
 
-        //Rotate button
-        RoundButton rotateTableButton = new RoundButton();
-        rotateTableButton.setBackground(new Color(255,230,153));
-        try {
-			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
-			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			rotateTableButton.setIcon(new ImageIcon(scaled));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-        //inUse Button
-        RoundButton inUseButton = new RoundButton();
-        inUseButton.setBackground(new Color(255,230,153));
-        try {
-			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
-			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			inUseButton.setIcon(new ImageIcon(scaled));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-        scroll_panel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-        		int x_click = e.getX(); int y_click = e.getY();
-        		
-        		for (Table table: RestoAppApplication.getRestoapp().getCurrentTables()) {
-        			if(table.contains(x_click, y_click)) {
-        				selectedTable = table;
-        				
-        				int selectedTableNumber = -1;
-                		if(selectedTable != null) {
-                			selectedTableNumber = selectedTable.getNumber();
-                		}
-                		
-        				tableName.setText("Table "+selectedTableNumber);
-
-        				pop(x_click, y_click);
-        				
-        				break;
-        			}
-        		}
-			}
-			public void pop(int x, int y) {
-        		
-                popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
-                popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
-                popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
-                popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
-
-                popupMenuItem1.add(tableName);
-                popupMenuItem2.add(removeTableButton);
-                popupMenuItem2.add(moveTableButton);
-                popupMenuItem3.add(rotateTableButton);
-                popupMenuItem3.add(inUseButton);
-                
-                popupMenu.add(popupMenuItem1);
-                popupMenu.add(popupMenuItem2);
-                popupMenu.add(popupMenuItem3);
-                
-        		popupMenu.show(Image_panel, x, y);
-			}
-        });
         
-        //TABLE POPUP
         
         GroupLayout Image_panelLayout = new GroupLayout(Image_panel);
         Image_panel.setLayout(Image_panelLayout);
@@ -288,13 +210,13 @@ public class RestoAppPage extends JFrame {
             .addGroup(app_panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(app_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll_pane, GroupLayout.PREFERRED_SIZE, 497, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scroll_layout, GroupLayout.PREFERRED_SIZE, 497, GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttons_panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(Image_panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
         
-        app_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {Image_panel, scroll_pane});
+        app_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {Image_panel, scroll_layout});
 
         app_panelLayout.setVerticalGroup(
             app_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -303,7 +225,7 @@ public class RestoAppPage extends JFrame {
                 .addGroup(app_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(Image_panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(app_panelLayout.createSequentialGroup()
-                        .addComponent(scroll_pane)
+                        .addComponent(scroll_layout)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttons_panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)))
@@ -341,13 +263,40 @@ public class RestoAppPage extends JFrame {
     
     /**************ACTIONS*****************/
     private void addTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
+        
+		error = null;
+		try {
+			
+			RestoAppController.createTable();
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+			
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
     }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    }
+    
+    private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
+    	try {
+			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+    }
+    
+    private void tableNumberChangeActionPerformed(ActionEvent evt, String newTableNumber) {
+		try {
+			RestoAppController.updateTable(selectedTable, Integer.valueOf(newTableNumber), selectedTable.getCurrentSeats().size());
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
     }
 
 	private void removeTableButtonActionPerformed(ActionEvent evt) {
@@ -376,4 +325,123 @@ public class RestoAppPage extends JFrame {
 		refreshData();
 	};
 
+	public void popUp(int x, int y, Table aTable) {
+
+		selectedTable = aTable;
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        JPanel popupMenuItem3 = new JPanel();
+        JPanel popupMenuItem4 = new JPanel();
+
+        //Table Label
+        JLabel tableName = new JLabel();
+        tableName.setBackground(new Color(255,230,153));
+        
+        JTextField tableNumber = new JTextField();
+        tableNumber.setBackground(new Color(255,230,153));
+        tableNumber.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		String newTableNumber = tableNumber.getText();
+        		tableNumberChangeActionPerformed(evt, newTableNumber);
+            }
+        });   
+        
+        JSlider tableSlider = new JSlider();
+        tableSlider.setBackground(new Color(255,230,153));
+        tableSlider.setMaximum(MAX_SEATS);
+		tableSlider.setMinimum(0);
+		tableSlider.setMajorTickSpacing(1);
+		tableSlider.setPaintTicks(true);
+		tableSlider.setPaintLabels(true);
+		tableSlider.addChangeListener(new ChangeListener() {
+        	public void stateChanged(ChangeEvent evt) {
+        		int numSeats = tableSlider.getValue();
+        		tableCurrentSeatsChangeActionPerformed(evt, numSeats);
+            }
+        });
+        
+        //Delete Button
+        RoundButton removeTableButton = new RoundButton();
+        removeTableButton.setBackground(new Color(255,230,153));
+		try {
+			Image img = ImageIO.read(getClass().getResource("../resources/remove.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			removeTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		removeTableButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		removeTableButtonActionPerformed(evt);
+            }
+        });
+		//Move Button
+		RoundButton moveTableButton = new RoundButton();
+        moveTableButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			moveTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+        //Rotate button
+        RoundButton rotateTableButton = new RoundButton();
+        rotateTableButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			rotateTableButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+        //inUse Button
+        RoundButton inUseButton = new RoundButton();
+        inUseButton.setBackground(new Color(255,230,153));
+        try {
+			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			inUseButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        String selectedTableNumber = "-1";
+		if(selectedTable != null) {
+			selectedTableNumber = Integer.toString(selectedTable.getNumber());
+		}
+		
+		tableName.setText("Table ");
+		tableNumber.setText(selectedTableNumber);
+		tableSlider.setValue(selectedTable.getCurrentSeats().size());
+		
+		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	        
+	    popupMenuItem1.add(tableName);
+	    popupMenuItem1.add(tableNumber);
+	    popupMenuItem2.add(removeTableButton);
+	    popupMenuItem2.add(moveTableButton);
+	    popupMenuItem3.add(rotateTableButton);
+	    popupMenuItem3.add(inUseButton);
+	    popupMenuItem4.add(tableSlider);
+	        
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    popupMenu.add(popupMenuItem3);
+	    popupMenu.add(popupMenuItem4);
+	        
+		popupMenu.show(Image_panel, x, y);
+	}
+
+	
 }
