@@ -69,16 +69,19 @@ public class RestoAppController {
 				System.out.println("3.2");
 				lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
 				//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
-				if(newTableNumber%2==0) {
-					aX= lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
-					aY = lastTable.getY();
+				if(newTableNumber%3==0) 
+				{
+					aX= 30;
+					aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;
+					
 					System.out.println("3.1.1");
 				}
 				else {
 					System.out.println("3.1.2");
-					aX =lastTable.getX();
-					aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;;
+					aX =lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
+					aY =lastTable.getY();
 				}
+
 
 			}
 
