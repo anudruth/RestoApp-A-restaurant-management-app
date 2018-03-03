@@ -81,6 +81,8 @@ public class RestoAppPage extends JFrame {
         buttons_panel = new JPanel();
         reserveTableButton = new JButton();
         
+        RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
         
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -245,6 +247,7 @@ public class RestoAppPage extends JFrame {
                 .addComponent(app_panel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
 
+        
         pack();
     }
 
@@ -355,7 +358,7 @@ public class RestoAppPage extends JFrame {
         JSlider tableSlider = new JSlider();
         tableSlider.setBackground(new Color(255,230,153));
         tableSlider.setMaximum(MAX_SEATS);
-		tableSlider.setMinimum(0);
+		tableSlider.setMinimum(1);
 		tableSlider.setMajorTickSpacing(1);
 		tableSlider.setPaintTicks(true);
 		tableSlider.setPaintLabels(true);
