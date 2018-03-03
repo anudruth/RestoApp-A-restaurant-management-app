@@ -172,7 +172,7 @@ public class RestoAppController {
 		}
 	}
 	
-public static void updateTable(Table table, int newNumber, int numberOfSeats) throws InvalidInputException {
+	public static void updateTable(Table table, int newNumber, int numberOfSeats) throws InvalidInputException {
 		
 		if(table == null) {
 			throw new InvalidInputException("The table doesn't exist.");
