@@ -29,6 +29,7 @@ public class RestoAppController {
 	
 	public static void createTable() throws InvalidInputException
 	{	
+		System.out.println("1");
 		int newTableNumber =0;
 		int aX;
 		int aY;
@@ -43,7 +44,7 @@ public class RestoAppController {
 		else {
 			newTableNumber =1 ;
 		}
-		
+		System.out.println("2");
 		int numberOfSeats = 4;
 		int tableWidth = 3*SEAT_DIAMETER;
 		int tableLength;
@@ -54,19 +55,23 @@ public class RestoAppController {
 		{
 			tableLength = (numberOfSeats) * SEAT_DIAMETER;
 		}
-		
+		System.out.println("3");
 		if(restoapp.getCurrentTables().size() == 0) {
 			aX = 30;
 			aY = 30;
+			System.out.println("3.1");
 		}
 		else {
+			System.out.println("3.2");
 			lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
 			//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
 			if(newTableNumber%2==0) {
 				aX= lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
 				aY = lastTable.getY();
+				System.out.println("3.1.1");
 			}
 			else {
+				System.out.println("3.1.2");
 				aX =lastTable.getX();
 				aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;;
 			}
@@ -75,10 +80,10 @@ public class RestoAppController {
 		
 		try
 		{	
-			
+			System.out.println("4");
 			Table newtable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength);
 			restoapp.addCurrentTable(newtable);
-			
+			System.out.println("5");
 			for (int seatCount = 1; seatCount <= numberOfSeats; seatCount++ )
 			{
 				newtable.addCurrentSeat(newtable.addSeat());
@@ -87,6 +92,7 @@ public class RestoAppController {
 		}
 		catch (RuntimeException e)
 		{
+			System.out.println(e.getMessage());
 			throw new InvalidInputException(e.getMessage());
 		}
 		
@@ -127,6 +133,15 @@ public class RestoAppController {
 			}
 			restoApp.removeCurrentTable(table);
 			RestoAppApplication.save();
+			System.out.println("Current");
+			for(Table atable : RestoAppApplication.getRestoapp().getCurrentTables()) {
+				System.out.println("Table "+ atable.getNumber());
+			}
+			System.out.println("Real");
+			for(Table atable : RestoAppApplication.getRestoapp().getTables()) {
+				System.out.println("Table "+ atable.getNumber());
+			}
+			
 		}catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}

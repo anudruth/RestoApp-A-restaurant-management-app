@@ -316,6 +316,8 @@ public class RestoAppPage extends JFrame {
 					}
 				}
 				RestoAppController.removeTable(toDelete);
+				RestoApp restoapp = RestoAppApplication.getRestoapp();
+				restoVisualizer.setResto(restoapp);
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
 			}
