@@ -116,6 +116,8 @@ public class RestoVisualizer extends JPanel {
 				seatPlacementOffsetWidth = 0;
 				seatCount =0;
 				
+				int k = 0;
+				int sideCount = 0;
 				int seatsPerSide;
 				int totalSeats = table.getCurrentSeats().size();
 				if (totalSeats <= 4) {
@@ -136,45 +138,45 @@ public class RestoVisualizer extends JPanel {
 				g2d.drawString(new Integer(table.getNumber()).toString(),(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
 				
 				for(Seat seat: table.getCurrentSeats()) {
-					if (seatCount ==0) {
-						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()-1.5*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 1 && totalSeats <= 4) {
-						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()+3.5*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 1 && totalSeats > 4 && totalSeats <= 6) {
-						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()+6.5*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 1 && totalSeats > 6) {
-						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()+9.5*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 2) {
-						sX = table.getX()+3.5*SEAT_DIAMETER;
-						sY = table.getY()+1*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 3) {
-						sX = table.getX()-1.5*SEAT_DIAMETER;
-						sY = table.getY()+1*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 4) {
-						sX = table.getX()-1.5*SEAT_DIAMETER;
-						sY = table.getY()+4*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 5) {
-						sX = table.getX()+3.5*SEAT_DIAMETER;
-						sY = table.getY()+4*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 6) {
-						sX = table.getX()+3.5*SEAT_DIAMETER;
-						sY = table.getY()+7*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 7) {
-						sX = table.getX()-1.5*SEAT_DIAMETER;
-						sY = table.getY()+7*(SEAT_DIAMETER);
+					
+					if (totalSeats <= 2) {
+						if (seatCount ==0) {
+							sX = table.getX()+SEAT_DIAMETER;
+							sY = table.getY()-1.5*(SEAT_DIAMETER);
+						}
+						else if(seatCount == 1) {
+							sX = table.getX()+SEAT_DIAMETER;
+							sY = table.getY()+3.5*(SEAT_DIAMETER);
+						}
+					} else {
+						if (seatCount == 0) {
+							sX = table.getX()+SEAT_DIAMETER;
+							sY = table.getY()-1.5*(SEAT_DIAMETER);
+						}
+						else if(seatCount == 1 && totalSeats%2 == 0) {
+							sX = table.getX()+SEAT_DIAMETER;
+							sY = table.getY()+(3.5 + 3 * (seatsPerSide - 1))*(SEAT_DIAMETER);
+						}
+						else if(seatCount % 2 == 0 && totalSeats % 2 == 0) {
+							sX = table.getX()+3.5*SEAT_DIAMETER;
+							sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							k++;
+						}
+						else if(seatCount % 2 == 1 && totalSeats % 2 == 0) {
+							sX = table.getX()-1.5*SEAT_DIAMETER;
+							sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							k++;
+						}
+						else if(seatCount % 2 == 0 && totalSeats % 2 == 1) {
+							sX = table.getX()+3.5*SEAT_DIAMETER;
+							sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							k++;
+						}
+						else if(seatCount % 2 == 1 && totalSeats % 2 == 1) {
+							sX = table.getX()-1.5*SEAT_DIAMETER;
+							sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							k++;
+						}
 					}
 					
 					
@@ -186,6 +188,10 @@ public class RestoVisualizer extends JPanel {
 					g2d.setColor(Color.GRAY);
 					g2d.fill(circle);
 					g2d.draw(circle);
+					
+					if (k % 2 == 0) {
+						sideCount++;
+					}
 					
 					seatCount++;
 					
