@@ -35,7 +35,7 @@ import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 public class RestoAppPage extends JFrame {
 
 	private static final long serialVersionUID = -2702005067769134471L;
-	private static final int MAX_SEATS = 9;
+	private static final int MAX_SEATS = 8;
 	
     /************DECLARATIONS******************/
     private JPanel Image_panel;

@@ -99,10 +99,9 @@ public class RestoAppController {
 			
 			restoapp.addCurrentTable(newTable);
 			System.out.println("5");
-			for (int seatCount = 1; seatCount <= numberOfSeats; seatCount++ )
-			{
-				newTable.addCurrentSeat(newTable.addSeat());
-			}
+
+			RestoAppController.updateTable(newTable, newTableNumber, 4);
+			
 			RestoAppApplication.save();
 		}
 		catch (RuntimeException e)

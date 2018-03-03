@@ -116,18 +116,15 @@ public class RestoVisualizer extends JPanel {
 				seatPlacementOffsetWidth = 0;
 				seatCount =0;
 				
+				int seatsPerSide;
 				int totalSeats = table.getCurrentSeats().size();
-				RoundRectangle2D rectangle = new RoundRectangle2D.Double();
-				
 				if (totalSeats <= 4) {
-					rectangle = new RoundRectangle2D.Double(table.getX(),table.getY(), table.getWidth(), table.getLength(), 10, 10);
-				} 
-				else if (totalSeats > 4 && totalSeats <= 6) {
-					rectangle = new RoundRectangle2D.Double(table.getX(),table.getY(), table.getWidth(), 1.75*table.getLength(), 10, 10);
+					seatsPerSide = 1;
+				} else {
+					seatsPerSide = (totalSeats - 1) / 2;
 				}
-				else if (totalSeats > 6) {
-					rectangle = new RoundRectangle2D.Double(table.getX(),table.getY(), table.getWidth(), 2.75*table.getLength(), 10, 10);
-				}
+				
+				RoundRectangle2D rectangle = new RoundRectangle2D.Double(table.getX(),table.getY(), table.getWidth(), seatsPerSide*table.getLength(), 10, 10);
 				
 				rectangles.add(rectangle);
 				
@@ -140,9 +137,8 @@ public class RestoVisualizer extends JPanel {
 				
 				for(Seat seat: table.getCurrentSeats()) {
 					if (seatCount ==0) {
-					sX = table.getX()+SEAT_DIAMETER;
-					sY = table.getY()-1.5*(SEAT_DIAMETER);
-						
+						sX = table.getX()+SEAT_DIAMETER;
+						sY = table.getY()-1.5*(SEAT_DIAMETER);
 					}
 					else if(seatCount == 1 && totalSeats <= 4) {
 						sX = table.getX()+SEAT_DIAMETER;
@@ -150,11 +146,11 @@ public class RestoVisualizer extends JPanel {
 					}
 					else if(seatCount == 1 && totalSeats > 4 && totalSeats <= 6) {
 						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()+6*(SEAT_DIAMETER);
+						sY = table.getY()+6.5*(SEAT_DIAMETER);
 					}
 					else if(seatCount == 1 && totalSeats > 6) {
 						sX = table.getX()+SEAT_DIAMETER;
-						sY = table.getY()+9*(SEAT_DIAMETER);
+						sY = table.getY()+9.5*(SEAT_DIAMETER);
 					}
 					else if(seatCount == 2) {
 						sX = table.getX()+3.5*SEAT_DIAMETER;
@@ -173,17 +169,14 @@ public class RestoVisualizer extends JPanel {
 						sY = table.getY()+4*(SEAT_DIAMETER);
 					}
 					else if(seatCount == 6) {
-						sX = table.getX()-1.5*SEAT_DIAMETER;
-						sY = table.getY()+4*(SEAT_DIAMETER);
-					}
-					else if(seatCount == 7) {
 						sX = table.getX()+3.5*SEAT_DIAMETER;
 						sY = table.getY()+7*(SEAT_DIAMETER);
 					}
-					else if(seatCount == 8) {
+					else if(seatCount == 7) {
 						sX = table.getX()-1.5*SEAT_DIAMETER;
 						sY = table.getY()+7*(SEAT_DIAMETER);
 					}
+					
 					
 					Ellipse2D circle = new Ellipse2D.Double(sX, sY, SEAT_DIAMETER, SEAT_DIAMETER);
 					circles.add(circle);
