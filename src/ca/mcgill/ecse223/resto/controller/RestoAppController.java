@@ -23,70 +23,85 @@ public class RestoAppController {
 	public static final int SEAT_DIAMETER = 20;
 	
 	public static final int TABLE_SPACING = 5 * SEAT_DIAMETER;
+	
+	private Table preExistTable;
 
 	public RestoAppController() {
 	}
-	
+
 	public static void createTable() throws InvalidInputException
 	{	
-		System.out.println("1");
-		int newTableNumber =0;
-		int aX;
-		int aY;
-		Table lastTable;
-		Table secondLastTable;
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		List<Table> currentTables = restoapp.getCurrentTables();
-		if(currentTables.size() != 0) {
-		Table highestNumberedTable = currentTables.stream().max(Comparator.comparing(Table::getNumber)).get();
-		newTableNumber = highestNumberedTable.getNumber() + 1;
-		}
-		else {
-			newTableNumber =1 ;
-		}
-		System.out.println("2");
-		int numberOfSeats = 4;
-		int tableWidth = 3*SEAT_DIAMETER;
-		int tableLength;
-		if (numberOfSeats%2 ==0) {
-			tableLength = (numberOfSeats-1)*SEAT_DIAMETER;
-		}
-		else
+		try
 		{
-			tableLength = (numberOfSeats) * SEAT_DIAMETER;
-		}
-		System.out.println("3");
-		if(restoapp.getCurrentTables().size() == 0) {
-			aX = 30;
-			aY = 30;
-			System.out.println("3.1");
-		}
-		else {
-			System.out.println("3.2");
-			lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
-			//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
-			if(newTableNumber%2==0) {
-				aX= lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
-				aY = lastTable.getY();
-				System.out.println("3.1.1");
+			System.out.println("1");
+			int newTableNumber =0;
+			int aX;
+			int aY;
+			Table lastTable;
+			Table secondLastTable;
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			List<Table> currentTables = restoapp.getCurrentTables();
+			if(currentTables.size() != 0) {
+				Table highestNumberedTable = currentTables.stream().max(Comparator.comparing(Table::getNumber)).get();
+				newTableNumber = highestNumberedTable.getNumber() + 1;
 			}
 			else {
-				System.out.println("3.1.2");
-				aX =lastTable.getX();
-				aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;;
+				newTableNumber =1 ;
+			}
+			System.out.println("2");
+			int numberOfSeats = 4;
+			int tableWidth = 3*SEAT_DIAMETER;
+			int tableLength;
+			if (numberOfSeats%2 ==0) {
+				tableLength = (numberOfSeats-1)*SEAT_DIAMETER;
+			}
+			else
+			{
+				tableLength = (numberOfSeats) * SEAT_DIAMETER;
+			}
+			System.out.println("3");
+			if(restoapp.getCurrentTables().size() == 0) {
+				aX = 30;
+				aY = 30;
+				System.out.println("3.1");
+			}
+			else {
+				System.out.println("3.2");
+				lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
+				//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
+				if(newTableNumber%2==0) {
+					aX= lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
+					aY = lastTable.getY();
+					System.out.println("3.1.1");
+				}
+				else {
+					System.out.println("3.1.2");
+					aX =lastTable.getX();
+					aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;;
+				}
+
+			}
+
+
+			System.out.println("4");
+			Table newTable;
+			
+			Table existingTable = tableExists(newTableNumber, restoapp);
+			
+			
+			if(existingTable != null)
+			{
+				newTable = existingTable;
+			}
+			else {
+				newTable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength);
 			}
 			
-		}
-		
-		try
-		{	
-			System.out.println("4");
-			Table newtable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength);
-			restoapp.addCurrentTable(newtable);
+			restoapp.addCurrentTable(newTable);
 			System.out.println("5");
 			for (int seatCount = 1; seatCount <= numberOfSeats; seatCount++ )
 			{
-				newtable.addCurrentSeat(newtable.addSeat());
+				newTable.addCurrentSeat(newTable.addSeat());
 			}
 			RestoAppApplication.save();
 		}
@@ -95,7 +110,17 @@ public class RestoAppController {
 			System.out.println(e.getMessage());
 			throw new InvalidInputException(e.getMessage());
 		}
-		
+
+	}
+	
+	private static Table tableExists(int tableNumber, RestoApp restoapp)
+	{
+		for (Table table : restoapp.getTables()) {
+			if(table.getNumber() == tableNumber) {
+				return table;
+			}
+		}
+		return null;
 	}
 	
 	
