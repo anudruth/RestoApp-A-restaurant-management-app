@@ -289,6 +289,8 @@ public class RestoAppPage extends JFrame {
     private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
     	try {
 			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
@@ -297,6 +299,8 @@ public class RestoAppPage extends JFrame {
     private void tableNumberChangeActionPerformed(ActionEvent evt, String newTableNumber) {
 		try {
 			RestoAppController.updateTable(selectedTable, Integer.valueOf(newTableNumber), selectedTable.getCurrentSeats().size());
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
