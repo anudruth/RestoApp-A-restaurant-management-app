@@ -81,6 +81,8 @@ public class RestoAppPage extends JFrame {
         buttons_panel = new JPanel();
         reserveTableButton = new JButton();
         
+        RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
         
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -245,6 +247,7 @@ public class RestoAppPage extends JFrame {
                 .addComponent(app_panel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
 
+        
         pack();
     }
 
@@ -286,6 +289,8 @@ public class RestoAppPage extends JFrame {
     private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
     	try {
 			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
@@ -294,6 +299,8 @@ public class RestoAppPage extends JFrame {
     private void tableNumberChangeActionPerformed(ActionEvent evt, String newTableNumber) {
 		try {
 			RestoAppController.updateTable(selectedTable, Integer.valueOf(newTableNumber), selectedTable.getCurrentSeats().size());
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
@@ -355,7 +362,7 @@ public class RestoAppPage extends JFrame {
         JSlider tableSlider = new JSlider();
         tableSlider.setBackground(new Color(255,230,153));
         tableSlider.setMaximum(MAX_SEATS);
-		tableSlider.setMinimum(0);
+		tableSlider.setMinimum(1);
 		tableSlider.setMajorTickSpacing(1);
 		tableSlider.setPaintTicks(true);
 		tableSlider.setPaintLabels(true);
@@ -379,6 +386,7 @@ public class RestoAppPage extends JFrame {
 		removeTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeTableButtonActionPerformed(evt);
+        		popupMenu.setVisible(false);
             }
         });
 		//Move Button
@@ -388,6 +396,7 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			moveTableButton.setIcon(new ImageIcon(scaled));
+    		popupMenu.setVisible(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -399,6 +408,7 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			rotateTableButton.setIcon(new ImageIcon(scaled));
+    		popupMenu.setVisible(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -410,6 +420,8 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			inUseButton.setIcon(new ImageIcon(scaled));
+    		popupMenu.setVisible(false);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
