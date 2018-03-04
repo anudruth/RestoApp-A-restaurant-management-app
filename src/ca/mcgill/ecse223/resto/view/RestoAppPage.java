@@ -396,7 +396,6 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			moveTableButton.setIcon(new ImageIcon(scaled));
-    		popupMenu.setVisible(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -408,7 +407,6 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			rotateTableButton.setIcon(new ImageIcon(scaled));
-    		popupMenu.setVisible(false);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
