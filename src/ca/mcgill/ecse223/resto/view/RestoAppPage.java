@@ -23,6 +23,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
+import ca.mcgill.ecse223.resto.model.MenuItem;
+import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
@@ -47,6 +49,7 @@ public class RestoAppPage extends JFrame {
     private JPanel scroll_panel;
     private JScrollPane scroll_layout;
     private RestoVisualizer restoVisualizer;
+    private JButton displayMenuButton;
     // End of variables declaration//GEN-END:variables
     
     // UI elements
@@ -80,6 +83,7 @@ public class RestoAppPage extends JFrame {
         jLabel2 = new JLabel();
         buttons_panel = new JPanel();
         reserveTableButton = new JButton();
+        displayMenuButton = new JButton();
         
         RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
@@ -138,6 +142,21 @@ public class RestoAppPage extends JFrame {
         		billTableButtonActionPerformed(evt);
             }
         });
+		
+		RoundButton displayMenuButton = new RoundButton();
+        displayMenuButton.setBackground(new Color(255,255,255));
+		try {
+			Image img = ImageIO.read(getClass().getResource("../resources/displayMenu.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			displayMenuButton.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		displayMenuButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		displayMenuButtonActionPerformed(evt);
+            }
+        });
         
         GroupLayout scroll_panel_Layout = new GroupLayout(scroll_panel);
         scroll_panel.setLayout(scroll_panel_Layout);
@@ -189,10 +208,11 @@ public class RestoAppPage extends JFrame {
                 .addContainerGap()
                 .addComponent(addTableButton, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
                 .addComponent(reserveTableButton)
-                .addComponent(billTableButton))
+                .addComponent(billTableButton)
+            	.addComponent(displayMenuButton))
         );
 
-        buttons_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {addTableButton, reserveTableButton});
+        buttons_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {addTableButton, reserveTableButton, displayMenuButton});
 
         buttons_panelLayout.setVerticalGroup(
             buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -201,7 +221,8 @@ public class RestoAppPage extends JFrame {
                 .addGroup(buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 	.addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                    .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         
@@ -286,6 +307,12 @@ public class RestoAppPage extends JFrame {
         // TODO add your handling code here:
     }
     
+    private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		menuPopUp(2,2,RestoAppController.getItemCategories(), null);
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+    
     private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
     	try {
 			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
@@ -329,11 +356,62 @@ public class RestoAppPage extends JFrame {
 				error = e.getMessage();
 			}
 		}
-
+		
 		// update visuals
 		refreshData();
 	};
+	
+	private void Category1ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void Category2ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
 
+	private void Category3ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void Category4ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void Category5ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
 	public void popUp(int x, int y, Table aTable) {
 
 		selectedTable = aTable;
@@ -373,7 +451,7 @@ public class RestoAppPage extends JFrame {
             }
         });
         
-        //Delete Button
+		//Delete Button
         RoundButton removeTableButton = new RoundButton();
         removeTableButton.setBackground(new Color(255,230,153));
 		try {
@@ -386,9 +464,9 @@ public class RestoAppPage extends JFrame {
 		removeTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeTableButtonActionPerformed(evt);
-        		popupMenu.setVisible(false);
             }
         });
+		
 		//Move Button
 		RoundButton moveTableButton = new RoundButton();
         moveTableButton.setBackground(new Color(255,230,153));
@@ -418,8 +496,6 @@ public class RestoAppPage extends JFrame {
 			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			inUseButton.setIcon(new ImageIcon(scaled));
-    		popupMenu.setVisible(false);
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -455,5 +531,132 @@ public class RestoAppPage extends JFrame {
 		popupMenu.show(Image_panel, x, y);
 	}
 
+	public void menuPopUp(int x, int y, List<ItemCategory> i, List<MenuItem> m) {
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(50,50));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        String c1 = i.get(0).toString();
+        String c2 = i.get(1).toString();
+        String c3 = i.get(2).toString();
+        String c4 = i.get(3).toString();
+        String c5 = i.get(4).toString();
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        JPanel popupMenuItem3 = new JPanel();
+        JPanel popupMenuItem4 = new JPanel();
+        JPanel popupMenuItem5 = new JPanel();
+        JPanel popupMenuItem6 = new JPanel();
+        JPanel popupMenuItem7 = new JPanel();
+
+        JLabel menuName = new JLabel();
+        menuName.setBackground(new Color(255,230,153));
+        
+        //Category1
+        JButton Category1Button = new JButton();
+        Category1Button.setBackground(new Color(255,230,153));
+		Category1Button.setText(c1);
+		Category1Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		Category1ButtonActionPerformed(evt, i.get(0), i);
+            }
+        });
+        
+		//Category2
+        JButton Category2Button = new JButton();
+        Category2Button.setBackground(new Color(255,230,153));
+		Category2Button.setText(c2);
+		Category2Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		Category2ButtonActionPerformed(evt, i.get(1), i);
+            }
+        });
+
+		//Category3
+        JButton Category3Button = new JButton();
+        Category3Button.setBackground(new Color(255,230,153));
+		Category3Button.setText(c3);
+		Category3Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		Category3ButtonActionPerformed(evt, i.get(2), i);
+            }
+        });
+
+		//Category4
+        JButton Category4Button = new JButton();
+        Category4Button.setBackground(new Color(255,230,153));
+		Category4Button.setText(c4);
+		Category4Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		Category4ButtonActionPerformed(evt, i.get(3), i);
+            }
+        });
+        
+		//Category5
+        JButton Category5Button = new JButton();
+        Category5Button.setBackground(new Color(255,230,153));
+		Category5Button.setText(c5);
+		Category5Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		Category5ButtonActionPerformed(evt, i.get(4), i);
+            }
+        });
+		
+		if (m != null) {
+			int j = 0;
+			for (MenuItem menuItem : m) {
+				j++;
+				JButton MenuItemButton = new JButton();
+				MenuItemButton.setBackground(new Color(255,230,153));
+				MenuItemButton.setText(menuItem.getName());
+				if (j < 5) {
+					popupMenuItem3.add(MenuItemButton);
+				}
+				else if (j < 9) {
+					popupMenuItem4.add(MenuItemButton);
+				}
+				else if (j < 13) {
+					popupMenuItem5.add(MenuItemButton);
+				}
+				else if (j < 17) {
+					popupMenuItem6.add(MenuItemButton);
+				}
+				else {
+					popupMenuItem7.add(MenuItemButton);
+				}
+			}
+		}
+		
+		menuName.setText("MENU ");
+		
+		
+		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
+	        
+	    popupMenuItem1.add(menuName);
+	    popupMenuItem2.add(Category1Button);
+	    popupMenuItem2.add(Category2Button);
+	    popupMenuItem2.add(Category3Button);
+	    popupMenuItem2.add(Category4Button);
+	    popupMenuItem2.add(Category5Button);
+	        
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    popupMenu.add(popupMenuItem3);
+	    popupMenu.add(popupMenuItem4);
+	    popupMenu.add(popupMenuItem5);
+	    popupMenu.add(popupMenuItem6);
+	    popupMenu.add(popupMenuItem7);
+        
+		popupMenu.show(Image_panel, x, y);
+	}
 	
 }
