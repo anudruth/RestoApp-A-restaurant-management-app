@@ -1,22 +1,26 @@
 package ca.mcgill.ecse223.resto.persistence;
 /**
- * @author anudruth
+ * @authors Pierre, Paul, Anudruth
  *
  */
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import ca.mcgill.ecse223.resto.model.MenuItem;
+import ca.mcgill.ecse223.resto.model.RestoApp;
+
 public class PersistenceObjectStream {
 
-	private static String filename = "output.txt";
+	private static String filename = "menu.resto";
 
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream(filename);
+			fileOut = new FileOutputStream("menu.resto");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(object);
 			out.close();
@@ -28,18 +32,20 @@ public class PersistenceObjectStream {
 	}
 
 	public static Object deserialize() {
-		Object o = null;
+		RestoApp app = null;
 		ObjectInputStream in;
 		try {
-			FileInputStream fileIn = new FileInputStream(filename);
+			FileInputStream fileIn = new FileInputStream("menu.resto");
 			in = new ObjectInputStream(fileIn);
-			o = in.readObject();
+			app = (RestoApp) in.readObject();
 			in.close();
 			fileIn.close();
-		} catch (Exception e) {
-			o = null;
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		return o;
+		return app;
 	}
 	
 	public static void setFilename(String newFilename) {
