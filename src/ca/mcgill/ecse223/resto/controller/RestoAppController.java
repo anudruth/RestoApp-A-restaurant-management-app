@@ -2,6 +2,7 @@ package ca.mcgill.ecse223.resto.controller;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
@@ -268,5 +269,31 @@ public class RestoAppController {
 		
 		RestoAppApplication.save();
 		
+	}
+	
+	public static List<ItemCategory> getItemCategories(){
+		List<ItemCategory> i;
+		i = Arrays.asList(ItemCategory.values());
+		return i;
+	}
+	
+	public static List<MenuItem> getMenuItems(ItemCategory itemCategory) throws InvalidInputException{
+				
+		if(itemCategory == null) {
+			throw new InvalidInputException("Item Category unspecified");
+		}
+		
+		List<MenuItem> I = new ArrayList<MenuItem>();
+		RestoApp r = RestoAppApplication.getRestoapp();
+		Menu menu = r.getMenu();
+		List<MenuItem> menuItems = menu.getMenuItems();
+		for(MenuItem menuItem : menuItems) {
+			boolean current = menuItem.hasCurrentPricedMenuItem();
+			ItemCategory category = menuItem.getItemCategory();
+			if (current && category.equals(itemCategory)) {
+				I.add(menuItem);
+			}
+		}
+		return I;
 	}
 }
