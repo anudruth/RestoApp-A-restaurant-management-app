@@ -59,7 +59,6 @@ public class RestoAppApplication {
 	public static RestoApp load() {
 		PersistenceObjectStream.setFilename(filename);
 		restoapp = (RestoApp) PersistenceObjectStream.deserialize();
-		// model cannot be loaded - create empty BTMS
 		if (restoapp == null) {
 			restoapp = new RestoApp();
 		}else {
