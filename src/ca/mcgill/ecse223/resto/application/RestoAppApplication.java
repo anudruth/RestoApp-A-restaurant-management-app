@@ -4,16 +4,7 @@
 package ca.mcgill.ecse223.resto.application;
 
 
-import ca.mcgill.ecse223.resto.controller.InvalidInputException;
-import ca.mcgill.ecse223.resto.controller.RestoAppController;
-
-/**
- * @author anudruth,eliott,romain
- *
- */
-
 import ca.mcgill.ecse223.resto.model.RestoApp;
-import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.persistence.PersistenceObjectStream;
 import ca.mcgill.ecse223.resto.view.RestoAppPage;
 
@@ -22,7 +13,7 @@ public class RestoAppApplication {
 	
 	private static RestoApp  restoapp;
 	private static RestoAppPage restoAppPage;
-	private static String filename = "data.restoapp";
+	private static String filename = "menu.resto";
 	
 	/**
 	 * @param args

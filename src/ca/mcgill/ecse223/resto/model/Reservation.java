@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.*;
 
-// line 68 "../../../../../RestoAppPersistence.ump"
+// line 71 "../../../../../RestoAppPersistence.ump"
 // line 17 "../../../../../RestoApp.ump"
 public class Reservation implements Serializable
 {
@@ -357,7 +357,7 @@ public class Reservation implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 71 "../../../../../RestoAppPersistence.ump"
+  // line 74 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 2315072607928790501L ;
 
   

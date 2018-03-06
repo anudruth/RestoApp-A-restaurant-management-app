@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.sql.Date;
 
-// line 3 "../../../../../RestoAppPersistence.ump"
+// line 5 "../../../../../RestoAppPersistence.ump"
 // line 6 "../../../../../RestoApp.ump"
 public class RestoApp implements Serializable
 {
@@ -806,7 +806,7 @@ public class RestoApp implements Serializable
     
   }
 
-  // line 9 "../../../../../RestoAppPersistence.ump"
+  // line 11 "../../../../../RestoAppPersistence.ump"
    public void reinitialize(){
     Table.reinitializeUniqueNumber(this.getTables());
     Order.reinitializeAutouniqueNumber(this.getOrders());
@@ -817,7 +817,7 @@ public class RestoApp implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 6 "../../../../../RestoAppPersistence.ump"
+  // line 8 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = -2683593616927798071L ;
 
   

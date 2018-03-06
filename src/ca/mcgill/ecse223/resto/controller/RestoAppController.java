@@ -10,13 +10,9 @@ import ca.mcgill.ecse223.resto.model.Order;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
-import ca.mcgill.ecse223.resto.model.Bill;
 import ca.mcgill.ecse223.resto.model.Menu;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
-import ca.mcgill.ecse223.resto.model.OrderItem;
-import ca.mcgill.ecse223.resto.model.PricedMenuItem;
-import ca.mcgill.ecse223.resto.model.Reservation;
 
 
 public class RestoAppController {
@@ -25,21 +21,24 @@ public class RestoAppController {
 	
 	public static final int TABLE_SPACING = 5 * SEAT_DIAMETER;
 	
-	private Table preExistTable;
-
 	public RestoAppController() {
 	}
 
+	
+	/**
+	 * Creates a 4 seated table with a width of three times the diameter of a seat such that it doesn't overlap with other tables
+	 * @throws InvalidInputException
+	 */
 	public static void createTable() throws InvalidInputException
 	{	
 		try
 		{
-			System.out.println("1");
+
 			int newTableNumber =0;
 			int aX;
 			int aY;
 			Table lastTable;
-			Table secondLastTable;
+//			Table secondLastTable;
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
 			List<Table> currentTables = restoapp.getCurrentTables();
 			if(currentTables.size() != 0) {
@@ -49,7 +48,6 @@ public class RestoAppController {
 			else {
 				newTableNumber =1 ;
 			}
-			System.out.println("2");
 			int numberOfSeats = 4;
 			int tableWidth = 3*SEAT_DIAMETER;
 			int tableLength;
@@ -60,14 +58,11 @@ public class RestoAppController {
 			{
 				tableLength = (numberOfSeats) * SEAT_DIAMETER;
 			}
-			System.out.println("3");
 			if(restoapp.getCurrentTables().size() == 0) {
 				aX = 30;
 				aY = 30;
-				System.out.println("3.1");
 			}
 			else {
-				System.out.println("3.2");
 				lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
 				//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
 				if(newTableNumber%3==0) 
@@ -75,10 +70,8 @@ public class RestoAppController {
 					aX= 30;
 					aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;
 					
-					System.out.println("3.1.1");
 				}
 				else {
-					System.out.println("3.1.2");
 					aX =lastTable.getX()+lastTable.getWidth()+TABLE_SPACING;
 					aY =lastTable.getY();
 				}
@@ -86,8 +79,6 @@ public class RestoAppController {
 
 			}
 
-
-			System.out.println("4");
 			Table newTable;
 			
 			Table existingTable = tableExists(newTableNumber, restoapp);
@@ -102,7 +93,6 @@ public class RestoAppController {
 			}
 			
 			restoapp.addCurrentTable(newTable);
-			System.out.println("5");
 
 			RestoAppController.updateTable(newTable, newTableNumber, 4);
 			
@@ -110,12 +100,14 @@ public class RestoAppController {
 		}
 		catch (RuntimeException e)
 		{
-			System.out.println(e.getMessage());
 			throw new InvalidInputException(e.getMessage());
 		}
 
 	}
 	
+	/**
+	 * Used by createTable() to see if the table already exists
+	 */
 	private static Table tableExists(int tableNumber, RestoApp restoapp)
 	{
 		for (Table table : restoapp.getTables()) {
@@ -126,7 +118,66 @@ public class RestoAppController {
 		return null;
 	}
 	
+	/**
+	 * Moves table to given x and y coordinates
+	 */
+	public static void moveTable(Table table, int x, int y) throws InvalidInputException {
+		
+		
+		if (table == null) throw new InvalidInputException("The table doesn't exist.");
+		if (x<0 || y<0) throw new InvalidInputException("x and y can not be negative");
+		int width = table.getWidth();
+		int length = table.getLength();
+		RestoApp r = RestoAppApplication.getRestoapp();
+		
+		try {
+		List <Table> currentTables = r.getCurrentTables();
+		for (Table currentTable: currentTables) {
+//			if (currentTable.doesOverlap(x,y,width,length)) throw new InvalidInputException
+//			("Location is already taken by another table");
+			//TODO: Fix this.
+		}
+		table.setX(x);
+		table.setY(y);
 	
+		RestoAppApplication.save();
+		}
+		catch (RuntimeException e){
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Moves table with number to coordinates x and y
+	 */
+	public static void moveTable(int number, int x, int y) throws InvalidInputException {
+		
+		Table table = RestoAppApplication.getRestoapp().getCurrentTable(number);
+		if (table == null) throw new InvalidInputException("The table doesn't exist.");
+		if (x<0 || y<0) throw new InvalidInputException("x and y can not be negative");
+		int width = table.getWidth();
+		int length = table.getLength();
+		RestoApp r = RestoAppApplication.getRestoapp();
+		
+		try {
+		List <Table> currentTables = r.getCurrentTables();
+		for (Table currentTable: currentTables) {
+			if (currentTable.doesOverlap(x,y,width,length)) throw new InvalidInputException
+			("Location is already taken by another table");
+		}
+		table.setX(x);
+		table.setY(y);
+	
+		RestoAppApplication.save();
+		}
+		catch (RuntimeException e){
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * removes table given by number from currentTables list
+	 */
 	public static void removeTable(int number) throws InvalidInputException {
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		Table table = Table.getWithNumber(number);
@@ -147,6 +198,9 @@ public class RestoAppController {
 		}
 	}
 	
+	/**
+	 * removes table from currentTables list
+	 */
 	public static void removeTable(Table table) throws InvalidInputException {
 		if(table == null) throw new InvalidInputException("Invalid Table");
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
@@ -161,20 +215,15 @@ public class RestoAppController {
 			}
 			restoApp.removeCurrentTable(table);
 			RestoAppApplication.save();
-			System.out.println("Current");
-			for(Table atable : RestoAppApplication.getRestoapp().getCurrentTables()) {
-				System.out.println("Table "+ atable.getNumber());
-			}
-			System.out.println("Real");
-			for(Table atable : RestoAppApplication.getRestoapp().getTables()) {
-				System.out.println("Table "+ atable.getNumber());
-			}
 			
 		}catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
 	
+	/**
+	 * sets number of table to newNumber and adds/removes the correct number of seats to get numberOfSeats
+	 */
 	public static void updateTable(Table table, int newNumber, int numberOfSeats) throws InvalidInputException {
 		
 		if(table == null) {
@@ -220,6 +269,9 @@ public class RestoAppController {
 		
 	}
 	
+	/**
+	 * does same as updateTable(table,newNumber,numberOfSeats) but gets the table with its number
+	 */
 	public static void updateTable(int number, int newNumber, int numberOfSeats) throws InvalidInputException {
 		
 		Table table = RestoAppApplication.getRestoapp().getCurrentTable(number);
@@ -252,10 +304,6 @@ public class RestoAppController {
 		}
 		
 		int n = table.numberOfCurrentSeats();
-		
-		System.out.println("The number of seats is: " + numberOfSeats);
-		System.out.println("The current number of seats is: " + n);
-		System.out.println("The difference is: " + (numberOfSeats - n));
 		
 		for (int k = 0; k < (numberOfSeats - n); k++) {
 			Seat seat = table.addSeat();

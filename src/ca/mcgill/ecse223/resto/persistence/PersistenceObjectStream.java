@@ -1,8 +1,4 @@
 package ca.mcgill.ecse223.resto.persistence;
-/**
- * @authors Pierre, Paul, Anudruth
- *
- */
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 
 public class PersistenceObjectStream {
@@ -20,7 +15,7 @@ public class PersistenceObjectStream {
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
 		try {
-			fileOut = new FileOutputStream("menu.resto");
+			fileOut = new FileOutputStream(filename);
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(object);
 			out.close();
@@ -35,7 +30,7 @@ public class PersistenceObjectStream {
 		RestoApp app = null;
 		ObjectInputStream in;
 		try {
-			FileInputStream fileIn = new FileInputStream("menu.resto");
+			FileInputStream fileIn = new FileInputStream(filename);
 			in = new ObjectInputStream(fileIn);
 			app = (RestoApp) in.readObject();
 			in.close();

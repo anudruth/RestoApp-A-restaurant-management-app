@@ -16,6 +16,11 @@ import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+/**
+ * Class which creats Round Buttons instead of square ones. 
+ * All rights go to aterai: https://java-swing-tips.blogspot.ca/2008/07/create-round-image-jbutton.html
+ */
+
 class RoundButton extends JButton {
   /**
 	 * 

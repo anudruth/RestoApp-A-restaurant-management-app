@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 80 "../../../../../RestoAppPersistence.ump"
+// line 83 "../../../../../RestoAppPersistence.ump"
 // line 27 "../../../../../RestoApp.ump"
 public class Table implements Serializable
 {
@@ -651,7 +651,7 @@ public class Table implements Serializable
     }
   }
 
-  // line 86 "../../../../../RestoAppPersistence.ump"
+  // line 89 "../../../../../RestoAppPersistence.ump"
    public static  void reinitializeUniqueNumber(List<Table> tables){
     tablesByNumber = new HashMap<Integer, Table>();
     for (Table table : tables) {
@@ -672,6 +672,31 @@ public class Table implements Serializable
 	   return result;
   }
 
+  // line 49 "../../../../../RestoApp.ump"
+   public boolean doesOverlap(int x, int y, int width, int length){
+    //Any rectangle can be represented by two coordinates, top left and bottom right
+	
+	//Coordinate of two points of this rectangle
+	int Ax1 = this.x;
+	int Ay1 = this.y;
+	int Ax2 = this.x + this.width;
+	int Ay2 = this.y + this.length;
+
+	//Coordinate of two points of rectangle from arguments
+	int Bx1 = x;
+	int By1 = y;
+	int Bx2 = x + width;
+	int By2 = y + length;
+
+	
+
+	if ((Ax1 < Bx2) && (Ax2 > Bx1) && (Ay1 < By2) && (Ay2 > By1))
+		{
+		return true;
+		}
+	return false;
+  }
+
 
   public String toString()
   {
@@ -687,7 +712,7 @@ public class Table implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 83 "../../../../../RestoAppPersistence.ump"
+  // line 86 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 8896099581655989380L ;
 
   

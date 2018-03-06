@@ -11,9 +11,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -30,10 +28,6 @@ import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 
-/**
- *
- * @author anudruth, eliott
- */
 public class RestoAppPage extends JFrame {
 
 	private static final long serialVersionUID = -2702005067769134471L;
@@ -41,17 +35,12 @@ public class RestoAppPage extends JFrame {
 	
     /************DECLARATIONS******************/
     private JPanel Image_panel;
-    private JButton addTableButton;
     private JPanel app_panel;
     private JPanel buttons_panel;
-    private JButton reserveTableButton;
     private JLabel jLabel2;
     private JPanel scroll_panel;
     private JScrollPane scroll_layout;
     private RestoVisualizer restoVisualizer;
-    private JButton displayMenuButton;
-    // End of variables declaration//GEN-END:variables
-    
     // UI elements
   	private JLabel errorMessage;
   	// table
@@ -61,7 +50,6 @@ public class RestoAppPage extends JFrame {
   	// table assignment
   	//...
 	
- 	/** Creates new form BtmsPage */
  	public RestoAppPage() {
  		initComponents();
  		refreshData();
@@ -82,8 +70,8 @@ public class RestoAppPage extends JFrame {
         Image_panel = new JPanel();
         jLabel2 = new JLabel();
         buttons_panel = new JPanel();
-        reserveTableButton = new JButton();
-        displayMenuButton = new JButton();
+        new JButton();
+        new JButton();
         
         RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
@@ -97,7 +85,7 @@ public class RestoAppPage extends JFrame {
 
         jLabel2.setIcon(new ImageIcon(getClass().getResource("../resources/Screen Shot 2018-02-20 at 1.08.07 AM.png"))); // NOI18N
         
-        //elements for addTableButton, reserveTableButton, billTableButton
+        //elements for addTableButton, reserveTableButton, billTableButton, displayMenuButton
         RoundButton addTableButton = new RoundButton();
         addTableButton.setBackground(new Color(255,255,255));
 		try {
@@ -158,6 +146,7 @@ public class RestoAppPage extends JFrame {
             }
         });
         
+		/********************LAYOUT FOR INITIAL STATE*******************/
         GroupLayout scroll_panel_Layout = new GroupLayout(scroll_panel);
         scroll_panel.setLayout(scroll_panel_Layout);
         scroll_panel_Layout.setHorizontalGroup(
@@ -276,9 +265,7 @@ public class RestoAppPage extends JFrame {
 		// error
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
-			// populate page with data
-			
-			// table
+			//TODO: Implement error messages on screen
 		}
 		// this is needed because the size of the window changes depending on whether an error message is shown or not
 		pack();
@@ -287,8 +274,6 @@ public class RestoAppPage extends JFrame {
     
     /**************ACTIONS*****************/
     private void addTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
-        
 		error = null;
 		try {
 			
@@ -332,7 +317,31 @@ public class RestoAppPage extends JFrame {
 			error = e.getMessage();
 		}
     }
+    
+    int x_move;
+    int y_move;
+    private void moveTableButtonActionPerformed(ActionEvent evt) {
+    	error = null;
+		restoVisualizer.addMouseListener(new MouseAdapter(){
 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				x_move = e.getX();
+				y_move = e.getY();
+				try {
+					RestoAppController.moveTable(selectedTable, x_move,y_move);
+					RestoApp restoapp = RestoAppApplication.getRestoapp();
+					restoVisualizer.setResto(restoapp);
+				} catch (InvalidInputException e1) {
+					e1.printStackTrace();
+				} 	
+			}
+		}); 
+	}
+    
+    /**
+     * If selectedTable (global variable) is in the CurrentTables, calls the Controller method to remove
+     */
 	private void removeTableButtonActionPerformed(ActionEvent evt) {
 		// clear error message and basic input validation
 		error = "";
@@ -361,7 +370,10 @@ public class RestoAppPage extends JFrame {
 		refreshData();
 	};
 	
-	private void Category1ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+	/**
+	 * Displays the proper popUp for the category of menu selected
+	 */
+	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
 		try {
 			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
 		} catch (InvalidInputException e) {
@@ -371,48 +383,11 @@ public class RestoAppPage extends JFrame {
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
-	
-	private void Category2ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
 
-	private void Category3ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void Category4ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void Category5ButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	public void popUp(int x, int y, Table aTable) {
+	/**
+	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
+	 */
+	public void tablePopUp(int x, int y, Table aTable) {
 
 		selectedTable = aTable;
         final JPopupMenu popupMenu = new JPopupMenu();
@@ -464,6 +439,7 @@ public class RestoAppPage extends JFrame {
 		removeTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeTableButtonActionPerformed(evt);
+        		popupMenu.setVisible(false);
             }
         });
 		
@@ -477,6 +453,13 @@ public class RestoAppPage extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        moveTableButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		moveTableButtonActionPerformed(evt);
+            }
+
+			
+        });
 
         //Rotate button
         RoundButton rotateTableButton = new RoundButton();
@@ -531,17 +514,20 @@ public class RestoAppPage extends JFrame {
 		popupMenu.show(Image_panel, x, y);
 	}
 
-	public void menuPopUp(int x, int y, List<ItemCategory> i, List<MenuItem> m) {
+	/**
+	 * Is called whenever a menu is selected. Makes the list of items for that menu appear.
+	 */
+	public void menuPopUp(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems) {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
         popupMenu.setBackground(new Color(255,230,153));
         
-        String c1 = i.get(0).toString();
-        String c2 = i.get(1).toString();
-        String c3 = i.get(2).toString();
-        String c4 = i.get(3).toString();
-        String c5 = i.get(4).toString();
+        String c1 = items.get(0).toString();
+        String c2 = items.get(1).toString();
+        String c3 = items.get(2).toString();
+        String c4 = items.get(3).toString();
+        String c5 = items.get(4).toString();
         
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -560,7 +546,7 @@ public class RestoAppPage extends JFrame {
 		Category1Button.setText(c1);
 		Category1Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		Category1ButtonActionPerformed(evt, i.get(0), i);
+        		CategoryButtonActionPerformed(evt, items.get(0), items);
             }
         });
         
@@ -570,7 +556,7 @@ public class RestoAppPage extends JFrame {
 		Category2Button.setText(c2);
 		Category2Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		Category2ButtonActionPerformed(evt, i.get(1), i);
+        		CategoryButtonActionPerformed(evt, items.get(1), items);
             }
         });
 
@@ -580,7 +566,7 @@ public class RestoAppPage extends JFrame {
 		Category3Button.setText(c3);
 		Category3Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		Category3ButtonActionPerformed(evt, i.get(2), i);
+        		CategoryButtonActionPerformed(evt, items.get(2), items);
             }
         });
 
@@ -590,7 +576,7 @@ public class RestoAppPage extends JFrame {
 		Category4Button.setText(c4);
 		Category4Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		Category4ButtonActionPerformed(evt, i.get(3), i);
+        		CategoryButtonActionPerformed(evt, items.get(3), items);
             }
         });
         
@@ -600,13 +586,13 @@ public class RestoAppPage extends JFrame {
 		Category5Button.setText(c5);
 		Category5Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		Category5ButtonActionPerformed(evt, i.get(4), i);
+        		CategoryButtonActionPerformed(evt, items.get(4), items);
             }
         });
 		
-		if (m != null) {
+		if (menuItems != null) {
 			int j = 0;
-			for (MenuItem menuItem : m) {
+			for (MenuItem menuItem : menuItems) {
 				j++;
 				JButton MenuItemButton = new JButton();
 				MenuItemButton.setBackground(new Color(255,230,153));
@@ -655,7 +641,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem5);
 	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem7);
-        
+	    
 		popupMenu.show(Image_panel, x, y);
 	}
 	

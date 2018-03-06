@@ -18,6 +18,9 @@ import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
 
+/**
+ * Takes care of creating the tables using Java 2D
+ */
 public class RestoVisualizer extends JPanel {
 
 	/**
@@ -73,7 +76,7 @@ public class RestoVisualizer extends JPanel {
 					if(rectangle.contains(x, y))
 					{
 						selectedTable = tables.get(rectangle);
-						RestoAppApplication.getRestoAppPage().popUp(x, y, selectedTable);
+						RestoAppApplication.getRestoAppPage().tablePopUp(x, y, selectedTable);
 					}
 				}
 				
