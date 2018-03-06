@@ -133,9 +133,8 @@ public class RestoAppController {
 		try {
 		List <Table> currentTables = r.getCurrentTables();
 		for (Table currentTable: currentTables) {
-//			if (currentTable.doesOverlap(x,y,width,length)) throw new InvalidInputException
-//			("Location is already taken by another table");
-			//TODO: Fix this.
+			if (currentTable.doesOverlap(x,y,width,length)) throw new InvalidInputException
+			("Location is already taken by another table");
 		}
 		table.setX(x);
 		table.setY(y);
