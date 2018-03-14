@@ -29,10 +29,10 @@ public class Table implements Serializable
   private int length;
 
   //Table State Machines
-  public enum State { notInUse, inUse }
-  public enum StateNotInUse { Null, available, reserved }
+  public enum State { tableState_notInUse, tableState_inUse }
+  public enum StateTableState_notInUse { Null, tableState_available, tableState_reserved }
   private State state;
-  private StateNotInUse stateNotInUse;
+  private StateTableState_notInUse stateTableState_notInUse;
 
   //Table Associations
   private List<Seat> seats;
@@ -64,8 +64,8 @@ public class Table implements Serializable
     }
     reservations = new ArrayList<Reservation>();
     orders = new ArrayList<Order>();
-    setStateNotInUse(StateNotInUse.Null);
-    setState(State.notInUse);
+    setStateTableState_notInUse(StateTableState_notInUse.Null);
+    setState(State.tableState_notInUse);
   }
 
   //------------------------
@@ -158,7 +158,7 @@ public class Table implements Serializable
   public String getStateFullName()
   {
     String answer = state.toString();
-    if (stateNotInUse != StateNotInUse.Null) { answer += "." + stateNotInUse.toString(); }
+    if (stateTableState_notInUse != StateTableState_notInUse.Null) { answer += "." + stateTableState_notInUse.toString(); }
     return answer;
   }
 
@@ -167,21 +167,21 @@ public class Table implements Serializable
     return state;
   }
 
-  public StateNotInUse getStateNotInUse()
+  public StateTableState_notInUse getStateTableState_notInUse()
   {
-    return stateNotInUse;
+    return stateTableState_notInUse;
   }
 
-  public boolean useTable()
+  public boolean setTableState_inUse()
   {
     boolean wasEventProcessed = false;
     
     State aState = state;
     switch (aState)
     {
-      case notInUse:
+      case tableState_notInUse:
         exitState();
-        setState(State.inUse);
+        setState(State.tableState_inUse);
         wasEventProcessed = true;
         break;
       default:
@@ -191,15 +191,15 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public boolean order()
+  public boolean setTableState_order()
   {
     boolean wasEventProcessed = false;
     
     State aState = state;
     switch (aState)
     {
-      case inUse:
-        setState(State.inUse);
+      case tableState_inUse:
+        setState(State.tableState_inUse);
         wasEventProcessed = true;
         break;
       default:
@@ -209,15 +209,15 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public boolean issueBill()
+  public boolean setTableState_issueBill()
   {
     boolean wasEventProcessed = false;
     
     State aState = state;
     switch (aState)
     {
-      case inUse:
-        setStateNotInUse(StateNotInUse.available);
+      case tableState_inUse:
+        setStateTableState_notInUse(StateTableState_notInUse.tableState_available);
         wasEventProcessed = true;
         break;
       default:
@@ -227,16 +227,16 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public boolean reserveTable()
+  public boolean setTableState_reserved()
   {
     boolean wasEventProcessed = false;
     
-    StateNotInUse aStateNotInUse = stateNotInUse;
-    switch (aStateNotInUse)
+    StateTableState_notInUse aStateTableState_notInUse = stateTableState_notInUse;
+    switch (aStateTableState_notInUse)
     {
-      case available:
-        exitStateNotInUse();
-        setStateNotInUse(StateNotInUse.reserved);
+      case tableState_available:
+        exitStateTableState_notInUse();
+        setStateTableState_notInUse(StateTableState_notInUse.tableState_reserved);
         wasEventProcessed = true;
         break;
       default:
@@ -246,16 +246,16 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public boolean cancel()
+  public boolean setTableState_cancel()
   {
     boolean wasEventProcessed = false;
     
-    StateNotInUse aStateNotInUse = stateNotInUse;
-    switch (aStateNotInUse)
+    StateTableState_notInUse aStateTableState_notInUse = stateTableState_notInUse;
+    switch (aStateTableState_notInUse)
     {
-      case reserved:
-        exitStateNotInUse();
-        setStateNotInUse(StateNotInUse.available);
+      case tableState_reserved:
+        exitStateTableState_notInUse();
+        setStateTableState_notInUse(StateTableState_notInUse.tableState_available);
         wasEventProcessed = true;
         break;
       default:
@@ -269,8 +269,8 @@ public class Table implements Serializable
   {
     switch(state)
     {
-      case notInUse:
-        exitStateNotInUse();
+      case tableState_notInUse:
+        exitStateTableState_notInUse();
         break;
 	default:
 		break;
@@ -284,33 +284,33 @@ public class Table implements Serializable
     // entry actions and do activities
     switch(state)
     {
-      case notInUse:
-        if (stateNotInUse == StateNotInUse.Null) { setStateNotInUse(StateNotInUse.available); }
+      case tableState_notInUse:
+        if (stateTableState_notInUse == StateTableState_notInUse.Null) { setStateTableState_notInUse(StateTableState_notInUse.tableState_available); }
         break;
 	default:
 		break;
     }
   }
 
-  private void exitStateNotInUse()
+  private void exitStateTableState_notInUse()
   {
-    switch(stateNotInUse)
+    switch(stateTableState_notInUse)
     {
-      case available:
-        setStateNotInUse(StateNotInUse.Null);
+      case tableState_available:
+        setStateTableState_notInUse(StateTableState_notInUse.Null);
         break;
-      case reserved:
-        setStateNotInUse(StateNotInUse.Null);
+      case tableState_reserved:
+        setStateTableState_notInUse(StateTableState_notInUse.Null);
         break;
 	default:
 		break;
     }
   }
 
-  private void setStateNotInUse(StateNotInUse aStateNotInUse)
+  private void setStateTableState_notInUse(StateTableState_notInUse aStateTableState_notInUse)
   {
-    stateNotInUse = aStateNotInUse;
-    if (state != State.notInUse && aStateNotInUse != StateNotInUse.Null) { setState(State.notInUse); }
+    stateTableState_notInUse = aStateTableState_notInUse;
+    if (state != State.tableState_notInUse && aStateTableState_notInUse != StateTableState_notInUse.Null) { setState(State.tableState_notInUse); }
   }
 
   public Seat getSeat(int index)
