@@ -1,0 +1,19 @@
+namespace ca.mcgill.ecse223.resto.model;
+
+class Table{
+  state {
+    notInUse {
+      useTable -> inUse;
+      available {
+        reserveTable -> reserved;
+      }
+      reserved {
+      cancel -> available;
+      }
+    }
+    inUse {
+      order -> inUse;
+      issueBill -> available;
+    }
+  }
+}

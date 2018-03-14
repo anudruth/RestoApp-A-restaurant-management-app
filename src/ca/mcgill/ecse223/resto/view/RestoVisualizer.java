@@ -44,20 +44,10 @@ public class RestoVisualizer extends JPanel {
 	private HashMap<RoundRectangle2D, Table> tables;
 	private HashMap<Ellipse2D, Seat> seats; 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public RestoVisualizer() {
 		super();
 		init();
 	}
-	
 	
 	private void init() {
 		restoapp = null;
@@ -74,7 +64,7 @@ public class RestoVisualizer extends JPanel {
 				for(RoundRectangle2D rectangle: rectangles)
 				{
 					if(rectangle.contains(x, y))
-					{
+					{	
 						selectedTable = tables.get(rectangle);
 						RestoAppApplication.getRestoAppPage().tablePopUp(x, y, selectedTable);
 					}
@@ -105,7 +95,6 @@ public class RestoVisualizer extends JPanel {
 			int number = restoapp.getCurrentTables().size();
 			
 			Graphics2D g2d = (Graphics2D) g.create();
-			
 			
 			
 			BasicStroke thinStroke = new BasicStroke(2);
@@ -198,20 +187,11 @@ public class RestoVisualizer extends JPanel {
 					
 					seatCount++;
 					
-					seatPlacementOffsetWidth+=(3*SEAT_DIAMETER);
-					
-				}
-				
-				
-				
+					seatPlacementOffsetWidth+=(3*SEAT_DIAMETER);	
+				}	
 			}
-			
-			
-			
 		}
 	}
-	
-	
 	
 	@Override
 	public void paintComponent(Graphics g) 
