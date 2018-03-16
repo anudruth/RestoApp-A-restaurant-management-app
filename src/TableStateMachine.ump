@@ -1,19 +1,13 @@
 namespace ca.mcgill.ecse223.resto.model;
 
-class Table{
-  state {
-    tableState_notInUse {
-      setTableState_inUse -> tableState_inUse;
-      tableState_available {
-        setTableState_reserved -> tableState_reserved;
-      }
-      tableState_reserved {
-      setTableState_cancel -> tableState_available;
-      }
-    }
-    tableState_inUse {
-      setTableState_order -> tableState_inUse;
-      setTableState_issueBill -> tableState_available;
-    }
-  }
-}
+class Table {
+	state {
+    	Available {
+      		toggleTableStatus() -> InUse;
+    	}
+    	InUse {
+      		toggleTableStatus() -> Available;
+      		order(Seat seat, MenuItem menuItem) -> InUse;
+    	}
+	}
+}	
