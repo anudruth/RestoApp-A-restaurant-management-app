@@ -5,6 +5,7 @@ package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.util.*;
 import java.sql.Date;
+import java.sql.Time;
 
 // line 5 "../../../../../RestoAppPersistence.ump"
 // line 6 "../../../../../RestoApp.ump"
@@ -290,9 +291,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Reservation addReservation(Date aDateTime, int aNumberInParty, String aContactName, String aContactEmailAddress, String aContactPhoneNumber, Table... allTables)
+  public Reservation addReservation(Date aDate, Time aTime, int aNumberInParty, String aContactName, String aContactEmailAddress, String aContactPhoneNumber, Table... allTables)
   {
-    return new Reservation(aDateTime, aNumberInParty, aContactName, aContactEmailAddress, aContactPhoneNumber, this, allTables);
+    return new Reservation(aDate, aTime, aNumberInParty, aContactName, aContactEmailAddress, aContactPhoneNumber, this, allTables);
   }
 
   public boolean addReservation(Reservation aReservation)
@@ -491,9 +492,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Order addOrder(Date aDateTime, Table... allTables)
+  public Order addOrder(Date aDate, Time aTime, Table... allTables)
   {
-    return new Order(aDateTime, this, allTables);
+    return new Order(aDate, aTime, this, allTables);
   }
 
   public boolean addOrder(Order aOrder)

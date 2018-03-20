@@ -1,13 +1,75 @@
-namespace ca.mcgill.ecse223.resto.model;
-
 class Table {
-	state {
-    	Available {
-      		toggleTableStatus() -> InUse;
-    	}
-    	InUse {
-      		toggleTableStatus() -> Available;
-      		order(Seat seat, MenuItem menuItem) -> InUse;
-    	}
-	}
-}	
+   status {
+      Available {
+         startOrder() / {
+            new Order(new java.sql.Date(Calendar.getInstance().getTime().getTime()), new java.sql.Time(Calendar.getInstance().getTime().getTime()), this.getRestoApp(), this);
+         } -> NothingOrdered;
+         addToOrder(Order o) / {
+            o.addTable(this);
+         } -> NothingOrdered; 
+      }
+      NothingOrdered {
+         orderItem(int quantity, Order o, Seat s, PricedMenuItem i) [quantityNotNegative(quantity)] / {
+            // create a new order item with the provided quantity, order, seat, and priced menu item
+         } -> Ordered; 
+         addToOrderItem(OrderItem i, Seat s) / {
+            // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
+         } -> Ordered;
+         endOrder(Order o) / {
+            if (!o.removeTable(this)) {
+               if (o.numberOfTables() == 1) {
+                  o.delete();
+               }
+            }
+         } -> Available;
+      }
+      Ordered {
+         orderItem(int quantity, Order o, Seat s, PricedMenuItem i) [quantityNotNegative(quantity)] / {
+            // create a new order item with the provided quantity, order, seat, and priced menu item
+         } -> Ordered; 
+         addToOrderItem(OrderItem i, Seat s) / {
+            // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
+         } -> Ordered;
+         cancelOrderItem(OrderItem i) [iIsLastItem(i)] / {
+            // delete order item
+         } -> NothingOrdered;
+         cancelOrderItem(OrderItem i) [!iIsLastItem(i)] / {
+            // delete order item
+         } -> Ordered;
+         cancelOrder() / {
+            // delete all order items of the table
+         } -> NothingOrdered;
+         billForSeat(Order o, Seat s) / {
+            // create a new bill with the provided order and seat; if the provided seat is already assigned to
+            // another bill for the current order, then the seat is first removed from the other bill and if no seats
+            // are left for the bill, the bill is deleted
+         } -> Ordered;
+         addToBill(Bill b, Seat s) / {
+            // add provided seat to provided bill unless seat has already been added, in which case nothing needs
+            // to be done; if the provided seat is already assigned to another bill for the current order, then the
+            // seat is first removed from the other bill and if no seats are left for the bill, the bill is deleted
+         } -> Ordered;
+         endOrder(Order o) [allSeatsBilled()] / {
+         } -> Available;
+      }
+   }
+   
+   // check that the provided quantity is an integer greater than 0
+   private boolean quantityNotNegative(int quantity) {
+      // TODO
+      return false;
+   }
+
+   // check that the provided order item is the last item of the current order of the table
+   private boolean iIsLastItem(OrderItem i) {
+      // TODO
+      return false;
+   }
+
+   // check that all seats of the table have a bill that belongs to the current order of the table 
+   private boolean allSeatsBilled() {
+      // TODO
+      return false;
+   }
+
+}

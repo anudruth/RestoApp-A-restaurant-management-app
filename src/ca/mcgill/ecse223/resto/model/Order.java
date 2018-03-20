@@ -4,10 +4,11 @@
 package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.*;
 
 // line 43 "../../../../../RestoAppPersistence.ump"
-// line 77 "../../../../../RestoApp.ump"
+// line 41 "../../../../../RestoApp.ump"
 public class Order implements Serializable
 {
 
@@ -22,7 +23,8 @@ public class Order implements Serializable
   //------------------------
 
   //Order Attributes
-  private Date dateTime;
+  private Date date;
+  private Time time;
 
   //Autounique Attributes
   private int number;
@@ -37,9 +39,10 @@ public class Order implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Order(Date aDateTime, RestoApp aRestoApp, Table... allTables)
+  public Order(Date aDate, Time aTime, RestoApp aRestoApp, Table... allTables)
   {
-    dateTime = aDateTime;
+    date = aDate;
+    time = aTime;
     number = nextNumber++;
     tables = new ArrayList<Table>();
     boolean didAddTables = setTables(allTables);
@@ -60,17 +63,30 @@ public class Order implements Serializable
   // INTERFACE
   //------------------------
 
-  public boolean setDateTime(Date aDateTime)
+  public boolean setDate(Date aDate)
   {
     boolean wasSet = false;
-    dateTime = aDateTime;
+    date = aDate;
     wasSet = true;
     return wasSet;
   }
 
-  public Date getDateTime()
+  public boolean setTime(Time aTime)
   {
-    return dateTime;
+    boolean wasSet = false;
+    time = aTime;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public Date getDate()
+  {
+    return date;
+  }
+
+  public Time getTime()
+  {
+    return time;
   }
 
   public int getNumber()
@@ -517,7 +533,8 @@ public class Order implements Serializable
   {
     return super.toString() + "["+
             "number" + ":" + getNumber()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "dateTime" + "=" + (getDateTime() != null ? !getDateTime().equals(this)  ? getDateTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "time" + "=" + (getTime() != null ? !getTime().equals(this)  ? getTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
   }  
   //------------------------

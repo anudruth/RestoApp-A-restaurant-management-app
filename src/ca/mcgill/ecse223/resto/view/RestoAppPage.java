@@ -286,7 +286,9 @@ public class RestoAppPage extends JFrame {
 		}
     }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    	reservePopUp(2,2);
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -641,6 +643,141 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem5);
 	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem7);
+	    
+		popupMenu.show(Image_panel, x, y);
+	}
+	
+	public void reservePopUp(int x, int y) {
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        JPanel popupMenuItem3 = new JPanel();
+        JPanel popupMenuItem4 = new JPanel();
+        JPanel popupMenuItem5 = new JPanel();
+        JPanel popupMenuItem6 = new JPanel();
+        JPanel popupMenuItem7 = new JPanel();
+        JPanel popupMenuItem8 = new JPanel();
+        JPanel popupMenuItem9 = new JPanel();
+        JPanel popupMenuItem10 = new JPanel();
+
+        //Reservation Labels
+        
+        JLabel makeReservation = new JLabel();
+        makeReservation.setBackground(new Color(255,230,153));
+        makeReservation.setText("Make a Reservation: ");
+        
+        JLabel reservationTable = new JLabel();
+        reservationTable.setBackground(new Color(255,230,153));
+        makeReservation.setText("Table: ");
+        
+        JLabel reservationDate = new JLabel();
+        reservationDate.setBackground(new Color(255,230,153));
+        reservationDate.setText("Date: ");
+        
+        JLabel reservationTime = new JLabel();
+        reservationTime.setBackground(new Color(255,230,153));
+        reservationTime.setText("Time: ");
+        
+        JLabel reservationSize = new JLabel();
+        reservationSize.setBackground(new Color(255,230,153));
+        reservationSize.setText("Size: ");
+        
+        JLabel reservationName = new JLabel();
+        reservationName.setBackground(new Color(255,230,153));
+        reservationName.setText("Name: ");
+        
+        JLabel reservationMail = new JLabel();
+        reservationMail.setBackground(new Color(255,230,153));
+        reservationMail.setText("Email Address: ");
+        
+        JLabel reservationPhone = new JLabel();
+        reservationPhone.setBackground(new Color(255,230,153));
+        reservationPhone.setText("Phone Number: ");
+        
+        JLabel reservationNumber = new JLabel();
+        reservationNumber.setBackground(new Color(255,230,153));
+        reservationNumber.setText("Reservation Number: ");
+        
+        JTextField tableField = new JTextField();
+        tableField.setBackground(new Color(255,230,153));
+        
+        JTextField dateField = new JTextField();
+        dateField.setBackground(new Color(255,230,153));
+        
+        JTextField timeField = new JTextField();
+        timeField.setBackground(new Color(255,230,153));
+
+        JTextField sizeField = new JTextField();
+        sizeField.setBackground(new Color(255,230,153));
+        
+        JTextField nameField = new JTextField();
+        nameField.setBackground(new Color(255,230,153));
+        
+        JTextField mailField = new JTextField();
+        mailField.setBackground(new Color(255,230,153));
+        
+        JTextField phoneField = new JTextField();
+        phoneField.setBackground(new Color(255,230,153));
+        
+        JTextField numberField = new JTextField();
+        numberField.setBackground(new Color(255,230,153));
+        
+		//Delete Button
+        JButton makeReservationButton = new JButton();
+        makeReservationButton.setBackground(new Color(255,230,153));
+        makeReservationButton.setText("Make Reservation");
+        makeReservationButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		removeTableButtonActionPerformed(evt);
+        		popupMenu.setVisible(false);
+            }
+        });
+		
+		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
+	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
+	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
+	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
+	        
+	    popupMenuItem1.add(makeReservation);
+	    popupMenuItem2.add(reservationTable);
+	    popupMenuItem2.add(tableField);
+	    popupMenuItem3.add(reservationDate);
+	    popupMenuItem3.add(dateField);
+	    popupMenuItem4.add(reservationTime);
+	    popupMenuItem4.add(timeField);
+	    popupMenuItem5.add(reservationSize);
+	    popupMenuItem5.add(sizeField);
+	    popupMenuItem6.add(reservationName);
+	    popupMenuItem6.add(nameField);
+	    popupMenuItem7.add(reservationMail);
+	    popupMenuItem7.add(mailField);
+	    popupMenuItem8.add(reservationPhone);
+	    popupMenuItem8.add(phoneField);
+	    popupMenuItem9.add(reservationNumber);
+	    popupMenuItem9.add(numberField);
+	    popupMenuItem10.add(makeReservationButton);
+	        
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    popupMenu.add(popupMenuItem3);
+	    popupMenu.add(popupMenuItem4);
+	    popupMenu.add(popupMenuItem5);
+	    popupMenu.add(popupMenuItem6);
+	    popupMenu.add(popupMenuItem7);
+	    popupMenu.add(popupMenuItem8);
+	    popupMenu.add(popupMenuItem9);
+	    popupMenu.add(popupMenuItem10);
 	    
 		popupMenu.show(Image_panel, x, y);
 	}

@@ -1,12 +1,15 @@
 package ca.mcgill.ecse223.resto.controller;
 
 import java.util.List;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
+import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
@@ -342,5 +345,33 @@ public class RestoAppController {
 			}
 		}
 		return I;
+	}
+	
+	public  static  void  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
+		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || numberInParty < 0 || contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty() || date == null || time == null) {
+			throw new InvalidInputException("Invalid Input");
+		}
+		
+		RestoApp r = RestoAppApplication.getRestoapp();
+		
+		List<Table> currentTables = r.getCurrentTables();
+		
+		int seatCapacity = 0;
+		
+		for(int k = 0; k < tables.size(); k++) {
+			boolean current = currentTables.contains(tables.get(k));
+			if (current) {
+				seatCapacity += tables.get(k).numberOfCurrentSeats();
+				List<Reservation> reservations = tables.get(k).getReservations();
+				
+				for(int i = 0; i < reservations.size(); i++) {
+					
+				}
+			} else {
+				throw new InvalidInputException("");
+			}
+		}
+		
+		
 	}
 }

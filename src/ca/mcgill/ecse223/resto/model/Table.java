@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 83 "../../../../../RestoAppPersistence.ump"
-// line 3 "../../../../../TableStateMachine.ump"
-// line 27 "../../../../../RestoApp.ump"
+// line 1 "../../../../../TableStateMachine.ump"
+// line 28 "../../../../../RestoApp.ump"
 public class Table implements Serializable
 {
 
@@ -29,8 +29,8 @@ public class Table implements Serializable
   private int length;
 
   //Table State Machines
-  public enum State { Available, InUse }
-  private State state;
+  public enum Status { Available, NothingOrdered, Ordered }
+  private Status status;
 
   //Table Associations
   private List<Seat> seats;
@@ -62,7 +62,7 @@ public class Table implements Serializable
     }
     reservations = new ArrayList<Reservation>();
     orders = new ArrayList<Order>();
-    setState(State.Available);
+    setStatus(Status.Available);
   }
 
   //------------------------
@@ -152,30 +152,28 @@ public class Table implements Serializable
     return length;
   }
 
-  public String getStateFullName()
+  public String getStatusFullName()
   {
-    String answer = state.toString();
+    String answer = status.toString();
     return answer;
   }
 
-  public State getState()
+  public Status getStatus()
   {
-    return state;
+    return status;
   }
 
-  public boolean toggleTableStatus()
+  public boolean startOrder()
   {
     boolean wasEventProcessed = false;
     
-    State aState = state;
-    switch (aState)
+    Status aStatus = status;
+    switch (aStatus)
     {
       case Available:
-        setState(State.InUse);
-        wasEventProcessed = true;
-        break;
-      case InUse:
-        setState(State.Available);
+        // line 4 "../../../../../TableStateMachine.ump"
+        new Order(new java.sql.Date(Calendar.getInstance().getTime().getTime()), new java.sql.Time(Calendar.getInstance().getTime().getTime()), this.getRestoApp(), this);
+        setStatus(Status.NothingOrdered);
         wasEventProcessed = true;
         break;
       default:
@@ -185,15 +183,17 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public boolean order(Seat seat,MenuItem menuItem)
+  public boolean addToOrder(Order o)
   {
     boolean wasEventProcessed = false;
     
-    State aState = state;
-    switch (aState)
+    Status aStatus = status;
+    switch (aStatus)
     {
-      case InUse:
-        setState(State.InUse);
+      case Available:
+        // line 7 "../../../../../TableStateMachine.ump"
+        o.addTable(this);
+        setStatus(Status.NothingOrdered);
         wasEventProcessed = true;
         break;
       default:
@@ -203,9 +203,199 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  private void setState(State aState)
+  public boolean orderItem(int quantity,Order o,Seat s,PricedMenuItem i)
   {
-    state = aState;
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case NothingOrdered:
+        if (quantityNotNegative(quantity))
+        {
+        // line 12 "../../../../../TableStateMachine.ump"
+          // create a new order item with the provided quantity, order, seat, and priced menu item
+          setStatus(Status.Ordered);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      case Ordered:
+        if (quantityNotNegative(quantity))
+        {
+        // line 27 "../../../../../TableStateMachine.ump"
+          // create a new order item with the provided quantity, order, seat, and priced menu item
+          setStatus(Status.Ordered);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean addToOrderItem(OrderItem i,Seat s)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case NothingOrdered:
+        // line 15 "../../../../../TableStateMachine.ump"
+        // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
+        setStatus(Status.Ordered);
+        wasEventProcessed = true;
+        break;
+      case Ordered:
+        // line 30 "../../../../../TableStateMachine.ump"
+        // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
+        setStatus(Status.Ordered);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean endOrder(Order o)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case NothingOrdered:
+        // line 18 "../../../../../TableStateMachine.ump"
+        if (!o.removeTable(this)) {
+               if (o.numberOfTables() == 1) {
+                  o.delete();
+               }
+            }
+        setStatus(Status.Available);
+        wasEventProcessed = true;
+        break;
+      case Ordered:
+        if (allSeatsBilled())
+        {
+        // line 52 "../../../../../TableStateMachine.ump"
+          
+          setStatus(Status.Available);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean cancelOrderItem(OrderItem i)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Ordered:
+        if (iIsLastItem(i))
+        {
+        // line 33 "../../../../../TableStateMachine.ump"
+          // delete order item
+          setStatus(Status.NothingOrdered);
+          wasEventProcessed = true;
+          break;
+        }
+        if (!(iIsLastItem(i)))
+        {
+        // line 36 "../../../../../TableStateMachine.ump"
+          // delete order item
+          setStatus(Status.Ordered);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean cancelOrder()
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Ordered:
+        // line 39 "../../../../../TableStateMachine.ump"
+        // delete all order items of the table
+        setStatus(Status.NothingOrdered);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean billForSeat(Order o,Seat s)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Ordered:
+        // line 42 "../../../../../TableStateMachine.ump"
+        // create a new bill with the provided order and seat; if the provided seat is already assigned to
+            // another bill for the current order, then the seat is first removed from the other bill and if no seats
+            // are left for the bill, the bill is deleted
+        setStatus(Status.Ordered);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  public boolean addToBill(Bill b,Seat s)
+  {
+    boolean wasEventProcessed = false;
+    
+    Status aStatus = status;
+    switch (aStatus)
+    {
+      case Ordered:
+        // line 47 "../../../../../TableStateMachine.ump"
+        // add provided seat to provided bill unless seat has already been added, in which case nothing needs
+            // to be done; if the provided seat is already assigned to another bill for the current order, then the
+            // seat is first removed from the other bill and if no seats are left for the bill, the bill is deleted
+        setStatus(Status.Ordered);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
+  private void setStatus(Status aStatus)
+  {
+    status = aStatus;
   }
 
   public Seat getSeat(int index)
@@ -721,43 +911,59 @@ public class Table implements Serializable
     }
   }
 
-  // line 37 "../../../../../RestoApp.ump"
-   public boolean contains(int x, int y){
-    boolean result = false;
-	   int x_leftBound = this.getX();
-	   int x_rightBound = x_leftBound+this.width;
-	   int y_topBound = this.getY();
-	   int y_bottomBound = this.getY()+this.length;
-	   if((x_leftBound <= x) && (x <= x_rightBound) && (y_topBound <= y) && (y <= y_bottomBound)) {
-		  result = true;
-	   }
-	   return result;
+
+  /**
+   * check that the provided quantity is an integer greater than 0
+   */
+  // line 59 "../../../../../TableStateMachine.ump"
+   private boolean quantityNotNegative(int quantity){
+    // TODO
+      return false;
   }
 
-  // line 49 "../../../../../RestoApp.ump"
+
+  /**
+   * check that the provided order item is the last item of the current order of the table
+   */
+  // line 65 "../../../../../TableStateMachine.ump"
+   private boolean iIsLastItem(OrderItem i){
+    // TODO
+      return false;
+  }
+
+
+  /**
+   * check that all seats of the table have a bill that belongs to the current order of the table
+   */
+  // line 71 "../../../../../TableStateMachine.ump"
+   private boolean allSeatsBilled(){
+    // TODO
+      return false;
+  }
+   
    public boolean doesOverlap(int x, int y, int width, int length){
-    //Any rectangle can be represented by two coordinates, top left and bottom right
-	
-	//Coordinate of two points of this rectangle
-	int Ax1 = this.x;
-	int Ay1 = this.y;
-	int Ax2 = this.x + this.width;
-	int Ay2 = this.y + this.length;
+	    //Any rectangle can be represented by two coordinates, top left and bottom right
+		
+		//Coordinate of two points of this rectangle
+		int Ax1 = this.x;
+		int Ay1 = this.y;
+		int Ax2 = this.x + this.width;
+		int Ay2 = this.y + this.length;
 
-	//Coordinate of two points of rectangle from arguments
-	int Bx1 = x;
-	int By1 = y;
-	int Bx2 = x + width;
-	int By2 = y + length;
+		//Coordinate of two points of rectangle from arguments
+		int Bx1 = x;
+		int By1 = y;
+		int Bx2 = x + width;
+		int By2 = y + length;
 
-	
+		
 
-	if ((Ax1 < Bx2) && (Ax2 > Bx1) && (Ay1 < By2) && (Ay2 > By1))
-		{
-		return true;
-		}
-	return false;
-  }
+		if ((Ax1 < Bx2) && (Ax2 > Bx1) && (Ay1 < By2) && (Ay2 > By1))
+			{
+			return true;
+			}
+		return false;
+	  }
 
 
   public String toString()

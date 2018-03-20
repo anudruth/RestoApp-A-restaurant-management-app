@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 59 "../../../../../RestoAppPersistence.ump"
-// line 84 "../../../../../RestoApp.ump"
+// line 49 "../../../../../RestoApp.ump"
 public class OrderItem implements Serializable
 {
 

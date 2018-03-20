@@ -15,7 +15,8 @@ class RestoApp {
 }
 
 class Reservation {
-   Date dateTime;
+   Date date;
+   Time time;
    Integer numberInParty;
    contactName;
    contactEmailAddress;
@@ -32,50 +33,14 @@ class Table {
    Integer length;
    1 <@>- 1..* Seat seats;
    0..1 -> * Seat currentSeats; // subsets seats
-   
-   public boolean contains(int x, int y){
-	   boolean result = false;
-	   int x_leftBound = this.getX();
-	   int x_rightBound = x_leftBound+this.width;
-	   int y_topBound = this.getY();
-	   int y_bottomBound = this.getY()+this.length;
-	   if((x_leftBound <= x) && (x <= x_rightBound) && (y_topBound <= y) && (y <= y_bottomBound)) {
-		  result = true;
-	   }
-	   return result;
-   }
-   
-   public boolean doesOverlap(int x, int y, int width, int length) {
-	//Any rectangle can be represented by two coordinates, top left and bottom right
-	
-	//Coordinate of two points of this rectangle
-	int Ax1 = this.x;
-	int Ay1 = this.y;
-	int Ax2 = this.x + this.width;
-	int Ay2 = this.y + this.length;
-
-	//Coordinate of two points of rectangle from arguments
-	int Bx1 = x;
-	int By1 = y;
-	int Bx2 = x + width;
-	int By2 = y + length;
-
-	
-
-	if ((Ax1 < Bx2) && (Ax2 > Bx1) && (Ay1 < By2) && (Ay2 > By1))
-		{
-		return true;
-		}
-	return false;
-	
-	}
 }
 
 class Seat {
 }
 
 class Order {
-   Date dateTime;
+   Date date;
+   Time time;
    autounique number;
    * orders -- 1..* Table tables; // only from currentTables for currentOrders
    1 <@>- * OrderItem orderItems;
