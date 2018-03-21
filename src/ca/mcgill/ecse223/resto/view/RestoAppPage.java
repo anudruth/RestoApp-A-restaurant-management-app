@@ -666,12 +666,7 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem6 = new JPanel();
         JPanel popupMenuItem7 = new JPanel();
         JPanel popupMenuItem8 = new JPanel();
-        JPanel popupMenuItem9 = new JPanel();
         JPanel popupMenuItem10 = new JPanel();
-        JPanel popupMenuItem11 = new JPanel();
-        JPanel popupMenuItem12 = new JPanel();
-        JPanel popupMenuItem13 = new JPanel();
-        JPanel popupMenuItem14 = new JPanel();
 
         //Reservation Labels
         
@@ -681,7 +676,7 @@ public class RestoAppPage extends JFrame {
         
         JLabel reservationTable = new JLabel();
         reservationTable.setBackground(new Color(255,230,153));
-        makeReservation.setText("Table: ");
+        makeReservation.setText("Tables: ");
         
         JLabel reservationDate = new JLabel();
         reservationDate.setBackground(new Color(255,230,153));
@@ -707,10 +702,6 @@ public class RestoAppPage extends JFrame {
         reservationPhone.setBackground(new Color(255,230,153));
         reservationPhone.setText("Phone Number: ");
         
-        JLabel reservationNumber = new JLabel();
-        reservationNumber.setBackground(new Color(255,230,153));
-        reservationNumber.setText("Reservation Number: ");
-        
         JTextField tableField = new JTextField();
         tableField.setBackground(new Color(255,230,153));
         
@@ -731,9 +722,6 @@ public class RestoAppPage extends JFrame {
         
         JTextField phoneField = new JTextField();
         phoneField.setBackground(new Color(255,230,153));
-        
-        JTextField numberField = new JTextField();
-        numberField.setBackground(new Color(255,230,153));
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -783,7 +771,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
 	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
-	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(makeReservation);
@@ -801,8 +788,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem7.add(mailField);
 	    popupMenuItem8.add(reservationPhone);
 	    popupMenuItem8.add(phoneField);
-	    popupMenuItem9.add(reservationNumber);
-	    popupMenuItem9.add(numberField);
 	    popupMenuItem10.add(makeReservationButton);
 	        
 	    popupMenu.add(popupMenuItem1);
@@ -813,7 +798,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem7);
 	    popupMenu.add(popupMenuItem8);
-	    popupMenu.add(popupMenuItem9);
 	    popupMenu.add(popupMenuItem10);
     
 		popupMenu.show(Image_panel, x, y);
