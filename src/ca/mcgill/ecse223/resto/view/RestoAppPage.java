@@ -772,7 +772,13 @@ public class RestoAppPage extends JFrame {
 				}
         		java.sql.Date date = new java.sql.Date(utilDate.getTime()); 
         		
-        		Time time = new Time(Integer.parseInt(timeField.getText().substring(0,2)), Integer.parseInt(timeField.getText().substring(3,5)), 0);
+        		Time time = null;
+        		
+        		if(timeField.getText().length() == 5) {
+            		time = new Time(Integer.parseInt(timeField.getText().substring(0,2)), Integer.parseInt(timeField.getText().substring(3,5)), 0);
+        		} else if(timeField.getText().length() == 4){
+            		time = new Time(Integer.parseInt(timeField.getText().substring(0,1)), Integer.parseInt(timeField.getText().substring(2,4)), 0);
+        		}
         		
         		try {
 					RestoAppController.reserveTable(date, time, Integer.parseInt(sizeField.getText()), nameField.getText(), mailField.getText(), phoneField.getText(), tables);
