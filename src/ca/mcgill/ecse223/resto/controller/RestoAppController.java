@@ -365,13 +365,22 @@ public class RestoAppController {
 				List<Reservation> reservations = tables.get(k).getReservations();
 				
 				for(int i = 0; i < reservations.size(); i++) {
-					
+					boolean overlaps = reservations.get(i).doesOverlap(date, time);
+					if(overlaps) {
+						throw new InvalidInputException("");
+					}
 				}
 			} else {
 				throw new InvalidInputException("");
 			}
 		}
 		
+		if (seatCapacity < numberInParty) {
+			throw new InvalidInputException("Not enough seats");
+		}
 		
+		//Reservation res = new Reservation(date, time, numberInParty, contactName, contactEmailAddress, contactPhoneNumber, r, tables)
+		
+		RestoAppApplication.save();
 	}
 }

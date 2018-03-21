@@ -356,6 +356,18 @@ public class Reservation implements Serializable
       placeholderRestoApp.removeReservation(this);
     }
   }
+  
+  public boolean doesOverlap(Date date, Time time) {
+	  
+	  Time reservationTimeAfter = new Time(this.time.getTime() + 2*60*60*1000);
+	  Time reservationTimeBefore = new Time(this.time.getTime() - 2*60*60*1000);
+	  
+	  if(time.before(reservationTimeAfter) || time.after(reservationTimeBefore)) {
+		  return true;
+	  } else {
+		  return false;
+	  }
+  }
 
 
   public String toString()
