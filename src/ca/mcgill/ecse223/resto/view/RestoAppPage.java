@@ -28,6 +28,7 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
+import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
@@ -731,7 +732,13 @@ public class RestoAppPage extends JFrame {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		List<Table> tables = new ArrayList<Table>();
         		
-        		tables.add(Table.getWithNumber(2));
+        		String[] tableNumbers = tableField.getText().split(",");
+        		
+        		for (int k = 0; k < tableNumbers.length; k++) {
+        			int tableNumber = Integer.parseInt(tableNumbers[k]);
+        			tables.add(Table.getWithNumber(tableNumber));
+        		}
+        		
         		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
         		java.util.Date utilDate = null;
 				try {
@@ -758,6 +765,7 @@ public class RestoAppPage extends JFrame {
 				} catch (InvalidInputException e) {
 					e.printStackTrace();
 				}
+        		
         		popupMenu.setVisible(false);
             }
         });

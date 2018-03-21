@@ -371,7 +371,7 @@ public class RestoAppController {
 					}
 				}
 			} else {
-				throw new InvalidInputException("");
+				throw new InvalidInputException("The table is not in the resto");
 			}
 		}
 		
