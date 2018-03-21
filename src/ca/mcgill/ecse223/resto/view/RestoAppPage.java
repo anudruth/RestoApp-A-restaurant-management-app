@@ -679,15 +679,7 @@ public class RestoAppPage extends JFrame {
         makeReservation.setBackground(new Color(255,230,153));
         makeReservation.setText("Make a Reservation: ");
         
-        JLabel cancelReservation = new JLabel();
-        makeReservation.setBackground(new Color(255,230,153));
-        makeReservation.setText("Cancel Reservation: ");
-        
         JLabel reservationTable = new JLabel();
-        reservationTable.setBackground(new Color(255,230,153));
-        makeReservation.setText("Table: ");
-        
-        JLabel cancelTable = new JLabel();
         reservationTable.setBackground(new Color(255,230,153));
         makeReservation.setText("Table: ");
         
@@ -719,10 +711,6 @@ public class RestoAppPage extends JFrame {
         reservationNumber.setBackground(new Color(255,230,153));
         reservationNumber.setText("Reservation Number: ");
         
-        JLabel cancelNumber = new JLabel();
-        reservationNumber.setBackground(new Color(255,230,153));
-        reservationNumber.setText("Reservation Number: ");
-        
         JTextField tableField = new JTextField();
         tableField.setBackground(new Color(255,230,153));
         
@@ -745,12 +733,6 @@ public class RestoAppPage extends JFrame {
         phoneField.setBackground(new Color(255,230,153));
         
         JTextField numberField = new JTextField();
-        numberField.setBackground(new Color(255,230,153));
-        
-        JTextField cancelTableField = new JTextField();
-        numberField.setBackground(new Color(255,230,153));
-        
-        JTextField cancelNumberField = new JTextField();
         numberField.setBackground(new Color(255,230,153));
         
 		//Delete Button
@@ -791,15 +773,6 @@ public class RestoAppPage extends JFrame {
         		popupMenu.setVisible(false);
             }
         });
-        
-        JButton cancelReservationButton = new JButton();
-        makeReservationButton.setBackground(new Color(255,230,153));
-        makeReservationButton.setText("Cancel Reservation");
-        makeReservationButton.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		popupMenu.setVisible(false);
-            }
-        });
 		
 		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
@@ -812,10 +785,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
 	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
-//	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
-//	    popupMenuItem12.setLayout(new BoxLayout(popupMenuItem12, BoxLayout.LINE_AXIS));
-//	    popupMenuItem13.setLayout(new BoxLayout(popupMenuItem13, BoxLayout.LINE_AXIS));
-//	    popupMenuItem14.setLayout(new BoxLayout(popupMenuItem14, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(makeReservation);
 	    popupMenuItem2.add(reservationTable);
@@ -835,12 +804,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem9.add(reservationNumber);
 	    popupMenuItem9.add(numberField);
 	    popupMenuItem10.add(makeReservationButton);
-//	    popupMenuItem11.add(cancelReservation);
-//	    popupMenuItem12.add(cancelTable);
-//	    popupMenuItem12.add(cancelTableField);
-//	    popupMenuItem13.add(cancelNumber);
-//	    popupMenuItem13.add(cancelNumberField);
-//	    popupMenuItem14.add(cancelReservationButton);
 	        
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
@@ -852,10 +815,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem8);
 	    popupMenu.add(popupMenuItem9);
 	    popupMenu.add(popupMenuItem10);
-//	   	popupMenu.add(popupMenuItem11);
-//	    popupMenu.add(popupMenuItem12);
-//	    popupMenu.add(popupMenuItem13);
-//	    popupMenu.add(popupMenuItem14);
     
 		popupMenu.show(Image_panel, x, y);
 	}
