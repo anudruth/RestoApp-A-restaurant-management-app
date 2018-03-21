@@ -12,6 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -754,6 +759,29 @@ public class RestoAppPage extends JFrame {
         makeReservationButton.setText("Make Reservation");
         makeReservationButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		List<Table> tables = new ArrayList<Table>();
+        		
+        		tables.add(Table.getWithNumber(2));
+        		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+        		java.util.Date utilDate = null;
+				try {
+					utilDate = sdf1.parse(dateField.getText());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		java.sql.Date date = new java.sql.Date(utilDate.getTime()); 
+        		
+        		Time time = new Time(Integer.parseInt(timeField.getText().substring(0,2)), Integer.parseInt(timeField.getText().substring(3,5)), 0);
+        		
+        		try {
+					RestoAppController.reserveTable(date, time, Integer.parseInt(sizeField.getText()), nameField.getText(), mailField.getText(), phoneField.getText(), tables);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					e.printStackTrace();
+				}
         		popupMenu.setVisible(false);
             }
         });
@@ -778,10 +806,10 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
 	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
-	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
-	    popupMenuItem12.setLayout(new BoxLayout(popupMenuItem12, BoxLayout.LINE_AXIS));
-	    popupMenuItem13.setLayout(new BoxLayout(popupMenuItem13, BoxLayout.LINE_AXIS));
-	    popupMenuItem14.setLayout(new BoxLayout(popupMenuItem14, BoxLayout.LINE_AXIS));
+//	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
+//	    popupMenuItem12.setLayout(new BoxLayout(popupMenuItem12, BoxLayout.LINE_AXIS));
+//	    popupMenuItem13.setLayout(new BoxLayout(popupMenuItem13, BoxLayout.LINE_AXIS));
+//	    popupMenuItem14.setLayout(new BoxLayout(popupMenuItem14, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(makeReservation);
 	    popupMenuItem2.add(reservationTable);
@@ -801,12 +829,12 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem9.add(reservationNumber);
 	    popupMenuItem9.add(numberField);
 	    popupMenuItem10.add(makeReservationButton);
-	    popupMenuItem11.add(cancelReservation);
-	    popupMenuItem12.add(cancelTable);
-	    popupMenuItem12.add(cancelTableField);
-	    popupMenuItem13.add(cancelNumber);
-	    popupMenuItem13.add(cancelNumberField);
-	    popupMenuItem14.add(cancelReservationButton);
+//	    popupMenuItem11.add(cancelReservation);
+//	    popupMenuItem12.add(cancelTable);
+//	    popupMenuItem12.add(cancelTableField);
+//	    popupMenuItem13.add(cancelNumber);
+//	    popupMenuItem13.add(cancelNumberField);
+//	    popupMenuItem14.add(cancelReservationButton);
 	        
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);

@@ -362,7 +362,9 @@ public class Reservation implements Serializable
 	  Time reservationTimeAfter = new Time(this.time.getTime() + 2*60*60*1000);
 	  Time reservationTimeBefore = new Time(this.time.getTime() - 2*60*60*1000);
 	  
-	  if(time.before(reservationTimeAfter) || time.after(reservationTimeBefore)) {
+	  if (!date.equals(this.date)) {
+		  return false;
+	  } else if(time.before(reservationTimeAfter) || time.after(reservationTimeBefore)) {
 		  return true;
 	  } else {
 		  return false;
