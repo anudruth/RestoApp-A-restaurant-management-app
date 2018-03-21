@@ -348,8 +348,12 @@ public class RestoAppController {
 	}
 	
 	public  static  void  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
-		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || numberInParty < 0 || contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty() || date == null || time == null) {
-			throw new InvalidInputException("Invalid Input");
+		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || date == null || time == null) {
+			throw new InvalidInputException("Fields are NULL");
+		} else if(contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty()) {
+			throw new InvalidInputException("Fields are Empty");
+		} else if(numberInParty < 0) {
+			throw new InvalidInputException("Party Size is Negative");
 		}
 		
 		RestoApp r = RestoAppApplication.getRestoapp();
