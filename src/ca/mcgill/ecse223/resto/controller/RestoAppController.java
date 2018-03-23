@@ -347,7 +347,7 @@ public class RestoAppController {
 		return I;
 	}
 	
-	public  static  void  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
+	public  static  int  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
 		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || date == null || time == null) {
 			throw new InvalidInputException("Fields are NULL");
 		} else if(contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty()) {
@@ -391,5 +391,7 @@ public class RestoAppController {
 		Reservation res = new Reservation(date, time, numberInParty, contactName, contactEmailAddress, contactPhoneNumber, r, resTables);
 		
 		RestoAppApplication.save();
+		
+		return res.getReservationNumber();
 	}
 }

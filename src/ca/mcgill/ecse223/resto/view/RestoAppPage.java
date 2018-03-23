@@ -410,6 +410,7 @@ public class RestoAppPage extends JFrame {
         //Table Label
         JLabel tableName = new JLabel();
         tableName.setBackground(new Color(255,230,153));
+        tableName.setOpaque(true);
         
         JTextField tableNumber = new JTextField();
         tableNumber.setBackground(new Color(255,230,153));
@@ -547,6 +548,7 @@ public class RestoAppPage extends JFrame {
 
         JLabel menuName = new JLabel();
         menuName.setBackground(new Color(255,230,153));
+        menuName.setOpaque(true);
         
         //Category1
         JButton Category1Button = new JButton();
@@ -668,40 +670,58 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem7 = new JPanel();
         JPanel popupMenuItem8 = new JPanel();
         JPanel popupMenuItem10 = new JPanel();
+        JPanel popupMenuItem11 = new JPanel();
 
         //Reservation Labels
         
         JLabel makeReservation = new JLabel();
         makeReservation.setBackground(new Color(255,230,153));
+        makeReservation.setOpaque(true);
         makeReservation.setText("Make a Reservation: ");
         
         JLabel reservationTable = new JLabel();
         reservationTable.setBackground(new Color(255,230,153));
-        makeReservation.setText("Tables: ");
+        reservationTable.setOpaque(true);
+        reservationTable.setText("Tables: ");
         
         JLabel reservationDate = new JLabel();
         reservationDate.setBackground(new Color(255,230,153));
+        reservationDate.setOpaque(true);
         reservationDate.setText("Date: ");
         
         JLabel reservationTime = new JLabel();
         reservationTime.setBackground(new Color(255,230,153));
+        reservationTime.setOpaque(true);
         reservationTime.setText("Time: ");
         
         JLabel reservationSize = new JLabel();
         reservationSize.setBackground(new Color(255,230,153));
+        reservationSize.setOpaque(true);
         reservationSize.setText("Size: ");
         
         JLabel reservationName = new JLabel();
         reservationName.setBackground(new Color(255,230,153));
+        reservationName.setOpaque(true);
         reservationName.setText("Name: ");
         
         JLabel reservationMail = new JLabel();
         reservationMail.setBackground(new Color(255,230,153));
+        reservationMail.setOpaque(true);
         reservationMail.setText("Email Address: ");
         
         JLabel reservationPhone = new JLabel();
         reservationPhone.setBackground(new Color(255,230,153));
+        reservationPhone.setOpaque(true);
         reservationPhone.setText("Phone Number: ");
+        
+        JLabel reservationNumber = new JLabel();
+        reservationNumber.setBackground(new Color(255,230,153));
+        reservationNumber.setOpaque(true);
+        reservationNumber.setText("Reservation: ");
+        
+        JLabel reservationField = new JLabel();
+        reservationField.setBackground(new Color(255,230,153));
+        reservationField.setOpaque(true);
         
         JTextField tableField = new JTextField();
         tableField.setBackground(new Color(255,230,153));
@@ -723,6 +743,7 @@ public class RestoAppPage extends JFrame {
         
         JTextField phoneField = new JTextField();
         phoneField.setBackground(new Color(255,230,153));
+        
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -758,15 +779,24 @@ public class RestoAppPage extends JFrame {
         		}
         		
         		try {
-					RestoAppController.reserveTable(date, time, Integer.parseInt(sizeField.getText()), nameField.getText(), mailField.getText(), phoneField.getText(), tables);
+					int reservationNumber = RestoAppController.reserveTable(date, time, Integer.parseInt(sizeField.getText()), nameField.getText(), mailField.getText(), phoneField.getText(), tables);
+					reservationField.setText(String.valueOf(reservationNumber));
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
 					e.printStackTrace();
 				}
         		
-        		popupMenu.setVisible(false);
+        		tableField.setText("");
+        		dateField.setText("");
+        		timeField.setText("");
+        		sizeField.setText("");
+        		nameField.setText("");
+        		mailField.setText("");
+        		phoneField.setText("");
+        		
             }
         });
 		
@@ -780,6 +810,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
+	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(makeReservation);
 	    popupMenuItem2.add(reservationTable);
@@ -797,6 +828,8 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem8.add(reservationPhone);
 	    popupMenuItem8.add(phoneField);
 	    popupMenuItem10.add(makeReservationButton);
+	    popupMenuItem11.add(reservationNumber);
+	    popupMenuItem11.add(reservationField);
 	        
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
@@ -807,8 +840,41 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem7);
 	    popupMenu.add(popupMenuItem8);
 	    popupMenu.add(popupMenuItem10);
+	    popupMenu.add(popupMenuItem11);
     
 		popupMenu.show(Image_panel, x, y);
+	}
+	
+	public void errorPopUp(String errorMessage) {
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        
+        JLabel errorLabel = new JLabel();
+        errorLabel.setBackground(new Color(255,230,153));
+        errorLabel.setOpaque(true);
+        errorLabel.setText("Error: ");
+        
+        JLabel errorText = new JLabel();
+        errorText.setBackground(new Color(255,230,153));
+        errorText.setOpaque(true);
+        errorText.setText(errorMessage);
+        
+        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+        
+	    popupMenuItem1.add(errorLabel);
+	    popupMenuItem2.add(errorText);
+	    
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    
+	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
 }
