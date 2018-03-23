@@ -3,6 +3,10 @@ package ca.mcgill.ecse223.resto.controller;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -348,12 +352,19 @@ public class RestoAppController {
 	}
 	
 	public  static  int  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
+		
+		long currentTime = System.currentTimeMillis();
+		long dateMil = date.getTime();
+		long timeMil = time.getTime();
+		
 		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || date == null || time == null) {
 			throw new InvalidInputException("Fields are NULL");
 		} else if(contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty()) {
 			throw new InvalidInputException("Fields are Empty");
 		} else if(numberInParty < 0) {
 			throw new InvalidInputException("Party Size is Negative");
+		} else if (dateMil + timeMil < currentTime) {
+			throw new InvalidInputException("The reservation time is before current time.");
 		}
 		
 		RestoApp r = RestoAppApplication.getRestoapp();
@@ -368,7 +379,6 @@ public class RestoAppController {
 				seatCapacity += tables.get(k).numberOfCurrentSeats();
 				List<Reservation> reservations = tables.get(k).getReservations();
 				
-				System.out.println(reservations);
 				for(int i = 0; i < reservations.size(); i++) {
 					boolean overlaps = reservations.get(i).doesOverlap(date, time);
 					if(overlaps) {
