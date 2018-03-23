@@ -12,6 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -23,6 +28,7 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
+import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
@@ -257,7 +263,6 @@ public class RestoAppPage extends JFrame {
                 .addComponent(app_panel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
 
-        
         pack();
     }
 
@@ -292,6 +297,7 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    	errorPopUp("Hello World");
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -404,6 +410,7 @@ public class RestoAppPage extends JFrame {
         //Table Label
         JLabel tableName = new JLabel();
         tableName.setBackground(new Color(255,230,153));
+        tableName.setOpaque(true);
         
         JTextField tableNumber = new JTextField();
         tableNumber.setBackground(new Color(255,230,153));
@@ -541,6 +548,7 @@ public class RestoAppPage extends JFrame {
 
         JLabel menuName = new JLabel();
         menuName.setBackground(new Color(255,230,153));
+        menuName.setOpaque(true);
         
         //Category1
         JButton Category1Button = new JButton();
@@ -661,46 +669,59 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem6 = new JPanel();
         JPanel popupMenuItem7 = new JPanel();
         JPanel popupMenuItem8 = new JPanel();
-        JPanel popupMenuItem9 = new JPanel();
         JPanel popupMenuItem10 = new JPanel();
+        JPanel popupMenuItem11 = new JPanel();
 
         //Reservation Labels
         
         JLabel makeReservation = new JLabel();
         makeReservation.setBackground(new Color(255,230,153));
-        makeReservation.setText("Make a Reservation: ");
+        makeReservation.setOpaque(true);
+        makeReservation.setText("                              Make a Reservation                              ");
         
         JLabel reservationTable = new JLabel();
         reservationTable.setBackground(new Color(255,230,153));
-        makeReservation.setText("Table: ");
+        reservationTable.setOpaque(true);
+        reservationTable.setText("Tables: ");
         
         JLabel reservationDate = new JLabel();
         reservationDate.setBackground(new Color(255,230,153));
-        reservationDate.setText("Date: ");
+        reservationDate.setOpaque(true);
+        reservationDate.setText("Date (MM/DD/YYYY): ");
         
         JLabel reservationTime = new JLabel();
         reservationTime.setBackground(new Color(255,230,153));
+        reservationTime.setOpaque(true);
         reservationTime.setText("Time: ");
         
         JLabel reservationSize = new JLabel();
         reservationSize.setBackground(new Color(255,230,153));
+        reservationSize.setOpaque(true);
         reservationSize.setText("Size: ");
         
         JLabel reservationName = new JLabel();
         reservationName.setBackground(new Color(255,230,153));
+        reservationName.setOpaque(true);
         reservationName.setText("Name: ");
         
         JLabel reservationMail = new JLabel();
         reservationMail.setBackground(new Color(255,230,153));
+        reservationMail.setOpaque(true);
         reservationMail.setText("Email Address: ");
         
         JLabel reservationPhone = new JLabel();
         reservationPhone.setBackground(new Color(255,230,153));
+        reservationPhone.setOpaque(true);
         reservationPhone.setText("Phone Number: ");
         
         JLabel reservationNumber = new JLabel();
         reservationNumber.setBackground(new Color(255,230,153));
-        reservationNumber.setText("Reservation Number: ");
+        reservationNumber.setOpaque(true);
+        reservationNumber.setText("Reservation: ");
+        
+        JLabel reservationField = new JLabel();
+        reservationField.setBackground(new Color(255,230,153));
+        reservationField.setOpaque(true);
         
         JTextField tableField = new JTextField();
         tableField.setBackground(new Color(255,230,153));
@@ -723,8 +744,6 @@ public class RestoAppPage extends JFrame {
         JTextField phoneField = new JTextField();
         phoneField.setBackground(new Color(255,230,153));
         
-        JTextField numberField = new JTextField();
-        numberField.setBackground(new Color(255,230,153));
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -732,8 +751,52 @@ public class RestoAppPage extends JFrame {
         makeReservationButton.setText("Make Reservation");
         makeReservationButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		removeTableButtonActionPerformed(evt);
-        		popupMenu.setVisible(false);
+        		List<Table> tables = new ArrayList<Table>();
+        		
+        		String[] tableNumbers = tableField.getText().split(",");
+        		
+        		for (int k = 0; k < tableNumbers.length; k++) {
+        			int tableNumber = Integer.parseInt(tableNumbers[k]);
+        			tables.add(Table.getWithNumber(tableNumber));
+        		}
+        		
+        		SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+        		java.util.Date utilDate = null;
+				try {
+					utilDate = sdf1.parse(dateField.getText());
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		java.sql.Date date = new java.sql.Date(utilDate.getTime()); 
+        		
+        		Time time = null;
+        		
+        		if(timeField.getText().length() == 5) {
+            		time = new Time(Integer.parseInt(timeField.getText().substring(0,2)), Integer.parseInt(timeField.getText().substring(3,5)), 0);
+        		} else if(timeField.getText().length() == 4){
+            		time = new Time(Integer.parseInt(timeField.getText().substring(0,1)), Integer.parseInt(timeField.getText().substring(2,4)), 0);
+        		}
+        		
+        		try {
+					int reservationNumber = RestoAppController.reserveTable(date, time, Integer.parseInt(sizeField.getText()), nameField.getText(), mailField.getText(), phoneField.getText(), tables);
+					reservationField.setText(String.valueOf(reservationNumber));
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
+					e.printStackTrace();
+				}
+        		
+        		tableField.setText("");
+        		dateField.setText("");
+        		timeField.setText("");
+        		sizeField.setText("");
+        		nameField.setText("");
+        		mailField.setText("");
+        		phoneField.setText("");
+        		
             }
         });
 		
@@ -746,8 +809,8 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
 	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
-	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
+	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(makeReservation);
 	    popupMenuItem2.add(reservationTable);
@@ -764,9 +827,9 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem7.add(mailField);
 	    popupMenuItem8.add(reservationPhone);
 	    popupMenuItem8.add(phoneField);
-	    popupMenuItem9.add(reservationNumber);
-	    popupMenuItem9.add(numberField);
 	    popupMenuItem10.add(makeReservationButton);
+	    popupMenuItem11.add(reservationNumber);
+	    popupMenuItem11.add(reservationField);
 	        
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
@@ -776,10 +839,42 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem7);
 	    popupMenu.add(popupMenuItem8);
-	    popupMenu.add(popupMenuItem9);
 	    popupMenu.add(popupMenuItem10);
-	    
+	    popupMenu.add(popupMenuItem11);
+    
 		popupMenu.show(Image_panel, x, y);
+	}
+	
+	public void errorPopUp(String errorMessage) {
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        
+        JLabel errorLabel = new JLabel();
+        errorLabel.setBackground(new Color(255,230,153));
+        errorLabel.setOpaque(true);
+        errorLabel.setText("                              Error:                              ");
+        
+        JLabel errorText = new JLabel();
+        errorText.setBackground(new Color(255,230,153));
+        errorText.setOpaque(true);
+        errorText.setText(errorMessage);
+        
+        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+        
+	    popupMenuItem1.add(errorLabel);
+	    popupMenuItem2.add(errorText);
+	    
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    
+	    popupMenu.show(Image_panel, 200, 0);
 	}
 	
 }

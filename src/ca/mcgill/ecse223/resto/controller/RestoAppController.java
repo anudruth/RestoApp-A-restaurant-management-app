@@ -3,6 +3,10 @@ package ca.mcgill.ecse223.resto.controller;
 import java.util.List;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -347,9 +351,20 @@ public class RestoAppController {
 		return I;
 	}
 	
-	public  static  void  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
-		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || numberInParty < 0 || contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty() || date == null || time == null) {
-			throw new InvalidInputException("Invalid Input");
+	public  static  int  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
+		
+		long currentTime = System.currentTimeMillis();
+		long dateMil = date.getTime();
+		long timeMil = time.getTime();
+		
+		if(contactName == null || contactEmailAddress == null || contactPhoneNumber == null || date == null || time == null) {
+			throw new InvalidInputException("Fields are NULL");
+		} else if(contactName.isEmpty() || contactEmailAddress.isEmpty() || contactPhoneNumber.isEmpty()) {
+			throw new InvalidInputException("Fields are Empty");
+		} else if(numberInParty < 0) {
+			throw new InvalidInputException("Party Size is Negative");
+		} else if (dateMil + timeMil < currentTime) {
+			throw new InvalidInputException("The reservation time is before current time.");
 		}
 		
 		RestoApp r = RestoAppApplication.getRestoapp();
@@ -365,13 +380,29 @@ public class RestoAppController {
 				List<Reservation> reservations = tables.get(k).getReservations();
 				
 				for(int i = 0; i < reservations.size(); i++) {
-					
+					boolean overlaps = reservations.get(i).doesOverlap(date, time);
+					if(overlaps) {
+						throw new InvalidInputException("The Date and Time overlap with some other reservation");
+					}
 				}
 			} else {
-				throw new InvalidInputException("");
+				throw new InvalidInputException("The table is not in the resto");
 			}
 		}
 		
+		if (seatCapacity < numberInParty) {
+			throw new InvalidInputException("Not enough seats");
+		}
 		
+		Table[] resTables = new Table[tables.size()];
+		for (int k = 0; k < resTables.length; k++) {
+			resTables[k] = tables.get(k);
+		}
+		
+		Reservation res = new Reservation(date, time, numberInParty, contactName, contactEmailAddress, contactPhoneNumber, r, resTables);
+		
+		RestoAppApplication.save();
+		
+		return res.getReservationNumber();
 	}
 }
