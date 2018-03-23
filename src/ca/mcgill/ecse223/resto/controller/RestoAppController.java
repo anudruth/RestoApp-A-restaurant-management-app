@@ -368,6 +368,7 @@ public class RestoAppController {
 				seatCapacity += tables.get(k).numberOfCurrentSeats();
 				List<Reservation> reservations = tables.get(k).getReservations();
 				
+				System.out.println(reservations);
 				for(int i = 0; i < reservations.size(); i++) {
 					boolean overlaps = reservations.get(i).doesOverlap(date, time);
 					if(overlaps) {

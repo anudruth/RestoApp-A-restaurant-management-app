@@ -263,7 +263,6 @@ public class RestoAppPage extends JFrame {
                 .addComponent(app_panel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE))
         );
 
-        
         pack();
     }
 
@@ -298,6 +297,7 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    	errorPopUp("Hello World");
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -677,7 +677,7 @@ public class RestoAppPage extends JFrame {
         JLabel makeReservation = new JLabel();
         makeReservation.setBackground(new Color(255,230,153));
         makeReservation.setOpaque(true);
-        makeReservation.setText("Make a Reservation: ");
+        makeReservation.setText("                              Make a Reservation                              ");
         
         JLabel reservationTable = new JLabel();
         reservationTable.setBackground(new Color(255,230,153));
@@ -687,7 +687,7 @@ public class RestoAppPage extends JFrame {
         JLabel reservationDate = new JLabel();
         reservationDate.setBackground(new Color(255,230,153));
         reservationDate.setOpaque(true);
-        reservationDate.setText("Date: ");
+        reservationDate.setText("Date (MM/DD/YYYY): ");
         
         JLabel reservationTime = new JLabel();
         reservationTime.setBackground(new Color(255,230,153));
@@ -857,7 +857,7 @@ public class RestoAppPage extends JFrame {
         JLabel errorLabel = new JLabel();
         errorLabel.setBackground(new Color(255,230,153));
         errorLabel.setOpaque(true);
-        errorLabel.setText("Error: ");
+        errorLabel.setText("                              Error:                              ");
         
         JLabel errorText = new JLabel();
         errorText.setBackground(new Color(255,230,153));
@@ -874,7 +874,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    
-	    popupMenu.show(Image_panel, 2, 2);
+	    popupMenu.show(Image_panel, 200, 0);
 	}
 	
 }
