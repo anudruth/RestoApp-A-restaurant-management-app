@@ -68,7 +68,7 @@ public class RestoAppController {
 			}
 			if(restoapp.getCurrentTables().size() == 0) {
 				aX = 30;
-				aY = 30;
+				aY = 50;
 			}
 			else {
 				lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);

@@ -107,7 +107,7 @@ public class RestoVisualizer extends JPanel {
 			for (Table table: restoapp.getCurrentTables()) {
 				String status = "";
 				if(table.getStatus() != Status.Available) {
-					status = " - In Use";
+					status = "In Use";
 				}
 				
 				seatPlacementOffsetLength = 0;
@@ -133,9 +133,12 @@ public class RestoVisualizer extends JPanel {
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString(new Integer(table.getNumber()).toString() + status,(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
-				
+				g2d.drawString(new Integer(table.getNumber()).toString() ,(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
+				g2d.drawString( status,(int) (table.getX() + (table.getWidth()/2.3))-12, (int)(table.getY() + (table.getLength()/1.8))+14 );
+
 				for(Seat seat: table.getCurrentSeats()) {
+					System.out.print(seat.getNumber());
+					System.out.println("");
 					
 					if (totalSeats <= 2) {
 						if (seatCount ==0) {
@@ -186,6 +189,8 @@ public class RestoVisualizer extends JPanel {
 					g2d.setColor(Color.GRAY);
 					g2d.fill(circle);
 					g2d.draw(circle);
+					g2d.setColor(Color.BLACK);
+					g2d.drawString(new Integer(seat.getNumber()).toString(),  (sX.intValue())+4,  (sY.intValue())+15);
 					
 					if (k % 2 == 0) {
 						sideCount++;

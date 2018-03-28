@@ -74,6 +74,7 @@ class Table {
 }
 
 class Seat {
+	autounique number;
 }
 
 class Order {
