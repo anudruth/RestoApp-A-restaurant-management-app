@@ -10,7 +10,7 @@ import ca.mcgill.ecse223.resto.model.RestoApp;
 
 public class PersistenceObjectStream {
 
-	private static String filename = "data.restoapp";
+	private static String filename = "menu v2.resto";
 
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
