@@ -7,7 +7,7 @@ import java.util.*;
 
 // line 83 "../../../../../RestoAppPersistence.ump"
 // line 1 "../../../../../TableStateMachine.ump"
-// line 28 "../../../../../RestoApp.ump"
+// line 42 "../../../../../RestoApp.ump"
 public class Table implements Serializable
 {
 
@@ -940,9 +940,10 @@ public class Table implements Serializable
     // TODO
       return false;
   }
-   
+
+  // line 52 "../../../../../RestoApp.ump"
    public boolean doesOverlap(int x, int y, int width, int length){
-	    //Any rectangle can be represented by two coordinates, top left and bottom right
+    //Any rectangle can be represented by two coordinates, top left and bottom right
 		
 		//Coordinate of two points of this rectangle
 		int Ax1 = this.x;
@@ -963,7 +964,7 @@ public class Table implements Serializable
 			return true;
 			}
 		return false;
-	  }
+  }
 
 
   public String toString()

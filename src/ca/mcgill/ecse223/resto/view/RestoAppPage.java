@@ -930,7 +930,7 @@ public class RestoAppPage extends JFrame {
         
         JButton startOrderButton = new JButton();
         startOrderButton.setBackground(new Color(255,230,153));
-        startOrderButton.setText("Make Reservation");
+        startOrderButton.setText("Start Order");
         startOrderButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		List<Table> tables = new ArrayList<Table>();

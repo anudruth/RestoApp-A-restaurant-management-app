@@ -23,6 +23,20 @@ class Reservation {
    contactPhoneNumber;
    autounique reservationNumber;
    * reservations -- 1..* Table tables; // only from currentTables
+   
+   public boolean doesOverlap(Date date, Time time) {
+	  
+	  Time reservationTimeAfter = new Time(this.time.getTime() + 2*60*60*1000);
+	  Time reservationTimeBefore = new Time(this.time.getTime() - 2*60*60*1000);
+	  	  
+	  if (!date.equals(this.date)) {
+		  return false;
+	  } else if(time.before(reservationTimeAfter) && time.after(reservationTimeBefore)) {
+		  return true;
+	  } else {
+		  return false;
+	  }
+  }
 }
 
 class Table {
@@ -33,6 +47,30 @@ class Table {
    Integer length;
    1 <@>- 1..* Seat seats;
    0..1 -> * Seat currentSeats; // subsets seats
+   
+   public boolean doesOverlap(int x, int y, int width, int length){
+	    //Any rectangle can be represented by two coordinates, top left and bottom right
+		
+		//Coordinate of two points of this rectangle
+		int Ax1 = this.x;
+		int Ay1 = this.y;
+		int Ax2 = this.x + this.width;
+		int Ay2 = this.y + this.length;
+
+		//Coordinate of two points of rectangle from arguments
+		int Bx1 = x;
+		int By1 = y;
+		int Bx2 = x + width;
+		int By2 = y + length;
+
+		
+
+		if ((Ax1 < Bx2) && (Ax2 > Bx1) && (Ay1 < By2) && (Ay2 > By1))
+			{
+			return true;
+			}
+		return false;
+	 }
 }
 
 class Seat {
