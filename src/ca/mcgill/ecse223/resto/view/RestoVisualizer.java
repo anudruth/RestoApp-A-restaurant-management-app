@@ -137,8 +137,6 @@ public class RestoVisualizer extends JPanel {
 				g2d.drawString( status,(int) (table.getX() + (table.getWidth()/2.3))-12, (int)(table.getY() + (table.getLength()/1.8))+14 );
 
 				for(Seat seat: table.getCurrentSeats()) {
-					System.out.print(seat.getNumber());
-					System.out.println("");
 					
 					if (totalSeats <= 2) {
 						if (seatCount ==0) {
