@@ -17,6 +17,7 @@ import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
+import ca.mcgill.ecse223.resto.model.Table.Status;
 
 /**
  * Takes care of creating the tables using Java 2D
@@ -104,6 +105,11 @@ public class RestoVisualizer extends JPanel {
 			tables.clear();
 			
 			for (Table table: restoapp.getCurrentTables()) {
+				String status = "";
+				if(table.getStatus() != Status.Available) {
+					status = " - In Use";
+				}
+				
 				seatPlacementOffsetLength = 0;
 				seatPlacementOffsetWidth = 0;
 				seatCount =0;
@@ -127,7 +133,7 @@ public class RestoVisualizer extends JPanel {
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString(new Integer(table.getNumber()).toString(),(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
+				g2d.drawString(new Integer(table.getNumber()).toString() + status,(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
 				
 				for(Seat seat: table.getCurrentSeats()) {
 					
