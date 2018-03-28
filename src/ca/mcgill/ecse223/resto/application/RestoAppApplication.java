@@ -13,7 +13,7 @@ public class RestoAppApplication {
 	
 	private static RestoApp  restoapp;
 	private static RestoAppPage restoAppPage;
-	private static String filename = "menu v2.resto";
+	private static String filename = "menu.resto";
 	
 	/**
 	 * @param args
