@@ -13,6 +13,7 @@ import java.util.Comparator;
 
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
+import ca.mcgill.ecse223.resto.model.OrderItem;
 import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
@@ -476,4 +477,59 @@ public class RestoAppController {
 		}
 		return flag;
 	}
+	
+	public static List<List<String>> getOrderItems(Table table) throws InvalidInputException {
+		
+		List<Seat> seats = table.getCurrentSeats();
+		if (seats == null) {
+			throw new InvalidInputException("This table has no seats");
+		}
+		
+		RestoApp r = RestoAppApplication.getRestoapp();
+		
+		List<Table> currentTables = r.getCurrentTables();
+		
+		boolean current = currentTables.contains(table);
+		if (!current) {
+			throw new InvalidInputException("The table does not exist");
+		}
+		
+		Status status = table.getStatus();
+		if (status.equals(Status.Available)) {
+			throw new InvalidInputException("This table is not in use");
+		}
+		
+		Order lastOrder = null;
+		if(table.numberOfOrders() > 0) {
+			lastOrder = table.getOrder(table.numberOfOrders() - 1);
+		} else {
+			throw new InvalidInputException("Table has no Orders. IMPOSSIBLE");
+		}
+		
+		List<Seat> currentSeats = table.getCurrentSeats();
+		List<String> seatsNumbers = null;
+		List<String> resultString = null;
+		List<OrderItem> result = null;
+		
+		for(Seat seat : currentSeats) {
+			seatsNumbers.add(String.valueOf(seat.getNumber()));
+			List<OrderItem> orderItems = seat.getOrderItems();
+			for(OrderItem orderItem : orderItems) {
+				Order order = orderItem.getOrder();
+				if(lastOrder.equals(order) && !result.contains(orderItem)) {
+					result.add(orderItem);
+					resultString.add(orderItem.toString());
+				}
+			}
+			resultString.add("Change Seat");
+		}
+		
+		List<List<String>> returnList = new ArrayList<List<String>>(2);
+
+		returnList.add(resultString);
+		returnList.add(seatsNumbers);
+		
+		return returnList;
+	}
+	
 }
