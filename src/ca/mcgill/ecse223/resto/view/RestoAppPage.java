@@ -19,6 +19,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.Date;
 import java.util.List;
 
@@ -319,7 +320,22 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    	tablePopUp(1);
+    	List<String> orderItems = new ArrayList<String>();
+    	orderItems.add("Hello World");
+    	orderItems.add("Order Item 1");
+    	orderItems.add("Order Item 2");
+    	orderItems.add("Change Seat");
+    	orderItems.add("Change Seat");
+    	orderItems.add("Order Item 3");
+    	orderItems.add("Order Item 4");
+    	orderItems.add("Change Seat");
+    	
+    	List<String> seatNumbers = new ArrayList<String>();
+    	seatNumbers.add("1");
+    	seatNumbers.add("2");
+    	seatNumbers.add("5");
+    	
+    	tablePopUp(1, orderItems, seatNumbers);
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1011,7 +1027,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
-	public JPanel seatPopUp(int seatNumber, List<String> orders) {
+	public JPanel seatPopUp(String seatNumber, String[] orders) {
 
 	    final JPanel popupMenu = new JPanel();
 	    popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.Y_AXIS));
@@ -1032,19 +1048,34 @@ public class RestoAppPage extends JFrame {
 	    orderItemLabel.setBackground(new Color(255,230,153));
 	    orderItemLabel.setOpaque(true);
 	    
-	    int k = 0;
+//	    int k = 0;
+//	    
+//	    int totalJLs = orders.size(); 
+//	    
+//    	String[] arrayJLs = new String[totalJLs];
+//	    
+//	    for(String orderItem : orders) {
+//
+//	    	arrayJLs[k] = orderItem;
+//	    	k++;
+//	    
+//	    }
 	    
-	    int totalJLs = orders.size(); 
+	    int nullCounter = 0;
 	    
-    	String[] arrayJLs = new String[totalJLs];
+	    for(int k = 0; k < orders.length; k++) {
+			if (orders[k] == null) {
+				nullCounter++;
+			}
+		}
 	    
-	    for(String orderItem : orders) {
-
-	    	arrayJLs[k] = orderItem;
-	    	k++;
+	    String[] finalOrder = new String[orders.length - nullCounter];
+	    for(int k = 0; k < finalOrder.length; k++) {
+			finalOrder[k] = orders[k];
+			System.out.println(orders[k]);
+		}
 	    
-	    }
-	    JList list = new JList(arrayJLs);
+	    JList list = new JList(finalOrder);
 	    popupMenu.add(list);
 	    
 	    JButton addOrderItem = new JButton();
@@ -1062,7 +1093,7 @@ public class RestoAppPage extends JFrame {
 	    return popupMenu;
 	}
 	
-	public void tablePopUp(int tableNumber) {
+	public void tablePopUp(int tableNumber, List<String> orderItems, List<String> seatNumber) {
 
 	    final JPopupMenu popupMenu = new JPopupMenu();
 	    popupMenu.setSize(300, 300);
@@ -1077,23 +1108,30 @@ public class RestoAppPage extends JFrame {
 	    
 	    popupMenuItem1.add(seatLabel);
 	    popupMenu.add(popupMenuItem1);
-	    
-	    List<String> orderItems = new ArrayList<String>();
-    	orderItems.add("Hello World");
-    	orderItems.add("Order Item 1");
-    	orderItems.add("Order Item 2");
     	
     	JPanel popupMenuItem2 = new JPanel();
     	popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.Y_AXIS));
-    			
-    	popupMenu.add(seatPopUp(1, orderItems));
     	
-    	List<String> orderItems2 = new ArrayList<String>();
-    	orderItems2.add("Hello World");
-    	orderItems2.add("Order Item 1");
-    	orderItems2.add("Order Item 2");
+    	int seatCounter = 0;
+    	int orderCounter = 0;
+    	String[] currentSeatOrders = new String[orderItems.size()];
     	
-    	popupMenu.add(seatPopUp(2, orderItems2));
+    	for (String order : orderItems) {
+    		if(order.equals("Change Seat")) {
+    			for(int k = 0; k < currentSeatOrders.length; k++) {
+    				System.out.println(currentSeatOrders[k]);
+    			}
+    			popupMenu.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
+    			seatCounter++;
+    			for(int k = 0; k < currentSeatOrders.length; k++) {
+    				currentSeatOrders[k] = null;
+    			}
+    			orderCounter = 0;
+    		} else {
+    			currentSeatOrders[orderCounter] = order;
+    			orderCounter++;
+    		}
+    	}
     	
     	popupMenu.show(Image_panel, 0, 0);
 	    
