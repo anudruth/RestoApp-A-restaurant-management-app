@@ -313,6 +313,10 @@ public class RestoAppPage extends JFrame {
 			error = e.getMessage();
 		}
     }
+    
+    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	
+    }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	reservePopUp(2,2);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -335,9 +339,14 @@ public class RestoAppPage extends JFrame {
     	seatNumbers.add("2");
     	seatNumbers.add("5");
     	
-    	tablePopUp(1, orderItems, seatNumbers);
+    	
+    issueBillPopUp();
+    	
+    //tablePopUp(1, orderItems, seatNumbers);
     }
     
+    
+   
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		menuPopUp(2,2,RestoAppController.getItemCategories(), null);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -1135,6 +1144,115 @@ public class RestoAppPage extends JFrame {
     	
     	popupMenu.show(Image_panel, 0, 0);
 	    
+	}
+	
+	public void issueBillPopUp() {
+		final JPopupMenu issue_bill_popup = new JPopupMenu();
+		issue_bill_popup.setSize(300, 300);
+		issue_bill_popup.setBackground(new Color(255,230,153));
+		
+	    //Panels
+		
+	    JPanel popupMenuItem1 = new JPanel();
+	    popupMenuItem1.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem2 = new JPanel();
+	    popupMenuItem2.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem3 = new JPanel();
+	    popupMenuItem3.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem4 = new JPanel();
+	    popupMenuItem4.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem5 = new JPanel();
+	    popupMenuItem5.setBackground(new Color(255, 230, 153));
+
+	    
+
+	    
+	    //Labels
+	    
+	    JLabel issue_bill_title = new JLabel();
+	    issue_bill_title.setBackground(new Color(255,230,153));
+	    issue_bill_title.setOpaque(true);
+	    issue_bill_title.setText("              Prepare Bill              ");
+	    
+	    JLabel seat_nums = new JLabel();
+	    seat_nums.setBackground(new Color(255,230,153));
+	    seat_nums.setOpaque(true);
+	    seat_nums.setText("Seat numbers: ");
+	    
+	    JLabel or_table = new JLabel();
+	    or_table.setBackground(new Color(255,230,153));
+	    or_table.setOpaque(true);
+	    or_table.setText("---------- OR ENTER TABLE NUMBER ---------- ");
+	    
+	    JLabel table_num = new JLabel();
+	    table_num.setBackground(new Color(255,230,153));
+	    table_num.setOpaque(true);
+	    table_num.setText("Table Number: ");
+	    
+	    
+	    //Text Fields
+	    
+	    JTextField seat_field = new JTextField();
+	    seat_field.setBackground(new Color(255, 230, 253));
+	    
+	    JTextField table_field = new JTextField();
+	    table_field.setBackground(new Color(255, 230, 253));
+	    
+	    //Buttons
+	    
+	    JButton prepBillButton = new JButton();
+	    prepBillButton.setBackground(new Color(255, 230, 253));
+	    prepBillButton.setText("Prepare Bill");
+	    prepBillButton.addActionListener(new java.awt.event.ActionListener() {
+	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    			prepBillButtonActionPerformed(evt);
+	    		}
+	    });
+	    
+	    
+	    issue_bill_popup.setLayout(new BoxLayout(issue_bill_popup, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+
+
+	    
+	    
+	    
+	    popupMenuItem1.add(issue_bill_title);
+	    popupMenuItem2.add(seat_nums);
+	    popupMenuItem2.add(seat_field);
+	    popupMenuItem3.add(or_table);
+	    popupMenuItem4.add(table_num);
+	    popupMenuItem4.add(table_field);
+	    popupMenuItem5.add(prepBillButton);
+
+
+	    
+	    
+	    
+	    
+	    issue_bill_popup.add(popupMenuItem1);
+	    issue_bill_popup.add(popupMenuItem2);
+	    issue_bill_popup.add(popupMenuItem3);
+	    issue_bill_popup.add(popupMenuItem4);
+	    issue_bill_popup.add(popupMenuItem5);
+
+
+	    
+    	
+    	
+    	
+   
+    	
+	    issue_bill_popup.show(Image_panel, 2, 2);
+		
 	}
 	
 }
