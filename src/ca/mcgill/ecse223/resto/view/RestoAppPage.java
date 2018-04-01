@@ -7,7 +7,10 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,6 +31,8 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
+import ca.mcgill.ecse223.resto.model.Order;
+import ca.mcgill.ecse223.resto.model.OrderItem;
 import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
@@ -314,7 +319,7 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    	errorPopUp("Hello World");
+    	tablePopUp(1);
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -897,7 +902,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    
-	    popupMenu.show(Image_panel, 200, 0);
+	    popupMenu.show(Image_panel, 0, 0);
 	}
 	
 	public void orderPopup() {
@@ -1006,4 +1011,93 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
+	public JPanel seatPopUp(int seatNumber, List<String> orders) {
+
+	    final JPanel popupMenu = new JPanel();
+	    popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.Y_AXIS));
+	    popupMenu.setSize(300, 300);
+	    popupMenu.setBackground(new Color(255,230,153));
+	    
+	    JPanel popupMenuItem1 = new JPanel();
+	    
+	    JLabel seatLabel = new JLabel();
+	    seatLabel.setBackground(new Color(255,230,153));
+	    seatLabel.setOpaque(true);
+	    seatLabel.setText("Seat: " + seatNumber);
+	    
+	    popupMenuItem1.add(seatLabel);
+	    popupMenu.add(popupMenuItem1);
+	    
+	    JLabel orderItemLabel = new JLabel();
+	    orderItemLabel.setBackground(new Color(255,230,153));
+	    orderItemLabel.setOpaque(true);
+	    
+	    int k = 0;
+	    
+	    int totalJLs = orders.size(); 
+	    
+    	String[] arrayJLs = new String[totalJLs];
+	    
+	    for(String orderItem : orders) {
+
+	    	arrayJLs[k] = orderItem;
+	    	k++;
+	    
+	    }
+	    JList list = new JList(arrayJLs);
+	    popupMenu.add(list);
+	    
+	    JButton addOrderItem = new JButton();
+	    addOrderItem.setText("Add Order Item");
+	    
+	    JButton removeSelectedOrderItem = new JButton();
+	    removeSelectedOrderItem.setText("Delete Order Item");
+	    
+	    JPanel popupMenuItem3 = new JPanel();
+	    popupMenuItem3.add(addOrderItem);
+	    popupMenuItem3.add(removeSelectedOrderItem);
+	    
+	    popupMenu.add(popupMenuItem3);
+	    
+	    return popupMenu;
+	}
+	
+	public void tablePopUp(int tableNumber) {
+
+	    final JPopupMenu popupMenu = new JPopupMenu();
+	    popupMenu.setSize(300, 300);
+	    popupMenu.setBackground(new Color(255,230,153));
+	    
+	    JPanel popupMenuItem1 = new JPanel();
+	    
+	    JLabel seatLabel = new JLabel();
+	    seatLabel.setBackground(new Color(255,230,153));
+	    seatLabel.setOpaque(true);
+	    seatLabel.setText("Table: " + tableNumber);
+	    
+	    popupMenuItem1.add(seatLabel);
+	    popupMenu.add(popupMenuItem1);
+	    
+	    List<String> orderItems = new ArrayList<String>();
+    	orderItems.add("Hello World");
+    	orderItems.add("Order Item 1");
+    	orderItems.add("Order Item 2");
+    	
+    	JPanel popupMenuItem2 = new JPanel();
+    	popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.Y_AXIS));
+    			
+    	popupMenu.add(seatPopUp(1, orderItems));
+    	
+    	List<String> orderItems2 = new ArrayList<String>();
+    	orderItems2.add("Hello World");
+    	orderItems2.add("Order Item 1");
+    	orderItems2.add("Order Item 2");
+    	
+    	popupMenu.add(seatPopUp(2, orderItems2));
+    	
+    	popupMenu.show(Image_panel, 0, 0);
+	    
+	}
+	
 }
+
