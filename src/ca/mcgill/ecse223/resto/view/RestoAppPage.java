@@ -1196,10 +1196,12 @@ public class RestoAppPage extends JFrame {
 	    
 	    //Text Fields
 	    
-	    JTextField seat_field = new JTextField();
+	    PlaceholderTextField seat_field = new PlaceholderTextField("Enter comma seperated list of seats");
 	    seat_field.setBackground(new Color(255, 230, 253));
 	    
-	    JTextField table_field = new JTextField();
+	    
+	    
+	    PlaceholderTextField table_field = new PlaceholderTextField("Enter table number");
 	    table_field.setBackground(new Color(255, 230, 253));
 	    
 	    //Buttons

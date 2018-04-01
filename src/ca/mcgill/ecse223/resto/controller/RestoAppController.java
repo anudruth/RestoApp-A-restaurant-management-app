@@ -532,4 +532,8 @@ public class RestoAppController {
 		return returnList;
 	}
 	
+	public void issueBill() {
+		
+	}
+	
 }
