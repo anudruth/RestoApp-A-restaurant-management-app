@@ -548,7 +548,7 @@ public class RestoAppPage extends JFrame {
         RoundButton orderButton = new RoundButton();
         orderButton.setBackground(new Color(255,230,153));
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/order.png"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			orderButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
@@ -761,7 +761,7 @@ public class RestoAppPage extends JFrame {
         JLabel reservationTime = new JLabel();
         reservationTime.setBackground(new Color(255,230,153));
         reservationTime.setOpaque(true);
-        reservationTime.setText("Time: ");
+        reservationTime.setText("Time (HH:MM): ");
         
         JLabel reservationSize = new JLabel();
         reservationSize.setBackground(new Color(255,230,153));
@@ -786,33 +786,32 @@ public class RestoAppPage extends JFrame {
         JLabel reservationNumber = new JLabel();
         reservationNumber.setBackground(new Color(255,230,153));
         reservationNumber.setOpaque(true);
-        reservationNumber.setText("Reservation: ");
+        reservationNumber.setText("Reservation Number: ");
         
         JLabel reservationField = new JLabel();
         reservationField.setBackground(new Color(255,230,153));
         reservationField.setOpaque(true);
         
-        JTextField tableField = new JTextField();
-        tableField.setBackground(new Color(255,230,153));
+        PlaceholderTextField tableField = new PlaceholderTextField("Enter Table Numbers seperated by commas");
+        tableField.setBackground(new Color(255, 230, 253));
         
-        JTextField dateField = new JTextField();
-        dateField.setBackground(new Color(255,230,153));
+        PlaceholderTextField dateField = new PlaceholderTextField("Enter Date (MM/DD/YYYY)");
+        dateField.setBackground(new Color(255, 230, 253));
         
-        JTextField timeField = new JTextField();
-        timeField.setBackground(new Color(255,230,153));
+        PlaceholderTextField timeField = new PlaceholderTextField("Enter Time (HH:MM)/(H:MM)");
+        timeField.setBackground(new Color(255, 230, 253));
 
-        JTextField sizeField = new JTextField();
-        sizeField.setBackground(new Color(255,230,153));
+        PlaceholderTextField sizeField = new PlaceholderTextField("Enter Party Size");
+        sizeField.setBackground(new Color(255, 230, 253));
         
-        JTextField nameField = new JTextField();
-        nameField.setBackground(new Color(255,230,153));
+        PlaceholderTextField nameField = new PlaceholderTextField("Enter Reservation Name");
+        nameField.setBackground(new Color(255, 230, 253));
         
-        JTextField mailField = new JTextField();
-        mailField.setBackground(new Color(255,230,153));
+        PlaceholderTextField mailField = new PlaceholderTextField("Enter Reservation Email");
+        mailField.setBackground(new Color(255, 230, 253));
         
-        JTextField phoneField = new JTextField();
-        phoneField.setBackground(new Color(255,230,153));
-        
+        PlaceholderTextField phoneField = new PlaceholderTextField("Enter Reservation Phone Number");
+        phoneField.setBackground(new Color(255, 230, 253));
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -1054,37 +1053,21 @@ public class RestoAppPage extends JFrame {
 	
 	public JPanel seatPopUp(String seatNumber, List<String> orders) {
 
-	    final JPanel popupMenu = new JPanel();
-	    popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.Y_AXIS));
-	    popupMenu.setSize(300, 300);
-	    popupMenu.setBackground(new Color(255,230,153));
+	    final JPanel seatPopupPanel = new JPanel();
+	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
+	    seatPopupPanel.setSize(300, 300);
+	    seatPopupPanel.setBackground(new Color(255,230,153));
 	    
-	    JPanel popupMenuItem1 = new JPanel();
+	    //Display the Seat Number at the top of panel
+	    JPanel seatNumberPanel = new JPanel();
 	    
 	    JLabel seatLabel = new JLabel();
 	    seatLabel.setBackground(new Color(255,230,153));
 	    seatLabel.setOpaque(true);
 	    seatLabel.setText("Seat: " + seatNumber);
 	    
-	    popupMenuItem1.add(seatLabel);
-	    popupMenu.add(popupMenuItem1);
-	    
-	    JLabel orderItemLabel = new JLabel();
-	    orderItemLabel.setBackground(new Color(255,230,153));
-	    orderItemLabel.setOpaque(true);
-	    
-	    int k = 0;
-	    
-	    int totalJLs = orders.size(); 
-	    
-    	String[] arrayJLs = new String[totalJLs];
-	    
-	    for(String orderItem : orders) {
-
-	    	arrayJLs[k] = orderItem;
-	    	k++;
-	    
-	    }
+	    seatNumberPanel.add(seatLabel);
+	    seatPopupPanel.add(seatNumberPanel);
 	    
 //	    int nullCounter = 0;
 //	    
@@ -1100,42 +1083,51 @@ public class RestoAppPage extends JFrame {
 //			System.out.println(orders[k]);
 //		}
 	    
-	    JList list = new JList(arrayJLs);
-	    popupMenu.add(list);
+	    //Display all the orderItems from the list
+	    int k = 0;
+	    int totalOrderItems = orders.size(); 
+    	String[] arrayOrderItem = new String[totalOrderItems];
 	    
+	    for(String orderItem : orders) {
+	    	arrayOrderItem[k] = orderItem;
+	    	k++;
+	    }
+	    
+	    JList<String> list = new JList<String>(arrayOrderItem);
+	    seatPopupPanel.add(list);
+	    
+	    //Add two buttons at the bottom of the panel (Add Order Item) and (Delete Order Item)
 	    JButton addOrderItem = new JButton();
 	    addOrderItem.setText("Add Order Item");
 	    
 	    JButton removeSelectedOrderItem = new JButton();
 	    removeSelectedOrderItem.setText("Delete Order Item");
 	    
-	    JPanel popupMenuItem3 = new JPanel();
-	    popupMenuItem3.add(addOrderItem);
-	    popupMenuItem3.add(removeSelectedOrderItem);
+	    JPanel buttonPanel = new JPanel();
+	    buttonPanel.add(addOrderItem);
+	    buttonPanel.add(removeSelectedOrderItem);
 	    
-	    popupMenu.add(popupMenuItem3);
+	    seatPopupPanel.add(buttonPanel);
 	    
-	    return popupMenu;
+	    return seatPopupPanel;
 	}
 	
 	public void tablePopUp(int tableNumber, Map<String,List<String>> orderMap) {
 
-	    final JPopupMenu popupMenu = new JPopupMenu();
-	    popupMenu.setSize(300, 300);
-	    popupMenu.setBackground(new Color(255,230,153));
+	    final JPopupMenu viewOrderPopup = new JPopupMenu();
+	    viewOrderPopup.setSize(300, 300);
+	    viewOrderPopup.setBackground(new Color(255,230,153));
 	    
-	    JPanel popupMenuItem1 = new JPanel();
+	    //Display the table number at the top of popup
+	    JPanel tableNumberPanel = new JPanel();
 	    
 	    JLabel seatLabel = new JLabel();
 	    seatLabel.setBackground(new Color(255,230,153));
 	    seatLabel.setOpaque(true);
 	    seatLabel.setText("Table: " + tableNumber);
 	    
-	    popupMenuItem1.add(seatLabel);
-	    popupMenu.add(popupMenuItem1);
-    	
-    	JPanel popupMenuItem2 = new JPanel();
-    	popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.Y_AXIS));
+	    tableNumberPanel.add(seatLabel);
+	    viewOrderPopup.add(tableNumberPanel);
     	
 //    	int seatCounter = 0;
 //    	int orderCounter = 0;
@@ -1146,7 +1138,7 @@ public class RestoAppPage extends JFrame {
 //    			for(int k = 0; k < currentSeatOrders.length; k++) {
 //    				System.out.println(currentSeatOrders[k]);
 //    			}
-//    			popupMenu.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
+//    			viewOrderPopup.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
 //    			seatCounter++;
 //    			for(int k = 0; k < currentSeatOrders.length; k++) {
 //    				currentSeatOrders[k] = null;
@@ -1158,13 +1150,14 @@ public class RestoAppPage extends JFrame {
 //    		}
 //    	}
     	
+	    //Display all of the seatPopUp from the input map
     	Set<String> keys = orderMap.keySet();
     	
     	for(String key : keys) {
-    		popupMenu.add(seatPopUp(key, orderMap.get(key)));
+    		viewOrderPopup.add(seatPopUp(key, orderMap.get(key)));
     	}	
     	
-    	popupMenu.show(Image_panel, 0, 0);
+    	viewOrderPopup.show(Image_panel, 0, 0);
 	    
 	}
 	
