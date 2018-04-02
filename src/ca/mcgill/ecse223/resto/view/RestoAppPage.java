@@ -20,9 +20,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.sql.Date;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -324,25 +326,7 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    	List<String> orderItems = new ArrayList<String>();
-    	orderItems.add("Hello World");
-    	orderItems.add("Order Item 1");
-    	orderItems.add("Order Item 2");
-    	orderItems.add("Change Seat");
-    	orderItems.add("Change Seat");
-    	orderItems.add("Order Item 3");
-    	orderItems.add("Order Item 4");
-    	orderItems.add("Change Seat");
-    	
-    	List<String> seatNumbers = new ArrayList<String>();
-    	seatNumbers.add("1");
-    	seatNumbers.add("2");
-    	seatNumbers.add("5");
-    	
-    	
-    issueBillPopUp();
-    	
-    //tablePopUp(1, orderItems, seatNumbers);
+    	issueBillPopUp();
     }
     
     
@@ -376,6 +360,34 @@ public class RestoAppPage extends JFrame {
 			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
+		}
+    }
+    
+    private void viewOrderActionPerformed(ActionEvent evt) {
+		try {
+			List<String> orderItems = new ArrayList<String>();
+			List<String> orderItems2 = new ArrayList<String>();
+			List<String> orderItems3 = new ArrayList<String>();
+	    	orderItems.add("Hello World");
+	    	orderItems.add("Order Item 1");
+	    	orderItems.add("Order Item 2");
+	    	orderItems2.add("Order Item 5");
+	    	orderItems2.add("Order Item 6");
+	    	orderItems2.add("Order Item 3");
+	    	orderItems3.add("Order Item 4");
+	    	orderItems3.add("Order Item 10");
+	    
+	    	Map<String, List<String>> orderMap = new HashMap<String, List<String>>();
+	    	orderMap.put("2", orderItems);
+	    	orderMap.put("5", orderItems3);
+	    	orderMap.put("1", orderItems2);
+	    	
+	    	tablePopUp(1, orderMap);
+	    	
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		} finally {
+			
 		}
     }
     
@@ -518,9 +530,7 @@ public class RestoAppPage extends JFrame {
         moveTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		moveTableButtonActionPerformed(evt);
-            }
-
-			
+        	}
         });
 
         //Rotate button
@@ -535,15 +545,21 @@ public class RestoAppPage extends JFrame {
 		}
 
         //inUse Button
-        RoundButton inUseButton = new RoundButton();
-        inUseButton.setBackground(new Color(255,230,153));
+        RoundButton orderButton = new RoundButton();
+        orderButton.setBackground(new Color(255,230,153));
         try {
 			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			inUseButton.setIcon(new ImageIcon(scaled));
+			orderButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        orderButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		viewOrderActionPerformed(evt);
+            }
+        });
+        
         
         String selectedTableNumber = "-1";
 		if(selectedTable != null) {
@@ -565,7 +581,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.add(removeTableButton);
 	    popupMenuItem2.add(moveTableButton);
 	    popupMenuItem3.add(rotateTableButton);
-	    popupMenuItem3.add(inUseButton);
+	    popupMenuItem3.add(orderButton);
 	    popupMenuItem4.add(tableSlider);
 	        
 	    popupMenu.add(popupMenuItem1);
@@ -1036,7 +1052,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
-	public JPanel seatPopUp(String seatNumber, String[] orders) {
+	public JPanel seatPopUp(String seatNumber, List<String> orders) {
 
 	    final JPanel popupMenu = new JPanel();
 	    popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.Y_AXIS));
@@ -1057,34 +1073,34 @@ public class RestoAppPage extends JFrame {
 	    orderItemLabel.setBackground(new Color(255,230,153));
 	    orderItemLabel.setOpaque(true);
 	    
-//	    int k = 0;
-//	    
-//	    int totalJLs = orders.size(); 
-//	    
-//    	String[] arrayJLs = new String[totalJLs];
-//	    
-//	    for(String orderItem : orders) {
-//
-//	    	arrayJLs[k] = orderItem;
-//	    	k++;
-//	    
-//	    }
+	    int k = 0;
 	    
-	    int nullCounter = 0;
+	    int totalJLs = orders.size(); 
 	    
-	    for(int k = 0; k < orders.length; k++) {
-			if (orders[k] == null) {
-				nullCounter++;
-			}
-		}
+    	String[] arrayJLs = new String[totalJLs];
 	    
-	    String[] finalOrder = new String[orders.length - nullCounter];
-	    for(int k = 0; k < finalOrder.length; k++) {
-			finalOrder[k] = orders[k];
-			System.out.println(orders[k]);
-		}
+	    for(String orderItem : orders) {
+
+	    	arrayJLs[k] = orderItem;
+	    	k++;
 	    
-	    JList list = new JList(finalOrder);
+	    }
+	    
+//	    int nullCounter = 0;
+//	    
+//	    for(int k = 0; k < orders.length; k++) {
+//			if (orders[k] == null) {
+//				nullCounter++;
+//			}
+//		}
+//	    
+//	    String[] finalOrder = new String[orders.length - nullCounter];
+//	    for(int k = 0; k < finalOrder.length; k++) {
+//			finalOrder[k] = orders[k];
+//			System.out.println(orders[k]);
+//		}
+	    
+	    JList list = new JList(arrayJLs);
 	    popupMenu.add(list);
 	    
 	    JButton addOrderItem = new JButton();
@@ -1102,7 +1118,7 @@ public class RestoAppPage extends JFrame {
 	    return popupMenu;
 	}
 	
-	public void tablePopUp(int tableNumber, List<String> orderItems, List<String> seatNumber) {
+	public void tablePopUp(int tableNumber, Map<String,List<String>> orderMap) {
 
 	    final JPopupMenu popupMenu = new JPopupMenu();
 	    popupMenu.setSize(300, 300);
@@ -1121,26 +1137,32 @@ public class RestoAppPage extends JFrame {
     	JPanel popupMenuItem2 = new JPanel();
     	popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.Y_AXIS));
     	
-    	int seatCounter = 0;
-    	int orderCounter = 0;
-    	String[] currentSeatOrders = new String[orderItems.size()];
+//    	int seatCounter = 0;
+//    	int orderCounter = 0;
+//    	String[] currentSeatOrders = new String[orderItems.size()];
+//    	
+//    	for (String order : orderItems) {
+//    		if(order.equals("Change Seat")) {
+//    			for(int k = 0; k < currentSeatOrders.length; k++) {
+//    				System.out.println(currentSeatOrders[k]);
+//    			}
+//    			popupMenu.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
+//    			seatCounter++;
+//    			for(int k = 0; k < currentSeatOrders.length; k++) {
+//    				currentSeatOrders[k] = null;
+//    			}
+//    			orderCounter = 0;
+//    		} else {
+//    			currentSeatOrders[orderCounter] = order;
+//    			orderCounter++;
+//    		}
+//    	}
     	
-    	for (String order : orderItems) {
-    		if(order.equals("Change Seat")) {
-    			for(int k = 0; k < currentSeatOrders.length; k++) {
-    				System.out.println(currentSeatOrders[k]);
-    			}
-    			popupMenu.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
-    			seatCounter++;
-    			for(int k = 0; k < currentSeatOrders.length; k++) {
-    				currentSeatOrders[k] = null;
-    			}
-    			orderCounter = 0;
-    		} else {
-    			currentSeatOrders[orderCounter] = order;
-    			orderCounter++;
-    		}
-    	}
+    	Set<String> keys = orderMap.keySet();
+    	
+    	for(String key : keys) {
+    		popupMenu.add(seatPopUp(key, orderMap.get(key)));
+    	}	
     	
     	popupMenu.show(Image_panel, 0, 0);
 	    

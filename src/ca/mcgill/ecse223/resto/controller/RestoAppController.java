@@ -1,6 +1,7 @@
 package ca.mcgill.ecse223.resto.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
@@ -478,7 +480,7 @@ public class RestoAppController {
 		return flag;
 	}
 	
-	public static List<List<String>> getOrderItems(Table table) throws InvalidInputException {
+	public static Map<String,List<OrderItem>> getOrderItems(Table table) throws InvalidInputException {
 		
 		List<Seat> seats = table.getCurrentSeats();
 		if (seats == null) {
@@ -506,30 +508,50 @@ public class RestoAppController {
 			throw new InvalidInputException("Table has no Orders. IMPOSSIBLE");
 		}
 		
+//		List<Seat> currentSeats = table.getCurrentSeats();
+//		List<String> seatsNumbers = null;
+//		List<String> resultString = null;
+//		List<OrderItem> result = null;
+//		
+//		for(Seat seat : currentSeats) {
+//			seatsNumbers.add(String.valueOf(seat.getNumber()));
+//			List<OrderItem> orderItems = seat.getOrderItems();
+//			for(OrderItem orderItem : orderItems) {
+//				Order order = orderItem.getOrder();
+//				if(lastOrder.equals(order) && !result.contains(orderItem)) {
+//					result.add(orderItem);
+//					resultString.add(orderItem.toString());
+//				}
+//			}
+//			resultString.add("Change Seat");
+//		}
+//		
+//		List<List<String>> returnList = new ArrayList<List<String>>(2);
+//
+//		returnList.add(resultString);
+//		returnList.add(seatsNumbers);
+//		
+//		return returnList;
+//	}
+		
 		List<Seat> currentSeats = table.getCurrentSeats();
-		List<String> seatsNumbers = null;
-		List<String> resultString = null;
-		List<OrderItem> result = null;
+		Map<String,List<OrderItem>> resultMap = new HashMap<String, List<OrderItem>>();
+		List<OrderItem> resultTotal = new ArrayList<OrderItem>();
 		
 		for(Seat seat : currentSeats) {
-			seatsNumbers.add(String.valueOf(seat.getNumber()));
+			List<OrderItem> seatList = new ArrayList<OrderItem>();
 			List<OrderItem> orderItems = seat.getOrderItems();
 			for(OrderItem orderItem : orderItems) {
 				Order order = orderItem.getOrder();
-				if(lastOrder.equals(order) && !result.contains(orderItem)) {
-					result.add(orderItem);
-					resultString.add(orderItem.toString());
+				if(lastOrder.equals(order) && !resultTotal.contains(orderItem)) {
+					resultTotal.add(orderItem);
+					seatList.add(orderItem);
 				}
 			}
-			resultString.add("Change Seat");
+			resultMap.put(String.valueOf(seat.getNumber()), seatList);
 		}
 		
-		List<List<String>> returnList = new ArrayList<List<String>>(2);
-
-		returnList.add(resultString);
-		returnList.add(seatsNumbers);
-		
-		return returnList;
+		return resultMap;
 	}
 	
 	public void issueBill() {
