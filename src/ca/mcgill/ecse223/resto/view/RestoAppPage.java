@@ -7,7 +7,10 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,9 +19,12 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.sql.Date;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,6 +34,8 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
+import ca.mcgill.ecse223.resto.model.Order;
+import ca.mcgill.ecse223.resto.model.OrderItem;
 import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Table;
@@ -307,6 +315,10 @@ public class RestoAppPage extends JFrame {
 			error = e.getMessage();
 		}
     }
+    
+    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	
+    }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	reservePopUp(2,2);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -314,9 +326,11 @@ public class RestoAppPage extends JFrame {
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    	errorPopUp("Hello World");
+    	issueBillPopUp();
     }
     
+    
+   
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		menuPopUp(2,2,RestoAppController.getItemCategories(), null);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -346,6 +360,34 @@ public class RestoAppPage extends JFrame {
 			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
+		}
+    }
+    
+    private void viewOrderActionPerformed(ActionEvent evt) {
+		try {
+			List<String> orderItems = new ArrayList<String>();
+			List<String> orderItems2 = new ArrayList<String>();
+			List<String> orderItems3 = new ArrayList<String>();
+	    	orderItems.add("Hello World");
+	    	orderItems.add("Order Item 1");
+	    	orderItems.add("Order Item 2");
+	    	orderItems2.add("Order Item 5");
+	    	orderItems2.add("Order Item 6");
+	    	orderItems2.add("Order Item 3");
+	    	orderItems3.add("Order Item 4");
+	    	orderItems3.add("Order Item 10");
+	    
+	    	Map<String, List<String>> orderMap = new HashMap<String, List<String>>();
+	    	orderMap.put("2", orderItems);
+	    	orderMap.put("5", orderItems3);
+	    	orderMap.put("1", orderItems2);
+	    	
+	    	orderListPopUp(1, orderMap);
+	    	
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		} finally {
+			
 		}
     }
     
@@ -488,9 +530,7 @@ public class RestoAppPage extends JFrame {
         moveTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		moveTableButtonActionPerformed(evt);
-            }
-
-			
+        	}
         });
 
         //Rotate button
@@ -505,15 +545,21 @@ public class RestoAppPage extends JFrame {
 		}
 
         //inUse Button
-        RoundButton inUseButton = new RoundButton();
-        inUseButton.setBackground(new Color(255,230,153));
+        RoundButton orderButton = new RoundButton();
+        orderButton.setBackground(new Color(255,230,153));
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/order.png"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			inUseButton.setIcon(new ImageIcon(scaled));
+			orderButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        orderButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		viewOrderActionPerformed(evt);
+            }
+        });
+        
         
         String selectedTableNumber = "-1";
 		if(selectedTable != null) {
@@ -535,7 +581,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.add(removeTableButton);
 	    popupMenuItem2.add(moveTableButton);
 	    popupMenuItem3.add(rotateTableButton);
-	    popupMenuItem3.add(inUseButton);
+	    popupMenuItem3.add(orderButton);
 	    popupMenuItem4.add(tableSlider);
 	        
 	    popupMenu.add(popupMenuItem1);
@@ -715,7 +761,7 @@ public class RestoAppPage extends JFrame {
         JLabel reservationTime = new JLabel();
         reservationTime.setBackground(new Color(255,230,153));
         reservationTime.setOpaque(true);
-        reservationTime.setText("Time: ");
+        reservationTime.setText("Time (HH:MM): ");
         
         JLabel reservationSize = new JLabel();
         reservationSize.setBackground(new Color(255,230,153));
@@ -740,33 +786,32 @@ public class RestoAppPage extends JFrame {
         JLabel reservationNumber = new JLabel();
         reservationNumber.setBackground(new Color(255,230,153));
         reservationNumber.setOpaque(true);
-        reservationNumber.setText("Reservation: ");
+        reservationNumber.setText("Reservation Number: ");
         
         JLabel reservationField = new JLabel();
         reservationField.setBackground(new Color(255,230,153));
         reservationField.setOpaque(true);
         
-        JTextField tableField = new JTextField();
-        tableField.setBackground(new Color(255,230,153));
+        PlaceholderTextField tableField = new PlaceholderTextField("Enter Table Numbers seperated by commas");
+        tableField.setBackground(new Color(255, 230, 253));
         
-        JTextField dateField = new JTextField();
-        dateField.setBackground(new Color(255,230,153));
+        PlaceholderTextField dateField = new PlaceholderTextField("Enter Date (MM/DD/YYYY)");
+        dateField.setBackground(new Color(255, 230, 253));
         
-        JTextField timeField = new JTextField();
-        timeField.setBackground(new Color(255,230,153));
+        PlaceholderTextField timeField = new PlaceholderTextField("Enter Time (HH:MM)/(H:MM)");
+        timeField.setBackground(new Color(255, 230, 253));
 
-        JTextField sizeField = new JTextField();
-        sizeField.setBackground(new Color(255,230,153));
+        PlaceholderTextField sizeField = new PlaceholderTextField("Enter Party Size");
+        sizeField.setBackground(new Color(255, 230, 253));
         
-        JTextField nameField = new JTextField();
-        nameField.setBackground(new Color(255,230,153));
+        PlaceholderTextField nameField = new PlaceholderTextField("Enter Reservation Name");
+        nameField.setBackground(new Color(255, 230, 253));
         
-        JTextField mailField = new JTextField();
-        mailField.setBackground(new Color(255,230,153));
+        PlaceholderTextField mailField = new PlaceholderTextField("Enter Reservation Email");
+        mailField.setBackground(new Color(255, 230, 253));
         
-        JTextField phoneField = new JTextField();
-        phoneField.setBackground(new Color(255,230,153));
-        
+        PlaceholderTextField phoneField = new PlaceholderTextField("Enter Reservation Phone Number");
+        phoneField.setBackground(new Color(255, 230, 253));
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -897,7 +942,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    
-	    popupMenu.show(Image_panel, 200, 0);
+	    popupMenu.show(Image_panel, 0, 0);
 	}
 	
 	public void orderPopup() {
@@ -1006,4 +1051,231 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
+	public JPanel seatPopUp(String seatNumber, List<String> orders) {
+
+	    final JPanel seatPopupPanel = new JPanel();
+	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
+	    seatPopupPanel.setSize(300, 300);
+	    seatPopupPanel.setBackground(new Color(255,230,153));
+	    
+	    //Display the Seat Number at the top of panel
+	    JPanel seatNumberPanel = new JPanel();
+	    seatNumberPanel.setBackground(new Color(255,230,153));
+	    
+	    JLabel seatLabel = new JLabel();
+	    seatLabel.setBackground(new Color(255,230,153));
+	    seatLabel.setOpaque(true);
+	    seatLabel.setText("Seat: " + seatNumber);
+	    
+	    seatNumberPanel.add(seatLabel);
+	    seatPopupPanel.add(seatNumberPanel);
+	    
+//	    int nullCounter = 0;
+//	    
+//	    for(int k = 0; k < orders.length; k++) {
+//			if (orders[k] == null) {
+//				nullCounter++;
+//			}
+//		}
+//	    
+//	    String[] finalOrder = new String[orders.length - nullCounter];
+//	    for(int k = 0; k < finalOrder.length; k++) {
+//			finalOrder[k] = orders[k];
+//			System.out.println(orders[k]);
+//		}
+	    
+	    //Display all the orderItems from the list
+	    
+	    int k = 0;
+    	String[] arrayOrderItem = new String[orders.size()];
+	    
+	    for(String orderItem : orders) {
+	    	arrayOrderItem[k] = orderItem;
+	    	k++;
+	    }
+	
+	    JList<String> list = new JList<String>(arrayOrderItem);
+	    list.setBackground(new Color(255,230,153));
+	    list.setOpaque(true);
+	    seatPopupPanel.add(list);
+	    
+	    //Add two buttons at the bottom of the panel (Add Order Item) and (Delete Order Item)
+	    JButton addOrderItem = new JButton();
+	    addOrderItem.setText("Add Order Item");
+	    
+	    JButton removeSelectedOrderItem = new JButton();
+	    removeSelectedOrderItem.setText("Delete Order Item");
+	    
+	    JPanel buttonPanel = new JPanel();
+	    buttonPanel.add(addOrderItem);
+	    buttonPanel.add(removeSelectedOrderItem);
+	    
+	    seatPopupPanel.add(buttonPanel);
+	    
+	    return seatPopupPanel;
+	}
+	
+	public void orderListPopUp(int tableNumber, Map<String,List<String>> orderMap) {
+
+	    final JPopupMenu viewOrderPopup = new JPopupMenu();
+	    viewOrderPopup.setSize(300, 300);
+	    viewOrderPopup.setBackground(new Color(255,230,153));
+	    viewOrderPopup.setOpaque(true);
+	    
+	    //Display the table number at the top of popup
+	    JPanel tableNumberPanel = new JPanel();
+	    tableNumberPanel.setBackground(new Color(255,230,153));
+	    
+	    JLabel seatLabel = new JLabel();
+	    seatLabel.setBackground(new Color(255,230,153));
+	    seatLabel.setOpaque(true);
+	    seatLabel.setText("Table: " + tableNumber);
+	    
+	    tableNumberPanel.add(seatLabel);
+	    viewOrderPopup.add(tableNumberPanel);
+    	
+//    	int seatCounter = 0;
+//    	int orderCounter = 0;
+//    	String[] currentSeatOrders = new String[orderItems.size()];
+//    	
+//    	for (String order : orderItems) {
+//    		if(order.equals("Change Seat")) {
+//    			for(int k = 0; k < currentSeatOrders.length; k++) {
+//    				System.out.println(currentSeatOrders[k]);
+//    			}
+//    			viewOrderPopup.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
+//    			seatCounter++;
+//    			for(int k = 0; k < currentSeatOrders.length; k++) {
+//    				currentSeatOrders[k] = null;
+//    			}
+//    			orderCounter = 0;
+//    		} else {
+//    			currentSeatOrders[orderCounter] = order;
+//    			orderCounter++;
+//    		}
+//    	}
+    	
+	    //Display all of the seatPopUp from the input map
+    	Set<String> keys = orderMap.keySet();
+    	
+    	for(String key : keys) {
+    		viewOrderPopup.add(seatPopUp(key, orderMap.get(key)));
+    	}	
+    	
+    	viewOrderPopup.show(Image_panel, 0, 0);
+	    
+	}
+	
+	public void issueBillPopUp() {
+		final JPopupMenu issue_bill_popup = new JPopupMenu();
+		issue_bill_popup.setSize(300, 300);
+		issue_bill_popup.setBackground(new Color(255,230,153));
+		
+	    //Panels
+		
+	    JPanel popupMenuItem1 = new JPanel();
+	    popupMenuItem1.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem2 = new JPanel();
+	    popupMenuItem2.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem3 = new JPanel();
+	    popupMenuItem3.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem4 = new JPanel();
+	    popupMenuItem4.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem5 = new JPanel();
+	    popupMenuItem5.setBackground(new Color(255, 230, 153));
+
+	    
+
+	    
+	    //Labels
+	    
+	    JLabel issue_bill_title = new JLabel();
+	    issue_bill_title.setBackground(new Color(255,230,153));
+	    issue_bill_title.setOpaque(true);
+	    issue_bill_title.setText("              Prepare Bill              ");
+	    
+	    JLabel seat_nums = new JLabel();
+	    seat_nums.setBackground(new Color(255,230,153));
+	    seat_nums.setOpaque(true);
+	    seat_nums.setText("Seat numbers: ");
+	    
+	    JLabel or_table = new JLabel();
+	    or_table.setBackground(new Color(255,230,153));
+	    or_table.setOpaque(true);
+	    or_table.setText("---------- OR ENTER TABLE NUMBER ---------- ");
+	    
+	    JLabel table_num = new JLabel();
+	    table_num.setBackground(new Color(255,230,153));
+	    table_num.setOpaque(true);
+	    table_num.setText("Table Number: ");
+	    
+	    
+	    //Text Fields
+	    
+	    PlaceholderTextField seat_field = new PlaceholderTextField("Enter comma seperated list of seats");
+	    seat_field.setBackground(new Color(255, 230, 253));
+	    
+	    
+	    
+	    PlaceholderTextField table_field = new PlaceholderTextField("Enter table number");
+	    table_field.setBackground(new Color(255, 230, 253));
+	    
+	    //Buttons
+	    
+	    JButton prepBillButton = new JButton();
+	    prepBillButton.setBackground(new Color(255, 230, 253));
+	    prepBillButton.setText("Prepare Bill");
+	    prepBillButton.addActionListener(new java.awt.event.ActionListener() {
+	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    			prepBillButtonActionPerformed(evt);
+	    		}
+	    });
+	    
+	    
+	    issue_bill_popup.setLayout(new BoxLayout(issue_bill_popup, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+
+
+	    
+	    
+	    
+	    popupMenuItem1.add(issue_bill_title);
+	    popupMenuItem2.add(seat_nums);
+	    popupMenuItem2.add(seat_field);
+	    popupMenuItem3.add(or_table);
+	    popupMenuItem4.add(table_num);
+	    popupMenuItem4.add(table_field);
+	    popupMenuItem5.add(prepBillButton);
+
+
+	    
+	    
+	    
+	    
+	    issue_bill_popup.add(popupMenuItem1);
+	    issue_bill_popup.add(popupMenuItem2);
+	    issue_bill_popup.add(popupMenuItem3);
+	    issue_bill_popup.add(popupMenuItem4);
+	    issue_bill_popup.add(popupMenuItem5);
+
+
+	    
+    	
+    	
+    	
+   
+    	
+	    issue_bill_popup.show(Image_panel, 2, 2);
+		
+	}
+	
 }
+
