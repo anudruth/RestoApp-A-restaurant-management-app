@@ -186,32 +186,10 @@ public class RestoAppController {
 	}
 	
 	/**
-	 * removes table given by number from currentTables list
-	 */
-	public static void removeTable(int number) throws InvalidInputException {
-		RestoApp restoApp = RestoAppApplication.getRestoapp();
-		Table table = Table.getWithNumber(number);
-				
-		boolean reserved = table.hasReservations();
-		if(reserved == true) throw new InvalidInputException("Table is reserved");
-		try {
-			List<Order> currentOrders = restoApp.getCurrentOrders();
-			for(Order order : currentOrders) { //if table in use throw exception
-				List<Table> tables = order.getTables();
-				boolean inUse = tables.contains(table);
-				if(inUse == true) throw new InvalidInputException("Table is in use");
-			}
-			restoApp.removeCurrentTable(table);
-			RestoAppApplication.save();
-		}catch (RuntimeException e){
-			throw new InvalidInputException(e.getMessage());
-		}
-	}
-	
-	/**
 	 * removes table from currentTables list
 	 */
 	public static void removeTable(Table table) throws InvalidInputException {
+		System.out.println("in removeTable()");
 		if(table == null) throw new InvalidInputException("Invalid Table");
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		boolean reserved = table.hasReservations();
@@ -224,9 +202,11 @@ public class RestoAppController {
 				if(inUse == true) throw new InvalidInputException("Table is in use");
 			}
 			restoApp.removeCurrentTable(table);
+			System.out.println("Table "+String.valueOf(table.getNumber())+" removed");
 			RestoAppApplication.save();
 			
 		}catch (RuntimeException e){
+			System.out.println(e.getMessage());
 			throw new InvalidInputException(e.getMessage());
 		}
 	}

@@ -361,9 +361,7 @@ public class RestoAppPage extends JFrame {
 	    	for(Seat seat : table.getCurrentSeats()) {
     			List<String> orderItems = new ArrayList<String>();
 	    		for(OrderItem orderItem : seat.getOrderItems()) {
-	    			for(int i=0; i<orderItem.getQuantity(); i++) {
-	    				orderItems.add(orderItem.toString());
-	    			}
+	    			orderItems.add(orderItem.toString());
 	    		}
 	    		orderMap.put(String.valueOf(seat.getNumber()), orderItems);
 	    	}
@@ -417,11 +415,13 @@ public class RestoAppPage extends JFrame {
 						toDelete = table;
 					}
 				}
+				System.out.println("Try to remove table");
 				RestoAppController.removeTable(toDelete);
 				RestoApp restoapp = RestoAppApplication.getRestoapp();
 				restoVisualizer.setResto(restoapp);
 			} catch (InvalidInputException e) {
 				error = e.getMessage();
+				errorPopUp(e.getMessage());
 			}
 		}
 		
@@ -500,6 +500,7 @@ public class RestoAppPage extends JFrame {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeTableButtonActionPerformed(evt);
         		popupMenu.setVisible(false);
+        		System.out.println("Delete button pressed");
             }
         });
 		
@@ -1055,20 +1056,6 @@ public class RestoAppPage extends JFrame {
 	    
 	    seatNumberPanel.add(seatLabel);
 	    seatPopupPanel.add(seatNumberPanel);
-	    
-//	    int nullCounter = 0;
-//	    
-//	    for(int k = 0; k < orders.length; k++) {
-//			if (orders[k] == null) {
-//				nullCounter++;
-//			}
-//		}
-//	    
-//	    String[] finalOrder = new String[orders.length - nullCounter];
-//	    for(int k = 0; k < finalOrder.length; k++) {
-//			finalOrder[k] = orders[k];
-//			System.out.println(orders[k]);
-//		}
 	    
 	    //Display all the orderItems from the list
 	    
