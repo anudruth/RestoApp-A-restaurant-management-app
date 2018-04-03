@@ -4,7 +4,16 @@
 package ca.mcgill.ecse223.resto.application;
 
 
+import java.sql.Date;
+import java.sql.Time;
+
+import ca.mcgill.ecse223.resto.model.Menu;
+import ca.mcgill.ecse223.resto.model.MenuItem;
+import ca.mcgill.ecse223.resto.model.Order;
+import ca.mcgill.ecse223.resto.model.OrderItem;
+import ca.mcgill.ecse223.resto.model.PricedMenuItem;
 import ca.mcgill.ecse223.resto.model.RestoApp;
+import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.persistence.PersistenceObjectStream;
 import ca.mcgill.ecse223.resto.view.RestoAppPage;
 
@@ -34,7 +43,6 @@ public class RestoAppApplication {
 			// load model
 			
 			restoapp = load();
-			
 		}
  		return restoapp;
 	}

@@ -389,11 +389,12 @@ public class RestoAppPage extends JFrame {
 					RestoAppController.moveTable(selectedTable, x_move,y_move);
 					RestoApp restoapp = RestoAppApplication.getRestoapp();
 					restoVisualizer.setResto(restoapp);
+					restoVisualizer.removeMouseListener(this);
 				} catch (InvalidInputException e1) {
 					e1.printStackTrace();
 				} 	
 			}
-		}); 
+		});
 	}
     
     /**
