@@ -357,16 +357,13 @@ public class RestoAppPage extends JFrame {
     
     private void viewOrderActionPerformed(ActionEvent evt, Table table) {
 		try {
-	    	Map<String, List<String>> orderMap = new HashMap<String, List<String>>();
-	    	for(Seat seat : table.getCurrentSeats()) {
-    			List<String> orderItems = new ArrayList<String>();
-	    		for(OrderItem orderItem : seat.getOrderItems()) {
-	    			orderItems.add(orderItem.toString());
-	    		}
-	    		orderMap.put(String.valueOf(seat.getNumber()), orderItems);
-	    	}
-	    	
-	    	viewOrderPopUp(table.getNumber(), orderMap);
+	    	Map<String, List<OrderItem>> orderMap;
+			try {
+				orderMap = RestoAppController.getOrderItems(table);
+				viewOrderPopUp(table.getNumber(), orderMap);
+			} catch (InvalidInputException e) {
+				errorPopUp(e.getMessage());
+			}
 	    	
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
 			restoVisualizer.setResto(restoapp);
@@ -1039,7 +1036,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
-	public JPanel seatPopUp(String seatNumber, List<String> orders) {
+	public JPanel seatPopUp(String seatNumber, List<OrderItem> orders) {
 
 	    final JPanel seatPopupPanel = new JPanel();
 	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
@@ -1061,14 +1058,14 @@ public class RestoAppPage extends JFrame {
 	    //Display all the orderItems from the list
 	    
 	    int k = 0;
-    	String[] arrayOrderItem = new String[orders.size()];
+    	OrderItem[] arrayOrderItem = new OrderItem[orders.size()];
 	    
-	    for(String orderItem : orders) {
+	    for(OrderItem orderItem : orders) {
 	    	arrayOrderItem[k] = orderItem;
 	    	k++;
 	    }
 	
-	    JList<String> list = new JList<String>(arrayOrderItem);
+	    JList<OrderItem> list = new JList<OrderItem>(arrayOrderItem);
 	    list.setBackground(new Color(255,230,153));
 	    list.setOpaque(true);
 	    seatPopupPanel.add(list);
@@ -1089,7 +1086,7 @@ public class RestoAppPage extends JFrame {
 	    return seatPopupPanel;
 	}
 	
-	public void viewOrderPopUp(int tableNumber, Map<String,List<String>> orderMap) {
+	public void viewOrderPopUp(int tableNumber, Map<String,List<OrderItem>> orderMap) {
 
 	    final JPopupMenu viewOrderPopup = new JPopupMenu();
 	    viewOrderPopup.setSize(300, 300);
@@ -1107,27 +1104,6 @@ public class RestoAppPage extends JFrame {
 	    
 	    tableNumberPanel.add(seatLabel);
 	    viewOrderPopup.add(tableNumberPanel);
-    	
-//    	int seatCounter = 0;
-//    	int orderCounter = 0;
-//    	String[] currentSeatOrders = new String[orderItems.size()];
-//    	
-//    	for (String order : orderItems) {
-//    		if(order.equals("Change Seat")) {
-//    			for(int k = 0; k < currentSeatOrders.length; k++) {
-//    				System.out.println(currentSeatOrders[k]);
-//    			}
-//    			viewOrderPopup.add(seatPopUp(seatNumber.get(seatCounter), currentSeatOrders));
-//    			seatCounter++;
-//    			for(int k = 0; k < currentSeatOrders.length; k++) {
-//    				currentSeatOrders[k] = null;
-//    			}
-//    			orderCounter = 0;
-//    		} else {
-//    			currentSeatOrders[orderCounter] = order;
-//    			orderCounter++;
-//    		}
-//    	}
     	
 	    //Display all of the seatPopUp from the input map
     	Set<String> seatNumbers = orderMap.keySet();
