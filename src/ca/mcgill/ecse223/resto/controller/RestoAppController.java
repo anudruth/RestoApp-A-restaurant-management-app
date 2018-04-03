@@ -565,6 +565,18 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
-	
+	public static void cancelOrder(Table table) throws InvalidInputException {
+		if(table.equals(null)) throw new InvalidInputException("Table is null. Cannot cancel order");
+		
+		RestoApp r = RestoAppApplication.getRestoapp();
+		
+		List<Table> currentTables = r.getCurrentTables();
+		
+		if(!currentTables.contains(table)) throw new InvalidInputException("Table is not in currentTables. Cannot cancel order");
+		
+		table.cancelOrder();
+		
+		RestoAppApplication.save();
+	}
 	
 }
