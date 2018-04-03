@@ -7,10 +7,7 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,9 +16,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,10 +29,9 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
-import ca.mcgill.ecse223.resto.model.Order;
 import ca.mcgill.ecse223.resto.model.OrderItem;
-import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
+import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
@@ -329,8 +323,6 @@ public class RestoAppPage extends JFrame {
     	issueBillPopUp();
     }
     
-    
-   
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		menuPopUp(2,2,RestoAppController.getItemCategories(), null);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -363,26 +355,20 @@ public class RestoAppPage extends JFrame {
 		}
     }
     
-    private void viewOrderActionPerformed(ActionEvent evt) {
+    private void viewOrderActionPerformed(ActionEvent evt, Table table) {
 		try {
-			List<String> orderItems = new ArrayList<String>();
-			List<String> orderItems2 = new ArrayList<String>();
-			List<String> orderItems3 = new ArrayList<String>();
-	    	orderItems.add("Hello World");
-	    	orderItems.add("Order Item 1");
-	    	orderItems.add("Order Item 2");
-	    	orderItems2.add("Order Item 5");
-	    	orderItems2.add("Order Item 6");
-	    	orderItems2.add("Order Item 3");
-	    	orderItems3.add("Order Item 4");
-	    	orderItems3.add("Order Item 10");
-	    
 	    	Map<String, List<String>> orderMap = new HashMap<String, List<String>>();
-	    	orderMap.put("2", orderItems);
-	    	orderMap.put("5", orderItems3);
-	    	orderMap.put("1", orderItems2);
+	    	for(Seat seat : table.getCurrentSeats()) {
+    			List<String> orderItems = new ArrayList<String>();
+	    		for(OrderItem orderItem : seat.getOrderItems()) {
+	    			for(int i=0; i<orderItem.getQuantity(); i++) {
+	    				orderItems.add(orderItem.toString());
+	    			}
+	    		}
+	    		orderMap.put(String.valueOf(seat.getNumber()), orderItems);
+	    	}
 	    	
-	    	orderListPopUp(1, orderMap);
+	    	viewOrderPopUp(table.getNumber(), orderMap);
 	    	
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
 			restoVisualizer.setResto(restoapp);
@@ -544,19 +530,19 @@ public class RestoAppPage extends JFrame {
 			e.printStackTrace();
 		}
 
-        //inUse Button
-        RoundButton orderButton = new RoundButton();
-        orderButton.setBackground(new Color(255,230,153));
+        //viewOrder Button
+        RoundButton viewOrderButton = new RoundButton();
+        viewOrderButton.setBackground(new Color(255,230,153));
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/order.png"));
+			Image img = ImageIO.read(getClass().getResource("../resources/order.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			orderButton.setIcon(new ImageIcon(scaled));
+			viewOrderButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        orderButton.addActionListener(new java.awt.event.ActionListener() {
+        viewOrderButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		viewOrderActionPerformed(evt);
+        		viewOrderActionPerformed(evt, selectedTable);
             }
         });
         
@@ -581,7 +567,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.add(removeTableButton);
 	    popupMenuItem2.add(moveTableButton);
 	    popupMenuItem3.add(rotateTableButton);
-	    popupMenuItem3.add(orderButton);
+	    popupMenuItem3.add(viewOrderButton);
 	    popupMenuItem4.add(tableSlider);
 	        
 	    popupMenu.add(popupMenuItem1);
@@ -1115,7 +1101,7 @@ public class RestoAppPage extends JFrame {
 	    return seatPopupPanel;
 	}
 	
-	public void orderListPopUp(int tableNumber, Map<String,List<String>> orderMap) {
+	public void viewOrderPopUp(int tableNumber, Map<String,List<String>> orderMap) {
 
 	    final JPopupMenu viewOrderPopup = new JPopupMenu();
 	    viewOrderPopup.setSize(300, 300);
@@ -1156,10 +1142,10 @@ public class RestoAppPage extends JFrame {
 //    	}
     	
 	    //Display all of the seatPopUp from the input map
-    	Set<String> keys = orderMap.keySet();
+    	Set<String> seatNumbers = orderMap.keySet();
     	
-    	for(String key : keys) {
-    		viewOrderPopup.add(seatPopUp(key, orderMap.get(key)));
+    	for(String seatNumber : seatNumbers) {
+    		viewOrderPopup.add(seatPopUp(seatNumber, orderMap.get(seatNumber)));
     	}	
     	
     	viewOrderPopup.show(Image_panel, 0, 0);
