@@ -8,6 +8,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import ca.mcgill.ecse223.resto.controller.InvalidInputException;
+import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.Menu;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.Order;
@@ -32,11 +34,14 @@ public class RestoAppApplication {
 	public static void main(String[] args) {
 		// start UI
 		
-		Menu menu = restoapp.getMenu();
-		List<MenuItem> menuItems = menu.getMenuItems();
-		OrderItem orderItem1 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
-		OrderItem orderItem2 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(1));
-		OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+		try {
+			RestoAppController.getMenuItems(MenuItem.ItemCategory.Appetizer);
+			OrderItem orderItem1 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+			OrderItem orderItem2 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(1));
+			OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+		} catch (InvalidInputException e) {
+			e.printStackTrace();
+		}
 		
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
