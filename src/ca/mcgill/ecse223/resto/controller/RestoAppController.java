@@ -488,32 +488,6 @@ public class RestoAppController {
 			throw new InvalidInputException("Table has no Orders. IMPOSSIBLE");
 		}
 		
-//		List<Seat> currentSeats = table.getCurrentSeats();
-//		List<String> seatsNumbers = null;
-//		List<String> resultString = null;
-//		List<OrderItem> result = null;
-//		
-//		for(Seat seat : currentSeats) {
-//			seatsNumbers.add(String.valueOf(seat.getNumber()));
-//			List<OrderItem> orderItems = seat.getOrderItems();
-//			for(OrderItem orderItem : orderItems) {
-//				Order order = orderItem.getOrder();
-//				if(lastOrder.equals(order) && !result.contains(orderItem)) {
-//					result.add(orderItem);
-//					resultString.add(orderItem.toString());
-//				}
-//			}
-//			resultString.add("Change Seat");
-//		}
-//		
-//		List<List<String>> returnList = new ArrayList<List<String>>(2);
-//
-//		returnList.add(resultString);
-//		returnList.add(seatsNumbers);
-//		
-//		return returnList;
-//	}
-		
 		List<Seat> currentSeats = table.getCurrentSeats();
 		Map<String,List<OrderItem>> resultMap = new HashMap<String, List<OrderItem>>();
 		List<OrderItem> resultTotal = new ArrayList<OrderItem>();
