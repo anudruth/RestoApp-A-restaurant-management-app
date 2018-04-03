@@ -538,4 +538,33 @@ public class RestoAppController {
 		
 	}
 	
+	public static void cancelOrderItem(OrderItem orderItem) throws InvalidInputException{
+		List<Seat> seats = orderItem.getSeats();
+		Order order = orderItem.getOrder();
+		List<Table> tables = new ArrayList<Table>();
+		
+		for(Seat seat : seats) {
+			Table table = seat.getTable();
+			Order lastOrder = null;
+			if(table.numberOfOrders() > 0) {
+				lastOrder = table.getOrder(table.numberOfOrders()-1);
+			}
+			else {
+				throw new InvalidInputException("Table doesn't have an order");
+			}
+			
+			if(lastOrder.equals(order) && !tables.contains(table)) {
+				tables.add(table);
+			}
+		}
+		
+		for(Table table : tables) {
+			table.cancelOrderItem(orderItem);
+		}
+		
+		RestoAppApplication.save();
+	}
+	
+	
+	
 }
