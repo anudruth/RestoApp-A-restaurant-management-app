@@ -1143,15 +1143,16 @@ public class RestoAppPage extends JFrame {
 	    tableNumberPanel.add(tableLable);
 	    tableNumberPanel.add(cancelTableOrderButton);
 	    viewOrderPopUp.add(tableNumberPanel);
+	    viewOrderPopUp.add(new JSeparator());
     	
 	    //Display all of the seatPopUp from the input map
     	Set<String> seatNumbers = orderMap.keySet();
     	
     	for(String seatNumber : seatNumbers) {
     		viewOrderPopUp.add(seatPopUp(viewOrderPopUp, seatNumber, orderMap.get(seatNumber)));
+    	    viewOrderPopUp.add(new JSeparator());
     	}	
     	
-    	viewOrderPopUp.add(cancelTableOrderButton);
     	viewOrderPopUp.show(Image_panel, 0, 0);
 	    
 	}
