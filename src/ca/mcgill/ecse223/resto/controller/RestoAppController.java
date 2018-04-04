@@ -22,6 +22,7 @@ import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.model.Table.Status;
+import ca.mcgill.ecse223.resto.model.Bill;
 import ca.mcgill.ecse223.resto.model.Menu;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
@@ -509,8 +510,76 @@ public class RestoAppController {
 		return resultMap;
 	}
 	
-	public static void issueBill(List<Seat> seats) {
+	public static void issueBill(List<Seat> seats) throws InvalidInputException{
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		List<Table> current_tables = restoapp.getCurrentTables();
+		List<Seat> current_seats = null;
+		Order last_order=null, compared_order;
+		Boolean bill_created = false;
+		Bill new_bill = null;
+		Bill last_bill;
 		
+		for(Seat seat : seats) {
+			Table table = seat.getTable();
+			
+			if(!current_tables.contains(table)) {
+				throw new InvalidInputException("Invalid table.");
+			}
+			
+			current_seats = table.getCurrentSeats();
+			
+			if(!current_seats.contains(seat)) {
+				throw new InvalidInputException("Invalid seat.");
+			}
+			
+			if(table.numberOfOrders() > 0) {
+				last_order  = table.getOrder(table.numberOfOrders()-1);
+			}
+			else {
+				throw new InvalidInputException("No orders for table.");
+			}
+			
+			
+			
+			if(last_order == null) {
+				throw new InvalidInputException("Order is null.");
+			}
+			else {
+				compared_order = null;
+				if(table.numberOfOrders()>0) {
+					compared_order = table.getOrder(table.numberOfOrders()-1);
+				}
+				else {
+					throw new InvalidInputException("No orders for table.");
+				}
+				
+				if (!compared_order.equals(last_order));{
+					throw new InvalidInputException("Error with orders.");
+				}
+				
+			}
+			
+		}
+		
+		for(Seat seat: seats) {
+			Table table = seat.getTable();
+			
+			if(bill_created) {
+				table.addToBill(new_bill, seat);
+			}
+			else {
+				last_bill =null;
+				if(last_order.numberOfBills()>0) {
+					last_bill = last_order.getBill(last_order.numberOfBills()-1);
+				}
+				
+				if(last_order.numberOfBills()>0 && !last_order.getBill(last_order.numberOfBills()-1).equals(last_bill)) {
+					bill_created = true;
+					new_bill = last_order.getBill(last_order.numberOfBills()-1);
+				}
+			}
+		}
+		RestoAppApplication.save();
 	}
 	
 	public static void cancelOrderItem(OrderItem orderItem) throws InvalidInputException{
