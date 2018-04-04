@@ -283,7 +283,7 @@ public class Table implements Serializable
       case Ordered:
         if (allSeatsBilled())
         {
-        // line 54 "../../../../../TableStateMachine.ump"
+        // line 65 "../../../../../TableStateMachine.ump"
           
           setStatus(Status.Available);
           wasEventProcessed = true;
@@ -341,6 +341,17 @@ public class Table implements Serializable
       case Ordered:
         // line 41 "../../../../../TableStateMachine.ump"
         // delete all order items of the table
+            List<OrderItem> toDelete = new ArrayList<OrderItem>();
+            List<Seat> seats = this.getCurrentSeats();
+	    	for(Seat seat : seats) {
+	    		List<OrderItem> orderItems = seat.getOrderItems();
+	    		for(OrderItem orderItem : orderItems) {
+	    			toDelete.add(orderItem);
+	    		}
+	    	}
+	    	for(OrderItem orderItem : toDelete) {
+	    		this.cancelOrderItem(orderItem);
+	    	}
         setStatus(Status.NothingOrdered);
         wasEventProcessed = true;
         break;
@@ -359,7 +370,7 @@ public class Table implements Serializable
     switch (aStatus)
     {
       case Ordered:
-        // line 44 "../../../../../TableStateMachine.ump"
+        // line 55 "../../../../../TableStateMachine.ump"
         // create a new bill with the provided order and seat; if the provided seat is already assigned to
             // another bill for the current order, then the seat is first removed from the other bill and if no seats
             // are left for the bill, the bill is deleted
@@ -381,7 +392,7 @@ public class Table implements Serializable
     switch (aStatus)
     {
       case Ordered:
-        // line 49 "../../../../../TableStateMachine.ump"
+        // line 60 "../../../../../TableStateMachine.ump"
         // add provided seat to provided bill unless seat has already been added, in which case nothing needs
             // to be done; if the provided seat is already assigned to another bill for the current order, then the
             // seat is first removed from the other bill and if no seats are left for the bill, the bill is deleted
@@ -917,7 +928,7 @@ public class Table implements Serializable
   /**
    * check that the provided quantity is an integer greater than 0
    */
-  // line 61 "../../../../../TableStateMachine.ump"
+  // line 72 "../../../../../TableStateMachine.ump"
    private boolean quantityNotNegative(int quantity){
     // TODO
       return false;
@@ -927,7 +938,7 @@ public class Table implements Serializable
   /**
    * check that the provided order item is the last item of the current order of the table
    */
-  // line 67 "../../../../../TableStateMachine.ump"
+  // line 78 "../../../../../TableStateMachine.ump"
    private boolean iIsLastItem(OrderItem i){
     // TODO
       return false;
@@ -937,7 +948,7 @@ public class Table implements Serializable
   /**
    * check that all seats of the table have a bill that belongs to the current order of the table
    */
-  // line 73 "../../../../../TableStateMachine.ump"
+  // line 84 "../../../../../TableStateMachine.ump"
    private boolean allSeatsBilled(){
     // TODO
       return false;

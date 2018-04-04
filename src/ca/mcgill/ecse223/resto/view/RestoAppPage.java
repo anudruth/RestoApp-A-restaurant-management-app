@@ -371,7 +371,7 @@ public class RestoAppPage extends JFrame {
 	    	Map<String, List<OrderItem>> orderMap;
 			try {
 				orderMap = RestoAppController.getOrderItems(table);
-				viewOrderPopUp(table.getNumber(), orderMap);
+				viewOrderPopUp(table, orderMap);
 			} catch (InvalidInputException e) {
 				errorPopUp(e.getMessage());
 			}
@@ -465,6 +465,14 @@ public class RestoAppPage extends JFrame {
 		}
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
+		try {
+			RestoAppController.cancelOrder(table);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
 	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
@@ -1120,7 +1128,7 @@ public class RestoAppPage extends JFrame {
 	    return seatPopupPanel;
 	}
 	
-	public void viewOrderPopUp(int tableNumber, Map<String,List<OrderItem>> orderMap) {
+	public void viewOrderPopUp(Table table, Map<String,List<OrderItem>> orderMap) {
 
 	    final JPopupMenu viewOrderPopUp = new JPopupMenu();
 	    viewOrderPopUp.setSize(300, 300);
@@ -1134,11 +1142,17 @@ public class RestoAppPage extends JFrame {
 	    JLabel tableLable = new JLabel();
 	    tableLable.setBackground(new Color(255,230,153));
 	    tableLable.setOpaque(true);
-	    tableLable.setText("Table: " + tableNumber);
+	    tableLable.setText("Table: " + table.getNumber());
 	    tableLable.setFont(new Font(tableLable.getFont().getName(), Font.PLAIN, 30));
 	    
 	    JButton cancelTableOrderButton = new JButton();
 	    cancelTableOrderButton.setText("Cancel Order");
+	    cancelTableOrderButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		cancelTableOrderItemActionPerformed(evt, table);
+        		viewOrderPopUp.setVisible(false);
+            }
+        });
 	    
 	    tableNumberPanel.add(tableLable);
 	    tableNumberPanel.add(cancelTableOrderButton);

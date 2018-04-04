@@ -40,6 +40,17 @@ class Table {
          } -> Ordered;
          cancelOrder() / {
             // delete all order items of the table
+            List<OrderItem> toDelete = new ArrayList<OrderItem>();
+            List<Seat> seats = this.getCurrentSeats();
+	    	for(Seat seat : seats) {
+	    		List<OrderItem> orderItems = seat.getOrderItems();
+	    		for(OrderItem orderItem : orderItems) {
+	    			toDelete.add(orderItem);
+	    		}
+	    	}
+	    	for(OrderItem orderItem : toDelete) {
+	    		this.cancelOrderItem(orderItem);
+	    	}
          } -> NothingOrdered;
          billForSeat(Order o, Seat s) / {
             // create a new bill with the provided order and seat; if the provided seat is already assigned to
