@@ -310,9 +310,16 @@ public class RestoAppPage extends JFrame {
 		}
     }
     
-    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt, String tables, String seats) {
     	
-    		billPopup("hi", "bye", "100.45");
+    		//billPopup("hi", "bye", "100.45");
+    	try {
+    		RestoAppController.getSeats(tables, seats);
+    	} catch (InvalidInputException e) {
+    		error = e.getMessage();
+    		errorPopUp(error);
+    	}
+    
     	
     }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1183,7 +1190,7 @@ public class RestoAppPage extends JFrame {
 	    prepBillButton.setText("Prepare Bill");
 	    prepBillButton.addActionListener(new java.awt.event.ActionListener() {
 	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
-	    			prepBillButtonActionPerformed(evt);
+	    			prepBillButtonActionPerformed(evt, table_field.getText(), seat_field.getText());
 	    		}
 	    });
 	    

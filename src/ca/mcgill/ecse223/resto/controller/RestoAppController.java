@@ -2,6 +2,7 @@ package ca.mcgill.ecse223.resto.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import org.apache.commons.lang3.ArrayUtils;
 
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
@@ -551,6 +553,58 @@ public class RestoAppController {
 		table.cancelOrder();
 		
 		RestoAppApplication.save();
+	}
+	
+	public static List<Seat> getSeats(String tables, String seats) throws InvalidInputException{
+		
+		RestoApp resto = RestoAppApplication.getRestoapp();
+		
+		List<Table> currentTables = resto.getCurrentTables();
+		List<Seat> seat_list = new ArrayList<Seat>();
+		
+		String[] seat_nums = seats.split(",");
+		String[] table_nums = tables.split(",");
+		
+		if ((seat_nums.length==1 && !seat_nums[0].equals("Enter comma seperated list of seats")) ||seat_nums.length>1) {
+			for(String t: seat_nums) {
+				if (Integer.parseInt(t)<0) {
+					throw new InvalidInputException("Negative seat number not valid.");
+				}
+				else {
+					for(Table table: currentTables) {
+						seat_list.addAll(table.getCurrentSeats().stream().filter(s -> t.equals(Integer.toString(s.getNumber()))).collect(Collectors.toList()));
+					}
+					
+				}
+			}
+		}
+		
+		else if ((table_nums.length==1 && !table_nums[0].equals("Enter table number"))||table_nums.length>1) {
+			for(String t:table_nums) {
+				if (Integer.parseInt(t)<0) {
+					throw new InvalidInputException("Negative table number not valid.");
+				}
+				else {
+					List<Table> l = currentTables.stream().filter(s -> t.equals(Integer.toString(s.getNumber()))).collect(Collectors.toList());
+					if(l.isEmpty()) {
+						throw new InvalidInputException("Table number not in system.");
+					}
+					else {
+						Table wanted_table = l.get(0);
+						seat_list = wanted_table.getCurrentSeats();
+					}
+				}
+			}
+			
+			
+			
+		}
+		else {
+			throw new InvalidInputException("No table or seat numbers entered. Try again!");
+		}
+		
+		
+		return seat_list;
 	}
 	
 }
