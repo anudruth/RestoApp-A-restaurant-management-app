@@ -314,7 +314,8 @@ public class RestoAppPage extends JFrame {
     	
     		//billPopup("hi", "bye", "100.45");
     	try {
-    		RestoAppController.getSeats(tables, seats);
+    		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
+    		RestoAppController.issueBill(seat_list);
     	} catch (InvalidInputException e) {
     		error = e.getMessage();
     		errorPopUp(error);

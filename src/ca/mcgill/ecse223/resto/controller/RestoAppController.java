@@ -510,7 +510,7 @@ public class RestoAppController {
 		return resultMap;
 	}
 	
-	public void issueBill() {
+	public static void issueBill(List<Seat> seats) {
 		
 	}
 	
