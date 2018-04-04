@@ -517,7 +517,7 @@ public class RestoAppController {
 		List<Seat> seats = orderItem.getSeats();
 		Order order = orderItem.getOrder();
 		List<Table> tables = new ArrayList<Table>();
-		
+		System.out.println("in cancelOrderItem()");
 		for(Seat seat : seats) {
 			Table table = seat.getTable();
 			Order lastOrder = null;
@@ -535,6 +535,7 @@ public class RestoAppController {
 		
 		for(Table table : tables) {
 			table.cancelOrderItem(orderItem);
+			System.out.println("canceled orderItem for table "+table.getNumber());
 		}
 		
 		RestoAppApplication.save();

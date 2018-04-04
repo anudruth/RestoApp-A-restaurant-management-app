@@ -89,6 +89,11 @@ class OrderItem {
    Integer quantity;
    * orderItems -- 1 PricedMenuItem pricedMenuItem; // only from MenuItem.currentPricedMenuItem for currentOrders
    * orderItems -- 1..* Seat seats; // only from order.tables.seats
+   
+   @Override
+   public String toString(){
+   		return getPricedMenuItem().getMenuItem().getName()+String.valueOf(getPricedMenuItem().getPrice());
+   }
 }
 
 class Menu {   

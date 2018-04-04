@@ -7,6 +7,7 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -382,16 +383,14 @@ public class RestoAppPage extends JFrame {
 		}
     }
     
-    int x_move;
-    int y_move;
     private void moveTableButtonActionPerformed(ActionEvent evt) {
     	error = null;
 		restoVisualizer.addMouseListener(new MouseAdapter(){
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				x_move = e.getX();
-				y_move = e.getY();
+				int x_move = e.getX();
+				int y_move = e.getY();
 				try {
 					RestoAppController.moveTable(selectedTable, x_move,y_move);
 					RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -451,6 +450,22 @@ public class RestoAppPage extends JFrame {
 		restoVisualizer.setResto(restoapp);
 	}
 
+	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, JList<OrderItem> list) {
+		System.out.println("Delete order Item button pushed");
+		
+		OrderItem selectedOrderItem;
+		if((selectedOrderItem = list.getSelectedValue()) == null){
+			errorPopUp("No OrderItem selected");
+		}
+		
+		try {
+			RestoAppController.cancelOrderItem(selectedOrderItem);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
 	 */
@@ -1046,7 +1061,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
-	public JPanel seatPopUp(String seatNumber, List<OrderItem> orders) {
+	public JPanel seatPopUp(JPopupMenu viewOrderPopUp, String seatNumber, List<OrderItem> orders) {
 
 	    final JPanel seatPopupPanel = new JPanel();
 	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
@@ -1057,12 +1072,14 @@ public class RestoAppPage extends JFrame {
 	    JPanel seatNumberPanel = new JPanel();
 	    seatNumberPanel.setBackground(new Color(255,230,153));
 	    
-	    JLabel seatLabel = new JLabel();
-	    seatLabel.setBackground(new Color(255,230,153));
-	    seatLabel.setOpaque(true);
-	    seatLabel.setText("Seat: " + seatNumber);
+	    JLabel seatLable = new JLabel();
+	    seatLable.setBackground(new Color(255,230,153));
+	    seatLable.setOpaque(true);
+	    seatLable.setText("Seat: " + seatNumber);
+	    seatLable.setFont(new Font(seatLable.getFont().getName(), Font.PLAIN, 20));
+
 	    
-	    seatNumberPanel.add(seatLabel);
+	    seatNumberPanel.add(seatLable);
 	    seatPopupPanel.add(seatNumberPanel);
 	    
 	    //Display all the orderItems from the list
@@ -1085,11 +1102,18 @@ public class RestoAppPage extends JFrame {
 	    addOrderItem.setText("Add Order Item");
 	    
 	    JButton removeSelectedOrderItem = new JButton();
-	    removeSelectedOrderItem.setText("Delete Order Item");
+	    removeSelectedOrderItem.setText("Cancel Order Item");
+	    removeSelectedOrderItem.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		removeSelectedOrderItemActionPerformed(evt, list);
+        		viewOrderPopUp.setVisible(false);
+            }
+        });
 	    
 	    JPanel buttonPanel = new JPanel();
 	    buttonPanel.add(addOrderItem);
 	    buttonPanel.add(removeSelectedOrderItem);
+	    buttonPanel.setBackground(new Color(255,230,153));
 	    
 	    seatPopupPanel.add(buttonPanel);
 	    
@@ -1098,31 +1122,37 @@ public class RestoAppPage extends JFrame {
 	
 	public void viewOrderPopUp(int tableNumber, Map<String,List<OrderItem>> orderMap) {
 
-	    final JPopupMenu viewOrderPopup = new JPopupMenu();
-	    viewOrderPopup.setSize(300, 300);
-	    viewOrderPopup.setBackground(new Color(255,230,153));
-	    viewOrderPopup.setOpaque(true);
+	    final JPopupMenu viewOrderPopUp = new JPopupMenu();
+	    viewOrderPopUp.setSize(300, 300);
+	    viewOrderPopUp.setBackground(new Color(255,230,153));
+	    viewOrderPopUp.setOpaque(true);
 	    
 	    //Display the table number at the top of popup
 	    JPanel tableNumberPanel = new JPanel();
 	    tableNumberPanel.setBackground(new Color(255,230,153));
 	    
-	    JLabel seatLabel = new JLabel();
-	    seatLabel.setBackground(new Color(255,230,153));
-	    seatLabel.setOpaque(true);
-	    seatLabel.setText("Table: " + tableNumber);
+	    JLabel tableLable = new JLabel();
+	    tableLable.setBackground(new Color(255,230,153));
+	    tableLable.setOpaque(true);
+	    tableLable.setText("Table: " + tableNumber);
+	    tableLable.setFont(new Font(tableLable.getFont().getName(), Font.PLAIN, 30));
 	    
-	    tableNumberPanel.add(seatLabel);
-	    viewOrderPopup.add(tableNumberPanel);
+	    JButton cancelTableOrderButton = new JButton();
+	    cancelTableOrderButton.setText("Cancel Order");
+	    
+	    tableNumberPanel.add(tableLable);
+	    tableNumberPanel.add(cancelTableOrderButton);
+	    viewOrderPopUp.add(tableNumberPanel);
     	
 	    //Display all of the seatPopUp from the input map
     	Set<String> seatNumbers = orderMap.keySet();
     	
     	for(String seatNumber : seatNumbers) {
-    		viewOrderPopup.add(seatPopUp(seatNumber, orderMap.get(seatNumber)));
+    		viewOrderPopUp.add(seatPopUp(viewOrderPopUp, seatNumber, orderMap.get(seatNumber)));
     	}	
     	
-    	viewOrderPopup.show(Image_panel, 0, 0);
+    	viewOrderPopUp.add(cancelTableOrderButton);
+    	viewOrderPopUp.show(Image_panel, 0, 0);
 	    
 	}
 	

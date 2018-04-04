@@ -32,9 +32,11 @@ class Table {
          } -> Ordered;
          cancelOrderItem(OrderItem i) [iIsLastItem(i)] / {
             // delete order item
+            i.delete();
          } -> NothingOrdered;
          cancelOrderItem(OrderItem i) [!iIsLastItem(i)] / {
             // delete order item
+            i.delete();
          } -> Ordered;
          cancelOrder() / {
             // delete all order items of the table

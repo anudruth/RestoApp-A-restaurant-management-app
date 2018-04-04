@@ -300,21 +300,20 @@ public class OrderItem implements Serializable
       placeholderOrder.removeOrderItem(this);
     }
   }
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "quantity" + ":" + getQuantity()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "pricedMenuItem = "+(getPricedMenuItem()!=null?Integer.toHexString(System.identityHashCode(getPricedMenuItem())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "order = "+(getOrder()!=null?Integer.toHexString(System.identityHashCode(getOrder())):"null");
-  }  
+  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
   // line 62 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 2045406856025012133L ;
+
+// line 93 "../../../../../RestoApp.ump"
+  @Override
+   public String toString () 
+  {
+    return getPricedMenuItem().getMenuItem().getName()+String.valueOf(getPricedMenuItem().getPrice());
+  }
 
   
 }
