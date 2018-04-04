@@ -312,6 +312,8 @@ public class RestoAppPage extends JFrame {
     
     private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	
+    		billPopup("hi", "bye", "100.45");
+    	
     }
     private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	reservePopUp(2,2);
@@ -1215,17 +1217,122 @@ public class RestoAppPage extends JFrame {
 	    issue_bill_popup.add(popupMenuItem3);
 	    issue_bill_popup.add(popupMenuItem4);
 	    issue_bill_popup.add(popupMenuItem5);
-
-
-	    
-    	
-    	
-    	
    
     	
 	    issue_bill_popup.show(Image_panel, 2, 2);
 		
 	}
 	
+	
+	public void billPopup(String bill, String waiter, String price) {
+		final JPopupMenu bill_popup = new JPopupMenu();
+		bill_popup.setSize(300, 300);
+		bill_popup.setBackground(new Color(255,230,153));
+		
+		
+		//Panels
+		
+	    JPanel popupMenuItem1 = new JPanel();
+	    popupMenuItem1.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem2 = new JPanel();
+	    popupMenuItem2.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem3 = new JPanel();
+	    popupMenuItem3.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem4 = new JPanel();
+	    popupMenuItem4.setBackground(new Color(255, 230, 153));
+
+	    //use for bill content
+	    JPanel popupMenuItem5 = new JPanel();
+	    popupMenuItem5.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem6 = new JPanel();
+	    popupMenuItem6.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popupMenuItem7 = new JPanel();
+	    popupMenuItem7.setBackground(new Color(255, 230, 153));
+	    
+	    
+	    
+	    //Labels
+	    
+	    JLabel bill_title = new JLabel();
+	    bill_title.setBackground(new Color(255,230,153));
+	    bill_title.setOpaque(true);
+	    bill_title.setText("                 Bill                 ");
+	    
+	    JLabel waiter_title = new JLabel();
+	    waiter_title.setBackground(new Color(255,230,153));
+	    waiter_title.setOpaque(true);
+	    waiter_title.setText("Waiter: ");
+	    
+	    JLabel waiter_name_title = new JLabel();
+	    waiter_name_title.setBackground(new Color(255,230,153));
+	    waiter_name_title.setOpaque(true);
+	    waiter_name_title.setText(waiter);
+	    
+	    JLabel header_lable = new JLabel();
+	    header_lable.setBackground(new Color(255,230,153));
+	    header_lable.setOpaque(true);
+	    header_lable.setText("Food                Quantity                     Price");
+	    
+	    JLabel seperator_lable = new JLabel();
+	    seperator_lable.setBackground(new Color(255,230,153));
+	    seperator_lable.setOpaque(true);
+	    seperator_lable.setText("------------------------------------------");
+	   
+	    JLabel lower_seperator_lable = new JLabel();
+	    lower_seperator_lable.setBackground(new Color(255,230,153));
+	    lower_seperator_lable.setOpaque(true);
+	    lower_seperator_lable.setText("=======================================");
+	    
+	    JLabel total_lable = new JLabel();
+	    total_lable.setBackground(new Color(255,230,153));
+	    total_lable.setOpaque(true);
+	    total_lable.setText("Total                                ");
+	    
+	    JLabel total_price = new JLabel();
+	    total_price.setBackground(new Color(255,230,153));
+	    total_price.setOpaque(true);
+	    total_price.setText(price);
+	    
+	    
+	    
+	    bill_popup.setLayout(new BoxLayout(bill_popup, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
+	    
+	    
+	    
+	    popupMenuItem1.add(bill_title);
+	    popupMenuItem2.add(waiter_title);
+	    popupMenuItem2.add(waiter_name_title);
+	    popupMenuItem3.add(header_lable);
+	    popupMenuItem4.add(seperator_lable);
+	    popupMenuItem6.add(lower_seperator_lable);
+	    popupMenuItem7.add(total_lable);
+	    popupMenuItem7.add(total_price);
+	    
+	    
+	    bill_popup.add(popupMenuItem1);
+	    bill_popup.add(popupMenuItem2);
+	    bill_popup.add(popupMenuItem3);
+	    bill_popup.add(popupMenuItem4);
+	    bill_popup.add(popupMenuItem5);
+	    bill_popup.add(popupMenuItem6);
+	    bill_popup.add(popupMenuItem7);
+	    
+	    
+	    
+	    bill_popup.show(Image_panel, 130, 130);
+
+	}
 }
 
