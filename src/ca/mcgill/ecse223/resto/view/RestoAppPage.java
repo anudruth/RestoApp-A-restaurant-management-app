@@ -499,9 +499,11 @@ public class RestoAppPage extends JFrame {
 			for(int i = 0; i < seatNumbers.length; i++) {
 				if(seat.getNumber() == Integer.parseInt(seatNumbers[i])) {
 					seats.add(seat);
-					System.out.println(seats.get(i).getNumber());
 				}
 			}
+		}
+		for(Seat seat: seats) {
+			System.out.println(seat.getNumber());
 		}
 		try {
 			RestoAppController.orderMenuItem(menuItem, quantity, seats);
@@ -1534,19 +1536,18 @@ public class RestoAppPage extends JFrame {
         
         JTextField seatsField = new JTextField();
         seatsField.setBackground(new Color(255,230,153));
+        StringBuilder seatsText = new StringBuilder();
         for(int i = 0; i < seatNumbers.length; i++) {
-    		seatsField.setText(seatNumbers[i] + ",");
+    		seatsText.append(seatNumbers[i] + ",");
+    		System.out.println(i + seatNumbers[i]);
         }
+        seatsField.setText(seatsText.toString());
         
         JTextField quantityField = new JTextField();
         quantityField.setBackground(new Color(255,230,153));
         quantityField.setText("1");
         
         int quantity = Integer.parseInt(quantityField.getText());
-        String[] inputSeatNumbers = seatsField.getText().split(",");
-        for(int i = 0; i < inputSeatNumbers.length; i++) {
-            System.out.println(inputSeatNumbers[i]);
-        }
         
         //Category1
         JButton Category1Button = new JButton();
@@ -1554,7 +1555,7 @@ public class RestoAppPage extends JFrame {
 		Category1Button.setText(c1);
 		Category1Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed2(evt, items.get(0), items, inputSeatNumbers, table);
+        		CategoryButtonActionPerformed2(evt, items.get(0), items, seatsField.getText().split(","), table);
             }
         });
         
@@ -1564,7 +1565,7 @@ public class RestoAppPage extends JFrame {
 		Category2Button.setText(c2);
 		Category2Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed2(evt, items.get(1), items, inputSeatNumbers, table);
+        		CategoryButtonActionPerformed2(evt, items.get(1), items, seatsField.getText().split(","), table);
             }
         });
 
@@ -1574,7 +1575,7 @@ public class RestoAppPage extends JFrame {
 		Category3Button.setText(c3);
 		Category3Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed2(evt, items.get(2), items, inputSeatNumbers, table);
+        		CategoryButtonActionPerformed2(evt, items.get(2), items, seatsField.getText().split(","), table);
             }
         });
 
@@ -1584,7 +1585,7 @@ public class RestoAppPage extends JFrame {
 		Category4Button.setText(c4);
 		Category4Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed2(evt, items.get(3), items, inputSeatNumbers, table);
+        		CategoryButtonActionPerformed2(evt, items.get(3), items, seatsField.getText().split(","), table);
             }
         });
         
@@ -1594,7 +1595,7 @@ public class RestoAppPage extends JFrame {
 		Category5Button.setText(c5);
 		Category5Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed2(evt, items.get(4), items, inputSeatNumbers, table);
+        		CategoryButtonActionPerformed2(evt, items.get(4), items, seatsField.getText().split(","), table);
             }
         });
 		
@@ -1607,7 +1608,7 @@ public class RestoAppPage extends JFrame {
 				MenuItemButton.setText(menuItem.getName());
 				MenuItemButton.addActionListener(new java.awt.event.ActionListener() {
 		        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-		        		MenuItemButtonActionPerformed2(evt, menuItem, inputSeatNumbers, quantity, table);
+		        		MenuItemButtonActionPerformed2(evt, menuItem, seatsField.getText().split(","), quantity, table);
 		            }
 		        });
 				if (j < 5) {
