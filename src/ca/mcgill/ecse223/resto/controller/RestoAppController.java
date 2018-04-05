@@ -511,28 +511,28 @@ public class RestoAppController {
 	
 	public static void issueBill(List<Seat> seats) throws InvalidInputException{
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		List<Table> current_tables = restoapp.getCurrentTables();
-		List<Seat> current_seats = null;
-		Order last_order=null, compared_order;
-		Boolean bill_created = false;
-		Bill new_bill = null;
-		Bill last_bill;
+		List<Table> currentTables = restoapp.getCurrentTables();
+		List<Seat> currentSeats = null;
+		Order lastOrder=null, comparedOrder;
+		Boolean billCreated = false;
+		Bill newBill = null;
+		Bill lastBill;
 		
 		for(Seat seat : seats) {
 			Table table = seat.getTable();
 			
-			if(!current_tables.contains(table)) {
+			if(!currentTables.contains(table)) {
 				throw new InvalidInputException("Invalid table.");
 			}
 			
-			current_seats = table.getCurrentSeats();
+			currentSeats = table.getCurrentSeats();
 			
-			if(!current_seats.contains(seat)) {
+			if(!currentSeats.contains(seat)) {
 				throw new InvalidInputException("Invalid seat.");
 			}
 			
 			if(table.numberOfOrders() > 0) {
-				last_order  = table.getOrder(table.numberOfOrders()-1);
+				lastOrder  = table.getOrder(table.numberOfOrders()-1);
 			}
 			else {
 				throw new InvalidInputException("No orders for table.");
@@ -540,19 +540,19 @@ public class RestoAppController {
 			
 			
 			
-			if(last_order == null) {
+			if(lastOrder == null) {
 				throw new InvalidInputException("Order is null.");
 			}
 			else {
-				compared_order = null;
+				comparedOrder = null;
 				if(table.numberOfOrders()>0) {
-					compared_order = table.getOrder(table.numberOfOrders()-1);
+					comparedOrder = table.getOrder(table.numberOfOrders()-1);
 				}
 				else {
 					throw new InvalidInputException("No orders for table.");
 				}
 				
-				if (!compared_order.equals(last_order));{
+				if (!comparedOrder.equals(lastOrder));{
 					throw new InvalidInputException("Error with orders.");
 				}
 				
@@ -563,18 +563,18 @@ public class RestoAppController {
 		for(Seat seat: seats) {
 			Table table = seat.getTable();
 			
-			if(bill_created) {
-				table.addToBill(new_bill, seat);
+			if(billCreated) {
+				table.addToBill(newBill, seat);
 			}
 			else {
-				last_bill =null;
-				if(last_order.numberOfBills()>0) {
-					last_bill = last_order.getBill(last_order.numberOfBills()-1);
+				lastBill =null;
+				if(lastOrder.numberOfBills()>0) {
+					lastBill = lastOrder.getBill(lastOrder.numberOfBills()-1);
 				}
 				
-				if(last_order.numberOfBills()>0 && !last_order.getBill(last_order.numberOfBills()-1).equals(last_bill)) {
-					bill_created = true;
-					new_bill = last_order.getBill(last_order.numberOfBills()-1);
+				if(lastOrder.numberOfBills()>0 && !lastOrder.getBill(lastOrder.numberOfBills()-1).equals(lastBill)) {
+					billCreated = true;
+					newBill = lastOrder.getBill(lastOrder.numberOfBills()-1);
 				}
 			}
 		}
@@ -628,11 +628,11 @@ public class RestoAppController {
 		List<Table> currentTables = resto.getCurrentTables();
 		List<Seat> seat_list = new ArrayList<Seat>();
 		
-		String[] seat_nums = seats.split(",");
-		String[] table_nums = tables.split(",");
+		String[] seatNums = seats.split(",");
+		String[] tableNums = tables.split(",");
 		
-		if ((seat_nums.length==1 && !seat_nums[0].equals("Enter comma seperated list of seats")) ||seat_nums.length>1) {
-			for(String t: seat_nums) {
+		if ((seatNums.length==1 && !seatNums[0].equals("Enter comma seperated list of seats")) ||seatNums.length>1) {
+			for(String t: seatNums) {
 				if (Integer.parseInt(t)<0) {
 					throw new InvalidInputException("Negative seat number not valid.");
 				}
@@ -645,8 +645,8 @@ public class RestoAppController {
 			}
 		}
 		
-		else if ((table_nums.length==1 && !table_nums[0].equals("Enter table number"))||table_nums.length>1) {
-			for(String t:table_nums) {
+		else if ((tableNums.length==1 && !tableNums[0].equals("Enter table number"))||tableNums.length>1) {
+			for(String t:tableNums) {
 				if (Integer.parseInt(t)<0) {
 					throw new InvalidInputException("Negative table number not valid.");
 				}
