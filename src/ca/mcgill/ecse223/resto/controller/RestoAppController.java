@@ -499,6 +499,8 @@ public class RestoAppController {
 				if(lastOrder.equals(order) && !resultTotal.contains(orderItem)) {
 					resultTotal.add(orderItem);
 					seatList.add(orderItem);
+				} else {
+					seatList.add(orderItem);
 				}
 			}
 			resultMap.put(String.valueOf(seat.getNumber()), seatList);
