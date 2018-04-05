@@ -45,7 +45,9 @@ class Table {
 	    	for(Seat seat : seats) {
 	    		List<OrderItem> orderItems = seat.getOrderItems();
 	    		for(OrderItem orderItem : orderItems) {
-	    			toDelete.add(orderItem);
+	    			if(!toDelete.contains(orderItem)){
+	    				toDelete.add(orderItem);
+	    			}
 	    		}
 	    	}
 	    	for(OrderItem orderItem : toDelete) {

@@ -422,7 +422,6 @@ public class RestoAppPage extends JFrame {
 						toDelete = table;
 					}
 				}
-				System.out.println("Try to remove table");
 				RestoAppController.removeTable(toDelete);
 				RestoApp restoapp = RestoAppApplication.getRestoapp();
 				restoVisualizer.setResto(restoapp);
@@ -451,7 +450,6 @@ public class RestoAppPage extends JFrame {
 	}
 
 	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, JList<OrderItem> list) {
-		System.out.println("Delete order Item button pushed");
 		
 		OrderItem selectedOrderItem;
 		if((selectedOrderItem = list.getSelectedValue()) == null){
@@ -531,7 +529,6 @@ public class RestoAppPage extends JFrame {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeTableButtonActionPerformed(evt);
         		popupMenu.setVisible(false);
-        		System.out.println("Delete button pressed");
             }
         });
 		
@@ -1069,7 +1066,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.show(Image_panel, 2, 2);
 	}
 	
-	public JPanel seatPopUp(JPopupMenu viewOrderPopUp, String seatNumber, List<OrderItem> orders) {
+	public JPanel seatPopUp(JPopupMenu viewOrderPopUp, Table table, String seatNumber, List<OrderItem> orders) {
 
 	    final JPanel seatPopupPanel = new JPanel();
 	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
@@ -1114,7 +1111,7 @@ public class RestoAppPage extends JFrame {
 	    removeSelectedOrderItem.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		removeSelectedOrderItemActionPerformed(evt, list);
-        		viewOrderPopUp.setVisible(false);
+        		refreshViewOrderPopUp(table);
             }
         });
 	    
@@ -1150,7 +1147,7 @@ public class RestoAppPage extends JFrame {
 	    cancelTableOrderButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		cancelTableOrderItemActionPerformed(evt, table);
-        		viewOrderPopUp.setVisible(false);
+        		refreshViewOrderPopUp(table);
             }
         });
 	    
@@ -1163,13 +1160,25 @@ public class RestoAppPage extends JFrame {
     	Set<String> seatNumbers = orderMap.keySet();
     	
     	for(String seatNumber : seatNumbers) {
-    		viewOrderPopUp.add(seatPopUp(viewOrderPopUp, seatNumber, orderMap.get(seatNumber)));
+    		viewOrderPopUp.add(seatPopUp(viewOrderPopUp, table, seatNumber, orderMap.get(seatNumber)));
     	    viewOrderPopUp.add(new JSeparator());
     	}	
     	
     	viewOrderPopUp.show(Image_panel, 0, 0);
 	    
 	}
+	
+	public void refreshViewOrderPopUp(Table table) {
+
+		Map<String, List<OrderItem>> newOrderMap;
+		try {
+			newOrderMap = RestoAppController.getOrderItems(table);
+    		viewOrderPopUp(table, newOrderMap);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
+	
 	
 	public void issueBillPopUp() {
 		final JPopupMenu issue_bill_popup = new JPopupMenu();

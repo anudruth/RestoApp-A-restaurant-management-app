@@ -191,7 +191,6 @@ public class RestoAppController {
 	 * removes table from currentTables list
 	 */
 	public static void removeTable(Table table) throws InvalidInputException {
-		System.out.println("in removeTable()");
 		if(table == null) throw new InvalidInputException("Invalid Table");
 		RestoApp restoApp = RestoAppApplication.getRestoapp();
 		boolean reserved = table.hasReservations();
@@ -204,11 +203,9 @@ public class RestoAppController {
 				if(inUse == true) throw new InvalidInputException("Table is in use");
 			}
 			restoApp.removeCurrentTable(table);
-			System.out.println("Table "+String.valueOf(table.getNumber())+" removed");
 			RestoAppApplication.save();
 			
 		}catch (RuntimeException e){
-			System.out.println(e.getMessage());
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
@@ -586,7 +583,6 @@ public class RestoAppController {
 		List<Seat> seats = orderItem.getSeats();
 		Order order = orderItem.getOrder();
 		List<Table> tables = new ArrayList<Table>();
-		System.out.println("in cancelOrderItem()");
 		for(Seat seat : seats) {
 			Table table = seat.getTable();
 			Order lastOrder = null;
@@ -604,7 +600,6 @@ public class RestoAppController {
 		
 		for(Table table : tables) {
 			table.cancelOrderItem(orderItem);
-			System.out.println("canceled orderItem for table "+table.getNumber());
 		}
 		
 		RestoAppApplication.save();

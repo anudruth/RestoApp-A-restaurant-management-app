@@ -35,14 +35,14 @@ public class RestoAppApplication {
 	public static void main(String[] args) {
 		// start UI
 		
-//		try {
-//			RestoAppController.getMenuItems(MenuItem.ItemCategory.Appetizer);
-//			OrderItem orderItem1 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
-//			OrderItem orderItem2 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(1));
-//			OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
-//		} catch (InvalidInputException e) {
-//			e.printStackTrace();
-//		}
+		try {
+			RestoAppController.getMenuItems(MenuItem.ItemCategory.Appetizer);
+			OrderItem orderItem1 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+			OrderItem orderItem2 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(1));
+			OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+		} catch (InvalidInputException e) {
+			e.printStackTrace();
+		}
 		
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -57,6 +57,7 @@ public class RestoAppApplication {
 			// load model
 			
 			restoapp = load();
+			restoapp.getTable(0).setStatus(Status.Ordered);
 		}
  		return restoapp;
 	}
