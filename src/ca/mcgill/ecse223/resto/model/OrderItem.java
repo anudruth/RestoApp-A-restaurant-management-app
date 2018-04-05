@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 59 "../../../../../RestoAppPersistence.ump"
-// line 88 "../../../../../RestoApp.ump"
+// line 89 "../../../../../RestoApp.ump"
 public class OrderItem implements Serializable
 {
 
@@ -308,7 +308,7 @@ public class OrderItem implements Serializable
   // line 62 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 2045406856025012133L ;
 
-// line 93 "../../../../../RestoApp.ump"
+// line 94 "../../../../../RestoApp.ump"
   @Override
    public String toString () 
   {

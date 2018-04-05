@@ -8,7 +8,7 @@ import java.sql.Time;
 import java.util.*;
 
 // line 43 "../../../../../RestoAppPersistence.ump"
-// line 80 "../../../../../RestoApp.ump"
+// line 81 "../../../../../RestoApp.ump"
 public class Order implements Serializable
 {
 
@@ -422,9 +422,9 @@ public class Order implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Bill addBill(RestoApp aRestoApp, Seat... allIssuedForSeats)
+  public Bill addBill(RestoApp aRestoApp, Waiter aWaiter, Seat... allIssuedForSeats)
   {
-    return new Bill(this, aRestoApp, allIssuedForSeats);
+    return new Bill(this, aRestoApp, aWaiter, allIssuedForSeats);
   }
 
   public boolean addBill(Bill aBill)

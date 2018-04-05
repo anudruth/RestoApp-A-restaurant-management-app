@@ -25,6 +25,7 @@ public class RestoApp implements Serializable
   private Menu menu;
   private List<PricedMenuItem> pricedMenuItems;
   private List<Bill> bills;
+  private List<Waiter> currentWaiter;
 
   //------------------------
   // CONSTRUCTOR
@@ -44,6 +45,7 @@ public class RestoApp implements Serializable
     menu = aMenu;
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
+    currentWaiter = new ArrayList<Waiter>();
   }
 
   public RestoApp()
@@ -56,6 +58,7 @@ public class RestoApp implements Serializable
     menu = new Menu(this);
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
+    currentWaiter = new ArrayList<Waiter>();
   }
 
   //------------------------
@@ -283,6 +286,36 @@ public class RestoApp implements Serializable
   public int indexOfBill(Bill aBill)
   {
     int index = bills.indexOf(aBill);
+    return index;
+  }
+
+  public Waiter getCurrentWaiter(int index)
+  {
+    Waiter aCurrentWaiter = currentWaiter.get(index);
+    return aCurrentWaiter;
+  }
+
+  public List<Waiter> getCurrentWaiter()
+  {
+    List<Waiter> newCurrentWaiter = Collections.unmodifiableList(currentWaiter);
+    return newCurrentWaiter;
+  }
+
+  public int numberOfCurrentWaiter()
+  {
+    int number = currentWaiter.size();
+    return number;
+  }
+
+  public boolean hasCurrentWaiter()
+  {
+    boolean has = currentWaiter.size() > 0;
+    return has;
+  }
+
+  public int indexOfCurrentWaiter(Waiter aCurrentWaiter)
+  {
+    int index = currentWaiter.indexOf(aCurrentWaiter);
     return index;
   }
 
@@ -693,9 +726,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Bill addBill(Order aOrder, Seat... allIssuedForSeats)
+  public Bill addBill(Order aOrder, Waiter aWaiter, Seat... allIssuedForSeats)
   {
-    return new Bill(aOrder, this, allIssuedForSeats);
+    return new Bill(aOrder, this, aWaiter, allIssuedForSeats);
   }
 
   public boolean addBill(Bill aBill)
@@ -760,6 +793,78 @@ public class RestoApp implements Serializable
     return wasAdded;
   }
 
+  public static int minimumNumberOfCurrentWaiter()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Waiter addCurrentWaiter(String aName, int aId)
+  {
+    return new Waiter(aName, aId, this);
+  }
+
+  public boolean addCurrentWaiter(Waiter aCurrentWaiter)
+  {
+    boolean wasAdded = false;
+    if (currentWaiter.contains(aCurrentWaiter)) { return false; }
+    RestoApp existingRestoApp = aCurrentWaiter.getRestoApp();
+    boolean isNewRestoApp = existingRestoApp != null && !this.equals(existingRestoApp);
+    if (isNewRestoApp)
+    {
+      aCurrentWaiter.setRestoApp(this);
+    }
+    else
+    {
+      currentWaiter.add(aCurrentWaiter);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeCurrentWaiter(Waiter aCurrentWaiter)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aCurrentWaiter, as it must always have a restoApp
+    if (!this.equals(aCurrentWaiter.getRestoApp()))
+    {
+      currentWaiter.remove(aCurrentWaiter);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  public boolean addCurrentWaiterAt(Waiter aCurrentWaiter, int index)
+  {  
+    boolean wasAdded = false;
+    if(addCurrentWaiter(aCurrentWaiter))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCurrentWaiter()) { index = numberOfCurrentWaiter() - 1; }
+      currentWaiter.remove(aCurrentWaiter);
+      currentWaiter.add(index, aCurrentWaiter);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveCurrentWaiterAt(Waiter aCurrentWaiter, int index)
+  {
+    boolean wasAdded = false;
+    if(currentWaiter.contains(aCurrentWaiter))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfCurrentWaiter()) { index = numberOfCurrentWaiter() - 1; }
+      currentWaiter.remove(aCurrentWaiter);
+      currentWaiter.add(index, aCurrentWaiter);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addCurrentWaiterAt(aCurrentWaiter, index);
+    }
+    return wasAdded;
+  }
+
   public void delete()
   {
     while (reservations.size() > 0)
@@ -803,6 +908,13 @@ public class RestoApp implements Serializable
       Bill aBill = bills.get(bills.size() - 1);
       aBill.delete();
       bills.remove(aBill);
+    }
+    
+    while (currentWaiter.size() > 0)
+    {
+      Waiter aCurrentWaiter = currentWaiter.get(currentWaiter.size() - 1);
+      aCurrentWaiter.delete();
+      currentWaiter.remove(aCurrentWaiter);
     }
     
   }

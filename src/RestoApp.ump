@@ -12,6 +12,7 @@ class RestoApp {
    1 <@>- 1 Menu menu;   
    1 <@>- * PricedMenuItem pricedMenuItems;
    1 <@>- * Bill bills;
+   1 <@>- * Waiter currentWaiter;
 }
 
 class Reservation {
@@ -126,3 +127,10 @@ class Bill {
    * bills -- 1 Order order; // order.bills.issuedForSeats = order.orderItems.seats
    * bills -- 1..* Seat issuedForSeats; // only from order.orderItems.seats;
 }
+class Waiter
+{
+  name;
+  Integer id;
+  1 -- * Bill bill;
+}
+
