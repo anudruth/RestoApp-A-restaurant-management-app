@@ -110,6 +110,21 @@ public class RestoAppPage extends JFrame {
             }
         });
 		
+		RoundButton waiter_management = new RoundButton();
+		waiter_management.setBackground(new Color(255,255,255));
+		try {
+			Image img = ImageIO.read(getClass().getResource("../resources/waiter_management.bmp"));
+			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+			waiter_management.setIcon(new ImageIcon(scaled));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		waiter_management.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		waiter_managementButtonActionPerformed(evt);
+            }
+        });
+		
 		RoundButton reserveTableButton = new RoundButton();
         reserveTableButton.setBackground(new Color(255,255,255));
 		try {
@@ -190,7 +205,6 @@ public class RestoAppPage extends JFrame {
         
         scroll_layout.setViewportView(scroll_panel);
 
-
         
         
         GroupLayout Image_panelLayout = new GroupLayout(Image_panel);
@@ -223,8 +237,10 @@ public class RestoAppPage extends JFrame {
                 .addComponent(reserveTableButton)
                 .addComponent(billTableButton)
             	.addComponent(displayMenuButton)
-            	.addComponent(orderButton))
+            	.addComponent(orderButton)
+            	.addComponent(waiter_management))
         );
+        
 
         buttons_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {addTableButton, reserveTableButton, displayMenuButton});
 
@@ -237,7 +253,8 @@ public class RestoAppPage extends JFrame {
                 	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                     .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(waiter_management, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         
@@ -328,6 +345,12 @@ public class RestoAppPage extends JFrame {
     	reservePopUp(2,2);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
+    }
+    
+    private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	waiterPopUp(2,2);
+    	RestoApp restoapp= RestoAppApplication.getRestoapp();
+    	restoVisualizer.setResto(restoapp);
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -927,6 +950,33 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem11);
     
 		popupMenu.show(Image_panel, x, y);
+	}
+	
+	public void waiterPopUp(int x, int y) {
+		final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(3,3));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        JPanel popupMenuItem1 = new JPanel();
+
+        
+        JLabel errorLabel = new JLabel();
+        errorLabel.setBackground(new Color(255,230,153));
+        errorLabel.setOpaque(true);
+        errorLabel.setText("                              Waiter Management                              ");
+        
+
+        
+        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+
+        
+	    popupMenuItem1.add(errorLabel);
+	    
+	    popupMenu.add(popupMenuItem1);
+
+	    
+	    popupMenu.show(Image_panel, 0, 0);
 	}
 	
 	public void errorPopUp(String errorMessage) {
