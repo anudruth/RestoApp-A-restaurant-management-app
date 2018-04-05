@@ -255,6 +255,11 @@ public class Table implements Serializable
       case Ordered:
         // line 30 "../../../../../TableStateMachine.ump"
         // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
+    	boolean added = false;
+    	for(Seat seat: i.getSeats()) {
+    		if(seat.equals(s)) added = true;
+    	}
+    	if(!added) i.addSeat(s);
         setStatus(Status.Ordered);
         wasEventProcessed = true;
         break;
