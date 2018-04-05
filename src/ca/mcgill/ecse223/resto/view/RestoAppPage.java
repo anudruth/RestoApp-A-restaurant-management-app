@@ -110,16 +110,16 @@ public class RestoAppPage extends JFrame {
             }
         });
 		
-		RoundButton waiter_management = new RoundButton();
-		waiter_management.setBackground(new Color(255,255,255));
+		RoundButton waiterButton = new RoundButton();
+		waiterButton.setBackground(new Color(255,255,255));
 		try {
-			Image img = ImageIO.read(getClass().getResource("../resources/waiter_management.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/waiter.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-			waiter_management.setIcon(new ImageIcon(scaled));
+			waiterButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		waiter_management.addActionListener(new java.awt.event.ActionListener() {
+		waiterButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		waiter_managementButtonActionPerformed(evt);
             }
@@ -233,12 +233,12 @@ public class RestoAppPage extends JFrame {
             buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(buttons_panelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(addTableButton, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
-                .addComponent(reserveTableButton)
-                .addComponent(billTableButton)
-            	.addComponent(displayMenuButton)
-            	.addComponent(orderButton)
-            	.addComponent(waiter_management))
+                .addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            	.addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            	.addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            	.addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
 
@@ -250,11 +250,11 @@ public class RestoAppPage extends JFrame {
                 .addContainerGap()
                 .addGroup(buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 	.addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(waiter_management, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         
