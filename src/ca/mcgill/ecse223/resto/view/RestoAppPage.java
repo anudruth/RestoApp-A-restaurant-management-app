@@ -328,6 +328,14 @@ public class RestoAppPage extends JFrame {
 		}
     }
     
+    private void addOrderItemActionPerformed(java.awt.event.ActionEvent evt, String seatNumber, Table table){
+    	String[] seatNumbers = {seatNumber}; 
+		menuPopUp2(0,0,RestoAppController.getItemCategories(), null, seatNumbers, table);
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+    
     private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt, String tables, String seats) {
     	
     		//billPopup("hi", "bye", "100.45");
@@ -465,6 +473,38 @@ public class RestoAppPage extends JFrame {
 	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
 		try {
 			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void CategoryButtonActionPerformed2(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i, String[] seatNumbers, Table table) {
+		try {
+			menuPopUp2(0, 0, i, RestoAppController.getMenuItems(itemCategory), seatNumbers, table);
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void MenuItemButtonActionPerformed2(ActionEvent evt, MenuItem menuItem, String[] seatNumbers, int quantity, Table table) {
+		List<Seat> currentSeats = table.getCurrentSeats();
+		List<Seat> seats = new ArrayList<Seat>();;
+		for(Seat seat: currentSeats) {
+			for(int i = 0; i < seatNumbers.length; i++) {
+				if(seat.getNumber() == Integer.parseInt(seatNumbers[i])) {
+					seats.add(seat);
+					System.out.println(seats.get(i).getNumber());
+				}
+			}
+		}
+		try {
+			RestoAppController.orderMenuItem(menuItem, quantity, seats);
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
@@ -1156,6 +1196,12 @@ public class RestoAppPage extends JFrame {
 	    //Add two buttons at the bottom of the panel (Add Order Item) and (Delete Order Item)
 	    JButton addOrderItem = new JButton();
 	    addOrderItem.setText("Add Order Item");
+	    addOrderItem.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		addOrderItemActionPerformed(evt, seatNumber, table);
+        		viewOrderPopUp.setVisible(false);
+            }
+        });
 	    
 	    JButton removeSelectedOrderItem = new JButton();
 	    removeSelectedOrderItem.setText("Cancel Order Item");
@@ -1446,6 +1492,177 @@ public class RestoAppPage extends JFrame {
 	    
 	    bill_popup.show(Image_panel, 130, 130);
 
+	}
+	
+	public void menuPopUp2(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems, String[] seatNumbers, Table table) {
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setMinimumSize(new Dimension(50,50));
+        popupMenu.setBackground(new Color(255,230,153));
+        
+        String c1 = items.get(0).toString();
+        String c2 = items.get(1).toString();
+        String c3 = items.get(2).toString();
+        String c4 = items.get(3).toString();
+        String c5 = items.get(4).toString();
+        
+        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem2 = new JPanel();
+        JPanel popupMenuItem3 = new JPanel();
+        JPanel popupMenuItem4 = new JPanel();
+        JPanel popupMenuItem5 = new JPanel();
+        JPanel popupMenuItem6 = new JPanel();
+        JPanel popupMenuItem7 = new JPanel();
+        JPanel popupMenuItem8 = new JPanel();
+        JPanel popupMenuItem9 = new JPanel();
+        JPanel popupMenuItem10 = new JPanel();
+
+        JLabel menuName = new JLabel();
+        menuName.setBackground(new Color(255,230,153));
+        menuName.setOpaque(true);
+        menuName.setText("MENU ");
+		
+		JLabel seatsLabel = new JLabel();
+		seatsLabel.setBackground(new Color(255,230,153));
+        seatsLabel.setOpaque(true);
+        seatsLabel.setText("Order for Seats: ");
+        
+        JLabel quantityLabel = new JLabel();
+        quantityLabel.setBackground(new Color(255,230,153));
+        quantityLabel.setOpaque(true);
+        quantityLabel.setText("Quantity: ");
+        
+        JTextField seatsField = new JTextField();
+        seatsField.setBackground(new Color(255,230,153));
+        for(int i = 0; i < seatNumbers.length; i++) {
+    		seatsField.setText(seatNumbers[i] + ",");
+        }
+        
+        JTextField quantityField = new JTextField();
+        quantityField.setBackground(new Color(255,230,153));
+        quantityField.setText("1");
+        
+        int quantity = Integer.parseInt(quantityField.getText());
+        String[] inputSeatNumbers = seatsField.getText().split(",");
+        for(int i = 0; i < inputSeatNumbers.length; i++) {
+            System.out.println(inputSeatNumbers[i]);
+        }
+        
+        //Category1
+        JButton Category1Button = new JButton();
+        Category1Button.setBackground(new Color(255,230,153));
+		Category1Button.setText(c1);
+		Category1Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		CategoryButtonActionPerformed2(evt, items.get(0), items, inputSeatNumbers, table);
+            }
+        });
+        
+		//Category2
+        JButton Category2Button = new JButton();
+        Category2Button.setBackground(new Color(255,230,153));
+		Category2Button.setText(c2);
+		Category2Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		CategoryButtonActionPerformed2(evt, items.get(1), items, inputSeatNumbers, table);
+            }
+        });
+
+		//Category3
+        JButton Category3Button = new JButton();
+        Category3Button.setBackground(new Color(255,230,153));
+		Category3Button.setText(c3);
+		Category3Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		CategoryButtonActionPerformed2(evt, items.get(2), items, inputSeatNumbers, table);
+            }
+        });
+
+		//Category4
+        JButton Category4Button = new JButton();
+        Category4Button.setBackground(new Color(255,230,153));
+		Category4Button.setText(c4);
+		Category4Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		CategoryButtonActionPerformed2(evt, items.get(3), items, inputSeatNumbers, table);
+            }
+        });
+        
+		//Category5
+        JButton Category5Button = new JButton();
+        Category5Button.setBackground(new Color(255,230,153));
+		Category5Button.setText(c5);
+		Category5Button.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		CategoryButtonActionPerformed2(evt, items.get(4), items, inputSeatNumbers, table);
+            }
+        });
+		
+		if (menuItems != null) {
+			int j = 0;
+			for (MenuItem menuItem : menuItems) {
+				j++;
+				JButton MenuItemButton = new JButton();
+				MenuItemButton.setBackground(new Color(255,230,153));
+				MenuItemButton.setText(menuItem.getName());
+				MenuItemButton.addActionListener(new java.awt.event.ActionListener() {
+		        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        		MenuItemButtonActionPerformed2(evt, menuItem, inputSeatNumbers, quantity, table);
+		            }
+		        });
+				if (j < 5) {
+					popupMenuItem3.add(MenuItemButton);
+				}
+				else if (j < 9) {
+					popupMenuItem4.add(MenuItemButton);
+				}
+				else if (j < 13) {
+					popupMenuItem5.add(MenuItemButton);
+				}
+				else if (j < 17) {
+					popupMenuItem6.add(MenuItemButton);
+				}
+				else {
+					popupMenuItem7.add(MenuItemButton);
+				}
+			}
+		}
+		
+		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
+	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
+	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
+	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
+	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
+	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
+	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
+	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
+	        
+	    popupMenuItem1.add(menuName);
+	    popupMenuItem2.add(Category1Button);
+	    popupMenuItem2.add(Category2Button);
+	    popupMenuItem2.add(Category3Button);
+	    popupMenuItem2.add(Category4Button);
+	    popupMenuItem2.add(Category5Button);
+	    popupMenuItem9.add(seatsLabel);
+	    popupMenuItem9.add(seatsField);
+	    popupMenuItem10.add(quantityLabel);
+	    popupMenuItem10.add(quantityField);
+	        
+	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem2);
+	    popupMenu.add(popupMenuItem3);
+	    popupMenu.add(popupMenuItem4);
+	    popupMenu.add(popupMenuItem5);
+	    popupMenu.add(popupMenuItem6);
+	    popupMenu.add(popupMenuItem7);
+	    popupMenu.add(popupMenuItem8);
+	    popupMenu.add(popupMenuItem9);
+	    popupMenu.add(popupMenuItem10);
+	    
+		popupMenu.show(Image_panel, x, y);
 	}
 }
 
