@@ -17,6 +17,7 @@ import java.util.HashMap;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
 import ca.mcgill.ecse223.resto.model.OrderItem;
+import ca.mcgill.ecse223.resto.model.PricedMenuItem;
 import ca.mcgill.ecse223.resto.model.Reservation;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
@@ -671,4 +672,65 @@ public class RestoAppController {
 		return seat_list;
 	}
 	
+	public static void orderMenuItem(MenuItem menuItem, int quantity, List<Seat> seats) throws InvalidInputException{
+		if(menuItem.equals(null)) throw new InvalidInputException("No Menu Item selected. Cannot add to order");
+		if(seats.equals(null)) throw new InvalidInputException("No Seat selected. Cannot add to order");
+		if(quantity <= 0) throw new InvalidInputException("Invalid quantity. Cannot add to order");
+		RestoApp r = RestoAppApplication.getRestoapp();
+		boolean current = menuItem.hasCurrentPricedMenuItem();
+		if(!current) throw new InvalidInputException("Invalid Menu Item. Cannot add to order");
+		List<Table> currentTables = r.getCurrentTables();
+		Order lastOrder = null;
+		for(Seat seat: seats) {
+			Table table = seat.getTable();
+			current = currentTables.contains(table);
+			if(!current) throw new InvalidInputException("Invalid Table. Cannot add to order");
+			List<Seat> currentSeats = table.getCurrentSeats();
+			current = currentSeats.contains(seat);
+			if(!current) throw new InvalidInputException("Invalid Seat. Cannot add to order");
+			if(lastOrder == null) {
+				if(table.numberOfOrders()>0) {
+					lastOrder = table.getOrder(table.numberOfOrders()-1);
+				}
+				else {
+					throw new InvalidInputException("Cannot find order.");
+				}
+			}
+			else {
+				Order comparedOrder = null;
+				if(table.numberOfOrders()>0) {
+					comparedOrder = table.getOrder(table.numberOfOrders()-1);
+				}
+				else {
+					throw new InvalidInputException("Cannot find order.");
+				}
+				if(!comparedOrder.equals(lastOrder)) {
+					throw new InvalidInputException("Invalid Order");
+				}
+			}
+		}
+		if(lastOrder == null) throw new InvalidInputException("Cannot find Order");
+		PricedMenuItem pmi = menuItem.getCurrentPricedMenuItem();
+		boolean itemCreated = false;
+		OrderItem newItem = null;
+		for(Seat seat: seats) {
+			Table table = seat.getTable();
+			if(itemCreated) {
+				table.addToOrderItem(newItem, seat);
+			}
+			else {
+				OrderItem lastItem = null;
+				if (lastOrder.numberOfOrderItems() > 0) {
+					lastItem = lastOrder.getOrderItem(lastOrder.numberOfOrderItems()-1);
+				}
+				table.orderItem(quantity, lastOrder, seat, pmi);
+				if(lastOrder.numberOfOrderItems() > 0 && !lastOrder.getOrderItem(lastOrder.numberOfOrderItems()-1).equals(lastItem)) {
+					itemCreated = true;
+					newItem = lastOrder.getOrderItem(lastOrder.numberOfOrderItems()-1);
+				}
+			}
+		}
+		if(!itemCreated) throw new InvalidInputException("Could not add item to order");
+		RestoAppApplication.save();
+	}
 }
