@@ -398,7 +398,7 @@ public class RestoAppPage extends JFrame {
 					restoVisualizer.removeMouseListener(this);
 				} catch (InvalidInputException e1) {
 					e1.printStackTrace();
-					errorPopUp(e1.getMessage());
+					errorPopUp(e1.getMessage()); //test
 				} 	
 			}
 		});
