@@ -531,17 +531,15 @@ public class RestoAppController {
 				throw new InvalidInputException("Invalid seat.");
 			}
 			
-			if(table.numberOfOrders() > 0) {
-				lastOrder  = table.getOrder(table.numberOfOrders()-1);
-			}
-			else {
-				throw new InvalidInputException("No orders for table.");
-			}
-			
 			
 			
 			if(lastOrder == null) {
-				throw new InvalidInputException("Order is null.");
+				if(table.numberOfOrders() > 0) {
+					lastOrder  = table.getOrder(table.numberOfOrders()-1);
+				}
+				else {
+					throw new InvalidInputException("No orders for table.");
+				}
 			}
 			else {
 				comparedOrder = null;
