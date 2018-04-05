@@ -11,6 +11,7 @@ class Table {
       NothingOrdered {
          orderItem(int quantity, Order o, Seat s, PricedMenuItem i) [quantityNotNegative(quantity)] / {
             // create a new order item with the provided quantity, order, seat, and priced menu item
+            OrderItem newOrderItem = new OrderItem(quantity, i, o, s);
          } -> Ordered; 
          addToOrderItem(OrderItem i, Seat s) / {
             // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
@@ -26,6 +27,7 @@ class Table {
       Ordered {
          orderItem(int quantity, Order o, Seat s, PricedMenuItem i) [quantityNotNegative(quantity)] / {
             // create a new order item with the provided quantity, order, seat, and priced menu item
+            OrderItem newOrderItem = new OrderItem(quantity, i, o, s);
          } -> Ordered; 
          addToOrderItem(OrderItem i, Seat s) / {
             // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
@@ -45,9 +47,7 @@ class Table {
 	    	for(Seat seat : seats) {
 	    		List<OrderItem> orderItems = seat.getOrderItems();
 	    		for(OrderItem orderItem : orderItems) {
-	    			if(!toDelete.contains(orderItem)){
-	    				toDelete.add(orderItem);
-	    			}
+	    			toDelete.add(orderItem);
 	    		}
 	    	}
 	    	for(OrderItem orderItem : toDelete) {
@@ -71,8 +71,7 @@ class Table {
    
    // check that the provided quantity is an integer greater than 0
    private boolean quantityNotNegative(int quantity) {
-      // TODO
-      return false;
+   		return (quantity > 0);
    }
 
    // check that the provided order item is the last item of the current order of the table

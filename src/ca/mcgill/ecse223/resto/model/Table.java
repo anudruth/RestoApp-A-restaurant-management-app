@@ -215,6 +215,7 @@ public class Table implements Serializable
         {
         // line 12 "../../../../../TableStateMachine.ump"
           // create a new order item with the provided quantity, order, seat, and priced menu item
+            OrderItem newOrderItem = new OrderItem(quantity, i, o, s);
           setStatus(Status.Ordered);
           wasEventProcessed = true;
           break;
@@ -225,6 +226,7 @@ public class Table implements Serializable
         {
         // line 27 "../../../../../TableStateMachine.ump"
           // create a new order item with the provided quantity, order, seat, and priced menu item
+            OrderItem newOrderItem = new OrderItem(quantity, i, o, s);
           setStatus(Status.Ordered);
           wasEventProcessed = true;
           break;
@@ -932,8 +934,7 @@ public class Table implements Serializable
    */
   // line 74 "../../../../../TableStateMachine.ump"
    private boolean quantityNotNegative(int quantity){
-    // TODO
-      return false;
+	  return (quantity > 0);
   }
 
 
