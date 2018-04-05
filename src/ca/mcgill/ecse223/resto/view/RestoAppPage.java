@@ -389,15 +389,16 @@ public class RestoAppPage extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int x_move = e.getX();
-				int y_move = e.getY();
+				int x_coordinate = e.getX();
+				int y_coordinate= e.getY();
 				try {
-					RestoAppController.moveTable(selectedTable, x_move,y_move);
+					RestoAppController.moveTable(selectedTable, x_coordinate,y_coordinate);
 					RestoApp restoapp = RestoAppApplication.getRestoapp();
 					restoVisualizer.setResto(restoapp);
 					restoVisualizer.removeMouseListener(this);
 				} catch (InvalidInputException e1) {
 					e1.printStackTrace();
+					errorPopUp(e1.getMessage());
 				} 	
 			}
 		});
