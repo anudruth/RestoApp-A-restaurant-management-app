@@ -312,7 +312,17 @@ public class OrderItem implements Serializable
   @Override
    public String toString () 
   {
-    return getPricedMenuItem().getMenuItem().getName()+String.valueOf(getPricedMenuItem().getPrice());
+    String result = this.getQuantity() + " " + getPricedMenuItem().getMenuItem().getName() + " " + String.valueOf(getPricedMenuItem().getPrice());
+    List<Seat> seats = this.getSeats();
+    if (seats.size() > 1) {
+		result = result + " (shared with: ";
+		for(Seat seat : seats) {
+	    	result = result + String.valueOf(seat.getNumber()) + ", ";
+	    }
+		result = result.substring(0, result.length() - 2);
+		result = result + ")";
+	}
+    return result;
   }
 
   

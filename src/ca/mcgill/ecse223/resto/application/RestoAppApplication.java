@@ -37,9 +37,13 @@ public class RestoAppApplication {
 		
 		try {
 			RestoAppController.getMenuItems(MenuItem.ItemCategory.Appetizer);
+			Seat[] seats = new Seat[3];
+			seats[0] = restoapp.getCurrentTable(0).getCurrentSeat(0);
+			seats[1] = restoapp.getCurrentTable(0).getCurrentSeat(1);
+			seats[2] = restoapp.getCurrentTable(0).getCurrentSeat(2);
 			OrderItem orderItem1 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
 			OrderItem orderItem2 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(1));
-			OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), restoapp.getCurrentTable(0).getSeat(0));
+			OrderItem orderItem3 = new OrderItem(2, restoapp.getPricedMenuItem(0), restoapp.getCurrentTable(0).getOrder(0), seats);
 		} catch (InvalidInputException e) {
 			e.printStackTrace();
 		}
