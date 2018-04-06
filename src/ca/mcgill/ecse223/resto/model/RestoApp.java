@@ -25,6 +25,7 @@ public class RestoApp implements Serializable
   private Menu menu;
   private List<PricedMenuItem> pricedMenuItems;
   private List<Bill> bills;
+  private List<Waiter> waiters;
   private List<Waiter> currentWaiter;
 
   //------------------------
@@ -45,6 +46,7 @@ public class RestoApp implements Serializable
     menu = aMenu;
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
+    waiters = new ArrayList<Waiter>();
     currentWaiter = new ArrayList<Waiter>();
   }
 
@@ -58,6 +60,7 @@ public class RestoApp implements Serializable
     menu = new Menu(this);
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
+    waiters = new ArrayList<Waiter>();
     currentWaiter = new ArrayList<Waiter>();
   }
 
@@ -286,6 +289,36 @@ public class RestoApp implements Serializable
   public int indexOfBill(Bill aBill)
   {
     int index = bills.indexOf(aBill);
+    return index;
+  }
+
+  public Waiter getWaiter(int index)
+  {
+    Waiter aWaiter = waiters.get(index);
+    return aWaiter;
+  }
+
+  public List<Waiter> getWaiters()
+  {
+    List<Waiter> newWaiters = Collections.unmodifiableList(waiters);
+    return newWaiters;
+  }
+
+  public int numberOfWaiters()
+  {
+    int number = waiters.size();
+    return number;
+  }
+
+  public boolean hasWaiters()
+  {
+    boolean has = waiters.size() > 0;
+    return has;
+  }
+
+  public int indexOfWaiter(Waiter aWaiter)
+  {
+    int index = waiters.indexOf(aWaiter);
     return index;
   }
 
@@ -793,30 +826,88 @@ public class RestoApp implements Serializable
     return wasAdded;
   }
 
-  public static int minimumNumberOfCurrentWaiter()
+  public static int minimumNumberOfWaiters()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Waiter addCurrentWaiter(String aName, int aId)
+  public Waiter addWaiter(String aName, int aId)
   {
     return new Waiter(aName, aId, this);
+  }
+
+  public boolean addWaiter(Waiter aWaiter)
+  {
+    boolean wasAdded = false;
+    if (waiters.contains(aWaiter)) { return false; }
+    RestoApp existingRestoApp = aWaiter.getRestoApp();
+    boolean isNewRestoApp = existingRestoApp != null && !this.equals(existingRestoApp);
+    if (isNewRestoApp)
+    {
+      aWaiter.setRestoApp(this);
+    }
+    else
+    {
+      waiters.add(aWaiter);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeWaiter(Waiter aWaiter)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aWaiter, as it must always have a restoApp
+    if (!this.equals(aWaiter.getRestoApp()))
+    {
+      waiters.remove(aWaiter);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+
+  public boolean addWaiterAt(Waiter aWaiter, int index)
+  {  
+    boolean wasAdded = false;
+    if(addWaiter(aWaiter))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWaiters()) { index = numberOfWaiters() - 1; }
+      waiters.remove(aWaiter);
+      waiters.add(index, aWaiter);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveWaiterAt(Waiter aWaiter, int index)
+  {
+    boolean wasAdded = false;
+    if(waiters.contains(aWaiter))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfWaiters()) { index = numberOfWaiters() - 1; }
+      waiters.remove(aWaiter);
+      waiters.add(index, aWaiter);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addWaiterAt(aWaiter, index);
+    }
+    return wasAdded;
+  }
+
+  public static int minimumNumberOfCurrentWaiter()
+  {
+    return 0;
   }
 
   public boolean addCurrentWaiter(Waiter aCurrentWaiter)
   {
     boolean wasAdded = false;
     if (currentWaiter.contains(aCurrentWaiter)) { return false; }
-    RestoApp existingRestoApp = aCurrentWaiter.getRestoApp();
-    boolean isNewRestoApp = existingRestoApp != null && !this.equals(existingRestoApp);
-    if (isNewRestoApp)
-    {
-      aCurrentWaiter.setRestoApp(this);
-    }
-    else
-    {
-      currentWaiter.add(aCurrentWaiter);
-    }
+    currentWaiter.add(aCurrentWaiter);
     wasAdded = true;
     return wasAdded;
   }
@@ -824,8 +915,7 @@ public class RestoApp implements Serializable
   public boolean removeCurrentWaiter(Waiter aCurrentWaiter)
   {
     boolean wasRemoved = false;
-    //Unable to remove aCurrentWaiter, as it must always have a restoApp
-    if (!this.equals(aCurrentWaiter.getRestoApp()))
+    if (currentWaiter.contains(aCurrentWaiter))
     {
       currentWaiter.remove(aCurrentWaiter);
       wasRemoved = true;
@@ -910,13 +1000,14 @@ public class RestoApp implements Serializable
       bills.remove(aBill);
     }
     
-    while (currentWaiter.size() > 0)
+    while (waiters.size() > 0)
     {
-      Waiter aCurrentWaiter = currentWaiter.get(currentWaiter.size() - 1);
-      aCurrentWaiter.delete();
-      currentWaiter.remove(aCurrentWaiter);
+      Waiter aWaiter = waiters.get(waiters.size() - 1);
+      aWaiter.delete();
+      waiters.remove(aWaiter);
     }
     
+    currentWaiter.clear();
   }
 
   // line 11 "../../../../../RestoAppPersistence.ump"
@@ -926,7 +1017,7 @@ public class RestoApp implements Serializable
     MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
   }
 
-  // line 18 "../../../../../RestoApp.ump"
+  // line 19 "../../../../../RestoApp.ump"
    public Seat getSeatByNum(int number){
     List<Table> tables = this.getCurrentTables();
 	  for(Table table : tables) {

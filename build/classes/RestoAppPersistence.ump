@@ -20,6 +20,12 @@ class Bill {
   private static final long serialVersionUID = 1301576255893682821L;
 }
 
+class Waiter {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -6819781202254769716L;
+}
+
 class Menu {
   depend java.io.Serializable;
   isA Serializable;
@@ -91,4 +97,6 @@ class Table {
       tablesByNumber.put(table.getNumber(), table);
     }
   }
+  
+
 }

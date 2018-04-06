@@ -5,9 +5,9 @@ package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 83 "../../../../../RestoAppPersistence.ump"
+// line 89 "../../../../../RestoAppPersistence.ump"
 // line 1 "../../../../../TableStateMachine.ump"
-// line 56 "../../../../../RestoApp.ump"
+// line 57 "../../../../../RestoApp.ump"
 public class Table implements Serializable
 {
 
@@ -428,7 +428,7 @@ public class Table implements Serializable
     return wasEventProcessed;
   }
 
-  public void setStatus(Status aStatus)
+  private void setStatus(Status aStatus)
   {
     status = aStatus;
   }
@@ -938,7 +938,7 @@ public class Table implements Serializable
     }
   }
 
-  // line 89 "../../../../../RestoAppPersistence.ump"
+  // line 95 "../../../../../RestoAppPersistence.ump"
    public static  void reinitializeUniqueNumber(List<Table> tables){
     tablesByNumber = new HashMap<Integer, Table>();
     for (Table table : tables) {
@@ -975,7 +975,7 @@ public class Table implements Serializable
       return false;
   }
 
-  // line 66 "../../../../../RestoApp.ump"
+  // line 67 "../../../../../RestoApp.ump"
    public boolean doesOverlap(int x, int y, int width, int length){
     //Any rectangle can be represented by two coordinates, top left and bottom right
 		
@@ -1015,7 +1015,7 @@ public class Table implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 86 "../../../../../RestoAppPersistence.ump"
+  // line 92 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 8896099581655989380L ;
 
   

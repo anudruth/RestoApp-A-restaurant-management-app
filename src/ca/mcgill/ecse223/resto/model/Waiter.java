@@ -2,17 +2,23 @@
 /*This code was generated using the UMPLE 1.27.0.3728.d139ed893 modeling language!*/
 
 package ca.mcgill.ecse223.resto.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 143 "../../../../../RestoApp.ump"
-public class Waiter
+// line 23 "../../../../../RestoAppPersistence.ump"
+// line 144 "../../../../../RestoApp.ump"
+public class Waiter implements Serializable
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //Waiter Attributes
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6819781202254769716L;
+//Waiter Attributes
   private String name;
   private int id;
 
@@ -32,7 +38,7 @@ public class Waiter
     boolean didAddRestoApp = setRestoApp(aRestoApp);
     if (!didAddRestoApp)
     {
-      throw new RuntimeException("Unable to create currentWaiter due to restoApp");
+      throw new RuntimeException("Unable to create waiter due to restoApp");
     }
   }
 
@@ -185,9 +191,9 @@ public class Waiter
     restoApp = aRestoApp;
     if (existingRestoApp != null && !existingRestoApp.equals(aRestoApp))
     {
-      existingRestoApp.removeCurrentWaiter(this);
+      existingRestoApp.removeWaiter(this);
     }
-    restoApp.addCurrentWaiter(this);
+    restoApp.addWaiter(this);
     wasSet = true;
     return wasSet;
   }
@@ -203,7 +209,7 @@ public class Waiter
     this.restoApp = null;
     if(placeholderRestoApp != null)
     {
-      placeholderRestoApp.removeCurrentWaiter(this);
+      placeholderRestoApp.removeWaiter(this);
     }
   }
 

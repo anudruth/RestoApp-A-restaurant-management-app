@@ -61,7 +61,7 @@ public class RestoAppApplication {
 			// load model
 			
 			restoapp = load();
-			restoapp.getTable(0).setStatus(Status.Ordered);
+			
 		}
  		return restoapp;
 	}

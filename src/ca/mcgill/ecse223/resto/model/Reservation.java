@@ -7,8 +7,8 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.*;
 
-// line 71 "../../../../../RestoAppPersistence.ump"
-// line 31 "../../../../../RestoApp.ump"
+// line 77 "../../../../../RestoAppPersistence.ump"
+// line 32 "../../../../../RestoApp.ump"
 public class Reservation implements Serializable
 {
 
@@ -357,7 +357,7 @@ public class Reservation implements Serializable
     }
   }
 
-  // line 43 "../../../../../RestoApp.ump"
+  // line 44 "../../../../../RestoApp.ump"
    public boolean doesOverlap(Date date, Time time){
     Time reservationTimeAfter = new Time(this.time.getTime() + 2*60*60*1000);
 	  Time reservationTimeBefore = new Time(this.time.getTime() - 2*60*60*1000);
@@ -388,7 +388,7 @@ public class Reservation implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 74 "../../../../../RestoAppPersistence.ump"
+  // line 80 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 2315072607928790501L ;
 
   
