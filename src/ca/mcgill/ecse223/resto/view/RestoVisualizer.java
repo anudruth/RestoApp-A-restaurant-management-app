@@ -90,14 +90,8 @@ public class RestoVisualizer extends JPanel {
 	private void doDrawing(Graphics g)
 	{
 		if(restoapp != null)
-		{
-			
-			
-			int number = restoapp.getCurrentTables().size();
-			
-			Graphics2D g2d = (Graphics2D) g.create();
-			
-			
+		{			
+			Graphics2D g2d = (Graphics2D) g.create();	
 			BasicStroke thinStroke = new BasicStroke(2);
 			g2d.setStroke(thinStroke);
 			
@@ -110,6 +104,7 @@ public class RestoVisualizer extends JPanel {
 					status = "In Use";
 				}
 				
+				//draw table
 				seatPlacementOffsetLength = 0;
 				seatPlacementOffsetWidth = 0;
 				seatCount =0;
@@ -124,7 +119,10 @@ public class RestoVisualizer extends JPanel {
 					seatsPerSide = (totalSeats - 1) / 2;
 				}
 				
-				RoundRectangle2D rectangle = new RoundRectangle2D.Double(table.getX(),table.getY(), table.getWidth(), seatsPerSide*table.getLength(), 10, 10);
+				int x = table.getX();
+				int y = table.getY();
+				
+				RoundRectangle2D rectangle = new RoundRectangle2D.Double(x,y, table.getWidth(), seatsPerSide*table.getLength(), 10, 10);
 				
 				rectangles.add(rectangle);
 				
@@ -133,9 +131,10 @@ public class RestoVisualizer extends JPanel {
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString(new Integer(table.getNumber()).toString() ,(int) (table.getX() + (table.getWidth()/2.3)), (int)(table.getY() + (table.getLength()/1.8)) );
-				g2d.drawString( status,(int) (table.getX() + (table.getWidth()/2.3))-12, (int)(table.getY() + (table.getLength()/1.8))+14 );
+				g2d.drawString(new Integer(table.getNumber()).toString() ,(int) (x + (table.getWidth()/2.3)), (int)(y + (table.getLength()/1.8)) );
+				g2d.drawString( status,(int) (x + (table.getWidth()/2.3))-12, (int)(y + (table.getLength()/1.8))+14 );
 
+				//now draw seats
 				for(Seat seat: table.getCurrentSeats()) {
 					
 					if (totalSeats <= 2) {
