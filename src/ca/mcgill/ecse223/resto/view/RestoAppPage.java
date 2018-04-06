@@ -478,6 +478,31 @@ public class RestoAppPage extends JFrame {
 		refreshData();
 	};
 	
+	private void rotateTableButtonActionPerformed(ActionEvent evt) {
+		error = "";
+		if (!(selectedTable.getNumber() > 0))
+			error = "Table needs to be selected for deletion!";
+		
+		if (error.length() == 0) {
+			Table toRotate = null;
+			List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
+			for(Table table : currentTables) {
+				if(table.getNumber() == selectedTable.getNumber()) {
+					toRotate = table;
+				}
+			}
+			if(toRotate.getFlipped()==0) {
+				toRotate.setFlipped(1);
+			}
+			else {
+				toRotate.setFlipped(0);
+			}
+			
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		}
+	}
+	
 	/**
 	 * Displays the proper popUp for the category of menu selected
 	 */
@@ -631,6 +656,7 @@ public class RestoAppPage extends JFrame {
         moveTableButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		moveTableButtonActionPerformed(evt);
+        		popupMenu.setVisible(false);
         	}
         });
 
@@ -646,6 +672,11 @@ public class RestoAppPage extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        rotateTableButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		rotateTableButtonActionPerformed(evt);
+        	}
+        });
 
         //viewOrder Button
         RoundButton viewOrderButton = new RoundButton();

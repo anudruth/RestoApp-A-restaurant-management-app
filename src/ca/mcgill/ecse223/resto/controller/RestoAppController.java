@@ -103,7 +103,7 @@ public class RestoAppController {
 				newTable = existingTable;
 			}
 			else {
-				newTable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength);
+				newTable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength, 0);
 			}
 			
 			restoapp.addCurrentTable(newTable);

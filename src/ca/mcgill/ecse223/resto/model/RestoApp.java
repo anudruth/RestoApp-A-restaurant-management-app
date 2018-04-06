@@ -429,9 +429,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Table addTable(int aNumber, int aX, int aY, int aWidth, int aLength)
+  public Table addTable(int aNumber, int aX, int aY, int aWidth, int aLength, int aFlipped)
   {
-    return new Table(aNumber, aX, aY, aWidth, aLength, this);
+    return new Table(aNumber, aX, aY, aWidth, aLength, aFlipped, this);
   }
 
   public boolean addTable(Table aTable)

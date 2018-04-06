@@ -105,10 +105,6 @@ public class RestoVisualizer extends JPanel {
 				}
 				
 				//draw table
-				seatPlacementOffsetLength = 0;
-				seatPlacementOffsetWidth = 0;
-				seatCount =0;
-				
 				int k = 0;
 				int sideCount = 0;
 				int seatsPerSide;
@@ -122,7 +118,15 @@ public class RestoVisualizer extends JPanel {
 				int x = table.getX();
 				int y = table.getY();
 				
-				RoundRectangle2D rectangle = new RoundRectangle2D.Double(x,y, table.getWidth(), seatsPerSide*table.getLength(), 10, 10);
+				int tableWidth = table.getWidth();
+				int tableLength = seatsPerSide*table.getLength();
+				
+				if (table.getFlipped()==1){
+					tableWidth = seatsPerSide*table.getLength();
+					tableLength = table.getWidth();
+				}
+				
+				RoundRectangle2D rectangle = new RoundRectangle2D.Double(x,y, tableWidth, tableLength, 10, 10);
 				
 				rectangles.add(rectangle);
 				
@@ -131,12 +135,17 @@ public class RestoVisualizer extends JPanel {
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
 				g2d.setColor(Color.BLACK);
+				
+				//draw Table number and Status
 				g2d.drawString(new Integer(table.getNumber()).toString() ,(int) (x + (table.getWidth()/2.3)), (int)(y + (table.getLength()/1.8)) );
 				g2d.drawString( status,(int) (x + (table.getWidth()/2.3))-12, (int)(y + (table.getLength()/1.8))+14 );
 
 				//now draw seats
+				seatCount = 0;
+				seatPlacementOffsetLength = 0;
+				seatPlacementOffsetWidth = 0;
+				
 				for(Seat seat: table.getCurrentSeats()) {
-					
 					if (totalSeats <= 2) {
 						if (seatCount ==0) {
 							sX = table.getX()+SEAT_DIAMETER;
@@ -148,35 +157,65 @@ public class RestoVisualizer extends JPanel {
 						}
 					} else {
 						if (seatCount == 0) {
-							sX = table.getX()+SEAT_DIAMETER;
-							sY = table.getY()-1.5*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()+SEAT_DIAMETER;
+								sY = table.getY()-1.5*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()-1.5*SEAT_DIAMETER;
+								sY = table.getY()+SEAT_DIAMETER;
+							}
 						}
 						else if(seatCount == 1 && totalSeats%2 == 0) {
-							sX = table.getX()+SEAT_DIAMETER;
-							sY = table.getY()+(3.5 + 3 * (seatsPerSide - 1))*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()+SEAT_DIAMETER;
+								sY = table.getY()+(3.5 + 3 * (seatsPerSide - 1))*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()+(3.5 + 3 * (seatsPerSide -1))*(SEAT_DIAMETER);
+								sY = table.getY()+SEAT_DIAMETER;
+							}
 						}
 						else if(seatCount % 2 == 0 && totalSeats % 2 == 0) {
-							sX = table.getX()+3.5*SEAT_DIAMETER;
-							sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()+3.5*SEAT_DIAMETER;
+								sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()+(1 + 3 * (sideCount -2))*(SEAT_DIAMETER);
+								sY = table.getY()+3.5*SEAT_DIAMETER;
+							}
 							k++;
 						}
 						else if(seatCount % 2 == 1 && totalSeats % 2 == 0) {
-							sX = table.getX()-1.5*SEAT_DIAMETER;
-							sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()-1.5*SEAT_DIAMETER;
+								sY = table.getY()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()+(1 + 3 * (sideCount - 2))*(SEAT_DIAMETER);
+								sY = table.getY()-1.5*SEAT_DIAMETER;
+							}
 							k++;
 						}
 						else if(seatCount % 2 == 0 && totalSeats % 2 == 1) {
-							sX = table.getX()+3.5*SEAT_DIAMETER;
-							sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()+3.5*SEAT_DIAMETER;
+								sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+								sY = table.getY()+3.5*SEAT_DIAMETER;
+							}
 							k++;
 						}
 						else if(seatCount % 2 == 1 && totalSeats % 2 == 1) {
-							sX = table.getX()-1.5*SEAT_DIAMETER;
-							sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							if(table.getFlipped()==0) {
+								sX = table.getX()-1.5*SEAT_DIAMETER;
+								sY = table.getY()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+							}else {
+								sX = table.getX()+(1 + 3 * (sideCount - 1))*(SEAT_DIAMETER);
+								sY = table.getY()-1.5*SEAT_DIAMETER;
+							}
 							k++;
 						}
 					}
-					
+				
 					
 					Ellipse2D circle = new Ellipse2D.Double(sX, sY, SEAT_DIAMETER, SEAT_DIAMETER);
 					circles.add(circle);

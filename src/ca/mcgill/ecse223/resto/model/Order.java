@@ -8,7 +8,7 @@ import java.sql.Time;
 import java.util.*;
 
 // line 49 "../../../../../RestoAppPersistence.ump"
-// line 95 "../../../../../RestoApp.ump"
+// line 96 "../../../../../RestoApp.ump"
 public class Order implements Serializable
 {
 

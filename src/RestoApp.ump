@@ -60,6 +60,7 @@ class Table {
    Integer y;
    Integer width;
    Integer length;
+   Integer flipped;
    1 <@>- 1..* Seat seats;
    0..1 -> * Seat currentSeats; // subsets seats
    

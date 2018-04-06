@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 23 "../../../../../RestoAppPersistence.ump"
-// line 144 "../../../../../RestoApp.ump"
+// line 145 "../../../../../RestoApp.ump"
 public class Waiter implements Serializable
 {
 

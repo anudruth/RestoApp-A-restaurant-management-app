@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 71 "../../../../../RestoAppPersistence.ump"
-// line 136 "../../../../../RestoApp.ump"
+// line 137 "../../../../../RestoApp.ump"
 public class PricedMenuItem implements Serializable
 {
 

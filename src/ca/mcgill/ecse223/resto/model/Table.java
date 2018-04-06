@@ -27,6 +27,7 @@ public class Table implements Serializable
   private int y;
   private int width;
   private int length;
+  private int flipped;
 
   //Table State Machines
   public enum Status { Available, NothingOrdered, Ordered }
@@ -43,12 +44,13 @@ public class Table implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Table(int aNumber, int aX, int aY, int aWidth, int aLength, RestoApp aRestoApp)
+  public Table(int aNumber, int aX, int aY, int aWidth, int aLength, int aFlipped, RestoApp aRestoApp)
   {
     x = aX;
     y = aY;
     width = aWidth;
     length = aLength;
+    flipped = aFlipped;
     if (!setNumber(aNumber))
     {
       throw new RuntimeException("Cannot create due to duplicate number");
@@ -117,6 +119,14 @@ public class Table implements Serializable
     return wasSet;
   }
 
+  public boolean setFlipped(int aFlipped)
+  {
+    boolean wasSet = false;
+    flipped = aFlipped;
+    wasSet = true;
+    return wasSet;
+  }
+
   public int getNumber()
   {
     return number;
@@ -150,6 +160,11 @@ public class Table implements Serializable
   public int getLength()
   {
     return length;
+  }
+
+  public int getFlipped()
+  {
+    return flipped;
   }
 
   public String getStatusFullName()
@@ -975,7 +990,7 @@ public class Table implements Serializable
       return false;
   }
 
-  // line 67 "../../../../../RestoApp.ump"
+  // line 68 "../../../../../RestoApp.ump"
    public boolean doesOverlap(int x, int y, int width, int length){
     //Any rectangle can be represented by two coordinates, top left and bottom right
 		
@@ -1008,7 +1023,8 @@ public class Table implements Serializable
             "x" + ":" + getX()+ "," +
             "y" + ":" + getY()+ "," +
             "width" + ":" + getWidth()+ "," +
-            "length" + ":" + getLength()+ "]" + System.getProperties().getProperty("line.separator") +
+            "length" + ":" + getLength()+ "," +
+            "flipped" + ":" + getFlipped()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
   }  
   //------------------------
