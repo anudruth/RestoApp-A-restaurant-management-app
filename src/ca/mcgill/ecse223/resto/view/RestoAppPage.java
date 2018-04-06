@@ -34,6 +34,7 @@ import ca.mcgill.ecse223.resto.model.OrderItem;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
+import ca.mcgill.ecse223.resto.model.Table.Status;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 
@@ -97,6 +98,7 @@ public class RestoAppPage extends JFrame {
         //elements for addTableButton, reserveTableButton, billTableButton, displayMenuButton
         RoundButton addTableButton = new RoundButton();
         addTableButton.setBackground(new Color(255,255,255));
+        addTableButton.setToolTipText("Add a Table");
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/add.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -112,6 +114,8 @@ public class RestoAppPage extends JFrame {
 		
 		RoundButton waiterButton = new RoundButton();
 		waiterButton.setBackground(new Color(255,255,255));
+		waiterButton.setToolTipText("Add a Waiter");
+
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/waiter.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -127,6 +131,7 @@ public class RestoAppPage extends JFrame {
 		
 		RoundButton reserveTableButton = new RoundButton();
         reserveTableButton.setBackground(new Color(255,255,255));
+        reserveTableButton.setToolTipText("Reserve a Table");
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/reserve.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -142,6 +147,8 @@ public class RestoAppPage extends JFrame {
 		 
 		RoundButton billTableButton = new RoundButton();
 		billTableButton.setBackground(new Color(255,255,255));
+		billTableButton.setToolTipText("Bill a Table or Seat(s)");
+
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/bill.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -157,6 +164,8 @@ public class RestoAppPage extends JFrame {
 		
 		RoundButton displayMenuButton = new RoundButton();
         displayMenuButton.setBackground(new Color(255,255,255));
+        displayMenuButton.setToolTipText("Display the Menu");
+		
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/displayMenu.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -172,6 +181,8 @@ public class RestoAppPage extends JFrame {
 		
 		RoundButton orderButton = new RoundButton();
         orderButton.setBackground(new Color(255,255,255));
+        orderButton.setToolTipText("Set as In Use");
+
         try {
 			Image img = ImageIO.read(getClass().getResource("../resources/inUse.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -234,15 +245,15 @@ public class RestoAppPage extends JFrame {
             .addGroup(buttons_panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            	.addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            	.addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             	.addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            	.addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            	.addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         
 
-        buttons_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {addTableButton, reserveTableButton, displayMenuButton});
+//        buttons_panelLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {addTableButton, reserveTableButton, displayMenuButton});
 
         buttons_panelLayout.setVerticalGroup(
             buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -250,11 +261,11 @@ public class RestoAppPage extends JFrame {
                 .addContainerGap()
                 .addGroup(buttons_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 	.addComponent(addTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                	.addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                	.addComponent(billTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reserveTableButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(orderButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(waiterButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(displayMenuButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         
@@ -576,14 +587,21 @@ public class RestoAppPage extends JFrame {
 		tableSlider.setPaintLabels(true);
 		tableSlider.addChangeListener(new ChangeListener() {
         	public void stateChanged(ChangeEvent evt) {
-        		int numSeats = tableSlider.getValue();
-        		tableCurrentSeatsChangeActionPerformed(evt, numSeats);
+        		if(aTable.getStatus()!=Status.Available) {
+        			errorPopUp("Cannot change size of InUse Table");
+        		}
+        		else {
+            		int numSeats = tableSlider.getValue();
+            		tableCurrentSeatsChangeActionPerformed(evt, numSeats);
+        		}
+        		
             }
         });
         
 		//Delete Button
         RoundButton removeTableButton = new RoundButton();
         removeTableButton.setBackground(new Color(255,230,153));
+        removeTableButton.setToolTipText("Remove selected Table");
 		try {
 			Image img = ImageIO.read(getClass().getResource("../resources/remove.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -601,6 +619,8 @@ public class RestoAppPage extends JFrame {
 		//Move Button
 		RoundButton moveTableButton = new RoundButton();
         moveTableButton.setBackground(new Color(255,230,153));
+        moveTableButton.setToolTipText("Move selected Table");
+
         try {
 			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -617,6 +637,8 @@ public class RestoAppPage extends JFrame {
         //Rotate button
         RoundButton rotateTableButton = new RoundButton();
         rotateTableButton.setBackground(new Color(255,230,153));
+        rotateTableButton.setToolTipText("Rotate selected Table");
+
         try {
 			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -628,6 +650,8 @@ public class RestoAppPage extends JFrame {
         //viewOrder Button
         RoundButton viewOrderButton = new RoundButton();
         viewOrderButton.setBackground(new Color(255,230,153));
+        viewOrderButton.setToolTipText("View and manage Orders");
+
         try {
 			Image img = ImageIO.read(getClass().getResource("../resources/order.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
