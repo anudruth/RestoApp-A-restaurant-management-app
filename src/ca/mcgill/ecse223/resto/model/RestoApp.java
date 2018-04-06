@@ -759,9 +759,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Bill addBill(Order aOrder, Waiter aWaiter, Seat... allIssuedForSeats)
+  public Bill addBill(Order aOrder, Seat... allIssuedForSeats)
   {
-    return new Bill(aOrder, this, aWaiter, allIssuedForSeats);
+    return new Bill(aOrder, this, allIssuedForSeats);
   }
 
   public boolean addBill(Bill aBill)

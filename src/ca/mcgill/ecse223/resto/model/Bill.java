@@ -18,13 +18,12 @@ public class Bill implements Serializable
   private Order order;
   private List<Seat> issuedForSeats;
   private RestoApp restoApp;
-  private Waiter waiter;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Bill(Order aOrder, RestoApp aRestoApp, Waiter aWaiter, Seat... allIssuedForSeats)
+  public Bill(Order aOrder, RestoApp aRestoApp, Seat... allIssuedForSeats)
   {
     boolean didAddOrder = setOrder(aOrder);
     if (!didAddOrder)
@@ -41,11 +40,6 @@ public class Bill implements Serializable
     if (!didAddRestoApp)
     {
       throw new RuntimeException("Unable to create bill due to restoApp");
-    }
-    boolean didAddWaiter = setWaiter(aWaiter);
-    if (!didAddWaiter)
-    {
-      throw new RuntimeException("Unable to create bill due to waiter");
     }
   }
 
@@ -94,11 +88,6 @@ public class Bill implements Serializable
   public RestoApp getRestoApp()
   {
     return restoApp;
-  }
-
-  public Waiter getWaiter()
-  {
-    return waiter;
   }
 
   public boolean setOrder(Order aOrder)
@@ -273,25 +262,6 @@ public class Bill implements Serializable
     return wasSet;
   }
 
-  public boolean setWaiter(Waiter aWaiter)
-  {
-    boolean wasSet = false;
-    if (aWaiter == null)
-    {
-      return wasSet;
-    }
-
-    Waiter existingWaiter = waiter;
-    waiter = aWaiter;
-    if (existingWaiter != null && !existingWaiter.equals(aWaiter))
-    {
-      existingWaiter.removeBill(this);
-    }
-    waiter.addBill(this);
-    wasSet = true;
-    return wasSet;
-  }
-
   public void delete()
   {
     Order placeholderOrder = order;
@@ -311,12 +281,6 @@ public class Bill implements Serializable
     if(placeholderRestoApp != null)
     {
       placeholderRestoApp.removeBill(this);
-    }
-    Waiter placeholderWaiter = waiter;
-    this.waiter = null;
-    if(placeholderWaiter != null)
-    {
-      placeholderWaiter.removeBill(this);
     }
   }
   

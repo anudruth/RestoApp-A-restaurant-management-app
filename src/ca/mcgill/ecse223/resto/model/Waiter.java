@@ -14,16 +14,12 @@ public class Waiter implements Serializable
   // MEMBER VARIABLES
   //------------------------
 
-  /**
-	 * 
-	 */
-	private static final long serialVersionUID = -6819781202254769716L;
-//Waiter Attributes
+  //Waiter Attributes
   private String name;
   private int id;
 
   //Waiter Associations
-  private List<Bill> bill;
+  private List<Order> order;
   private RestoApp restoApp;
 
   //------------------------
@@ -34,7 +30,7 @@ public class Waiter implements Serializable
   {
     name = aName;
     id = aId;
-    bill = new ArrayList<Bill>();
+    order = new ArrayList<Order>();
     boolean didAddRestoApp = setRestoApp(aRestoApp);
     if (!didAddRestoApp)
     {
@@ -72,33 +68,33 @@ public class Waiter implements Serializable
     return id;
   }
 
-  public Bill getBill(int index)
+  public Order getOrder(int index)
   {
-    Bill aBill = bill.get(index);
-    return aBill;
+    Order aOrder = order.get(index);
+    return aOrder;
   }
 
-  public List<Bill> getBill()
+  public List<Order> getOrder()
   {
-    List<Bill> newBill = Collections.unmodifiableList(bill);
-    return newBill;
+    List<Order> newOrder = Collections.unmodifiableList(order);
+    return newOrder;
   }
 
-  public int numberOfBill()
+  public int numberOfOrder()
   {
-    int number = bill.size();
+    int number = order.size();
     return number;
   }
 
-  public boolean hasBill()
+  public boolean hasOrder()
   {
-    boolean has = bill.size() > 0;
+    boolean has = order.size() > 0;
     return has;
   }
 
-  public int indexOfBill(Bill aBill)
+  public int indexOfOrder(Order aOrder)
   {
-    int index = bill.indexOf(aBill);
+    int index = order.indexOf(aOrder);
     return index;
   }
 
@@ -107,74 +103,73 @@ public class Waiter implements Serializable
     return restoApp;
   }
 
-  public static int minimumNumberOfBill()
+  public static int minimumNumberOfOrder()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public Bill addBill(Order aOrder, RestoApp aRestoApp, Seat... allIssuedForSeats)
-  {
-    return new Bill(aOrder, aRestoApp, this, allIssuedForSeats);
-  }
 
-  public boolean addBill(Bill aBill)
+  public boolean addOrder(Order aOrder)
   {
     boolean wasAdded = false;
-    if (bill.contains(aBill)) { return false; }
-    Waiter existingWaiter = aBill.getWaiter();
-    boolean isNewWaiter = existingWaiter != null && !this.equals(existingWaiter);
-    if (isNewWaiter)
+    if (order.contains(aOrder)) { return false; }
+    Waiter existingWaiter = aOrder.getWaiter();
+    if (existingWaiter == null)
     {
-      aBill.setWaiter(this);
+      aOrder.setWaiter(this);
+    }
+    else if (!this.equals(existingWaiter))
+    {
+      existingWaiter.removeOrder(aOrder);
+      addOrder(aOrder);
     }
     else
     {
-      bill.add(aBill);
+      order.add(aOrder);
     }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeBill(Bill aBill)
+  public boolean removeOrder(Order aOrder)
   {
     boolean wasRemoved = false;
-    //Unable to remove aBill, as it must always have a waiter
-    if (!this.equals(aBill.getWaiter()))
+    if (order.contains(aOrder))
     {
-      bill.remove(aBill);
+      order.remove(aOrder);
+      aOrder.setWaiter(null);
       wasRemoved = true;
     }
     return wasRemoved;
   }
 
-  public boolean addBillAt(Bill aBill, int index)
+  public boolean addOrderAt(Order aOrder, int index)
   {  
     boolean wasAdded = false;
-    if(addBill(aBill))
+    if(addOrder(aOrder))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfBill()) { index = numberOfBill() - 1; }
-      bill.remove(aBill);
-      bill.add(index, aBill);
+      if(index > numberOfOrder()) { index = numberOfOrder() - 1; }
+      order.remove(aOrder);
+      order.add(index, aOrder);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveBillAt(Bill aBill, int index)
+  public boolean addOrMoveOrderAt(Order aOrder, int index)
   {
     boolean wasAdded = false;
-    if(bill.contains(aBill))
+    if(order.contains(aOrder))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfBill()) { index = numberOfBill() - 1; }
-      bill.remove(aBill);
-      bill.add(index, aBill);
+      if(index > numberOfOrder()) { index = numberOfOrder() - 1; }
+      order.remove(aOrder);
+      order.add(index, aOrder);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addBillAt(aBill, index);
+      wasAdded = addOrderAt(aOrder, index);
     }
     return wasAdded;
   }
@@ -200,10 +195,9 @@ public class Waiter implements Serializable
 
   public void delete()
   {
-    for(int i=bill.size(); i > 0; i--)
+    while( !order.isEmpty() )
     {
-      Bill aBill = bill.get(i - 1);
-      aBill.delete();
+      order.get(0).setWaiter(null);
     }
     RestoApp placeholderRestoApp = restoApp;
     this.restoApp = null;
@@ -220,5 +214,13 @@ public class Waiter implements Serializable
             "name" + ":" + getName()+ "," +
             "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 26 "../../../../../RestoAppPersistence.ump"
+  private static final long serialVersionUID = -6819781202254769716L ;
+
+  
 }
