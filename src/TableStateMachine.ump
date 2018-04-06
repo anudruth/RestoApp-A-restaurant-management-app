@@ -15,11 +15,11 @@ class Table {
          } -> Ordered; 
          addToOrderItem(OrderItem i, Seat s) / {
             // add provided seat to provided order item unless seat has already been added, in which case nothing needs to be done
-            boolean added = false;
+            boolean added1 = false;
     		for(Seat seat: i.getSeats()) {
-    			if(seat.equals(s)) added = true;
+    			if(seat.equals(s)) added1 = true;
     		}
-    		if(!added) i.addSeat(s);
+    		if(!added1) i.addSeat(s);
          } -> Ordered;
          endOrder(Order o) / {
             if (!o.removeTable(this)) {
@@ -42,13 +42,23 @@ class Table {
     		}
     		if(!added) i.addSeat(s);
          } -> Ordered;
-         cancelOrderItem(OrderItem i) [iIsLastItem(i)] / {
+         cancelOrderItem(OrderItem i, Seat seat) [iIsLastItem(i)] / {
             // delete order item
-            i.delete();
+            if(i.getSeats().size()==1) {
+            	i.delete();
+        	}
+        	else {
+        		seat.removeOrderItem(i);
+        	}
          } -> NothingOrdered;
-         cancelOrderItem(OrderItem i) [!iIsLastItem(i)] / {
+         cancelOrderItem(OrderItem i, Seat seat) [!iIsLastItem(i)] / {
             // delete order item
-            i.delete();
+            if(i.getSeats().size()==1) {
+            	i.delete();
+        	}
+        	else {
+        		seat.removeOrderItem(i);
+        	}
          } -> Ordered;
          cancelOrder() / {
             // delete all order items of the table
@@ -61,7 +71,7 @@ class Table {
 	    		}
 	    	}
 	    	for(OrderItem orderItem : toDelete) {
-	    		this.cancelOrderItem(orderItem);
+	    		orderItem.delete();
 	    	}
          } -> NothingOrdered;
          billForSeat(Order o, Seat s) / {

@@ -925,6 +925,20 @@ public class RestoApp implements Serializable
     Order.reinitializeAutouniqueNumber(this.getOrders());
     MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
   }
+
+  // line 18 "../../../../../RestoApp.ump"
+   public Seat getSeatByNum(int number){
+    List<Table> tables = this.getCurrentTables();
+	  for(Table table : tables) {
+		  List<Seat> seats = table.getCurrentSeats();
+		  for(Seat seat : seats) {
+			  if(seat.getNumber()==number) {
+				  return seat;
+			  }
+		  }
+	  }
+	  return null;
+  }
   
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS

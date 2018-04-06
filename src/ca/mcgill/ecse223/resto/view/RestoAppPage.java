@@ -526,7 +526,7 @@ public class RestoAppPage extends JFrame {
 		restoVisualizer.setResto(restoapp);
 	}
 
-	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, JList<OrderItem> list) {
+	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, String seatNumber, JList<OrderItem> list) {
 		
 		OrderItem selectedOrderItem;
 		if((selectedOrderItem = list.getSelectedValue()) == null){
@@ -534,7 +534,7 @@ public class RestoAppPage extends JFrame {
 		}
 		
 		try {
-			RestoAppController.cancelOrderItem(selectedOrderItem);
+			RestoAppController.cancelOrderItem(selectedOrderItem, seatNumber);
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
@@ -1233,7 +1233,7 @@ public class RestoAppPage extends JFrame {
 	    removeSelectedOrderItem.setText("Cancel Order Item");
 	    removeSelectedOrderItem.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		removeSelectedOrderItemActionPerformed(evt, list);
+        		removeSelectedOrderItemActionPerformed(evt, seatNumber, list);
         		refreshViewOrderPopUp(table);
             }
         });

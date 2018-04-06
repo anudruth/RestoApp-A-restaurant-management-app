@@ -13,6 +13,19 @@ class RestoApp {
    1 <@>- * PricedMenuItem pricedMenuItems;
    1 <@>- * Bill bills;
    1 <@>- * Waiter currentWaiter;
+   
+   public Seat getSeatByNum(int number){
+	  List<Table> tables = this.getCurrentTables();
+	  for(Table table : tables) {
+		  List<Seat> seats = table.getCurrentSeats();
+		  for(Seat seat : seats) {
+			  if(seat.getNumber()==number) {
+				  return seat;
+			  }
+		  }
+	  }
+	  return null;
+  }
 }
 
 class Reservation {

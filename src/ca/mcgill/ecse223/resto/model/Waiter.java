@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.resto.model;
 import java.util.*;
 
-// line 130 "../../../../../RestoApp.ump"
+// line 143 "../../../../../RestoApp.ump"
 public class Waiter
 {
 

@@ -580,7 +580,8 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
-	public static void cancelOrderItem(OrderItem orderItem) throws InvalidInputException{
+	public static void cancelOrderItem(OrderItem orderItem, String seatNumber) throws InvalidInputException{
+		
 		List<Seat> seats = orderItem.getSeats();
 		Order order = orderItem.getOrder();
 		List<Table> tables = new ArrayList<Table>();
@@ -599,8 +600,11 @@ public class RestoAppController {
 			}
 		}
 		
+		RestoApp r = RestoAppApplication.getRestoapp();
+		Seat seat = r.getSeatByNum(Integer.valueOf(seatNumber));
+		
 		for(Table table : tables) {
-			table.cancelOrderItem(orderItem);
+			table.cancelOrderItem(orderItem, seat);
 		}
 		
 		RestoAppApplication.save();
