@@ -85,6 +85,11 @@ class Table {
             // seat is first removed from the other bill and if no seats are left for the bill, the bill is deleted
          } -> Ordered;
          endOrder(Order o) [allSeatsBilled()] / {
+	         if (!o.removeTable(this)) {
+	               if (o.numberOfTables() == 1) {
+	                  o.delete();
+	               }
+	         } 
          } -> Available;
       }
    }

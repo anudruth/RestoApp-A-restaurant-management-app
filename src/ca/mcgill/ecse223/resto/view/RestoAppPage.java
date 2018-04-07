@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import ca.mcgill.ecse223.resto.controller.RestoAppController;
 import ca.mcgill.ecse223.resto.model.MenuItem;
 import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
+import ca.mcgill.ecse223.resto.model.Order;
 import ca.mcgill.ecse223.resto.model.OrderItem;
 import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
@@ -598,6 +599,37 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void endOrderActionPerformed(ActionEvent evt, Order order) {
+		try {
+			RestoAppController.endOrder(order);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void startOrderActionPerformed(ActionEvent evt, String[] tableNumbers) {
+		List<Table> tables = new ArrayList<Table>();
+		
+		
+		for (int k = 0; k < tableNumbers.length; k++) {
+			int tableNumber = Integer.parseInt(tableNumbers[k]);
+			tables.add(Table.getWithNumber(tableNumber));
+		}
+		try {
+			RestoAppController.startOrder(tables);
+			orderPopup();
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
 	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
@@ -1238,15 +1270,14 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
         JPanel popupMenuItem2 = new JPanel();
         JPanel popupMenuItem3 = new JPanel();
         JPanel popupMenuItem4 = new JPanel();
-        JPanel popupMenuItem5 = new JPanel();
-        JPanel popupMenuItem6 = new JPanel();
-        JPanel popupMenuItem7 = new JPanel();
         
         JLabel orderLabel = new JLabel();
         orderLabel.setBackground(new Color(255,230,153));
         orderLabel.setOpaque(true);
         
-        orderLabel.setText("Create New Order:");
+        orderLabel.setText("Create New Order");
+        orderLabel.setFont(new Font(orderLabel.getFont().getName(), Font.PLAIN, 20));
+
         
         JLabel instructions = new JLabel();
         instructions.setBackground(new Color(255,230,153));
@@ -1261,75 +1292,72 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
         startOrderButton.setText("Start Order");
         startOrderButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		List<Table> tables = new ArrayList<Table>();
         		String[] tableNumbers = tableField.getText().split(",");
-        		
-        		for (int k = 0; k < tableNumbers.length; k++) {
-        			int tableNumber = Integer.parseInt(tableNumbers[k]);
-        			tables.add(Table.getWithNumber(tableNumber));
-        		}
-        		try {
-        			RestoAppController.startOrder(tables);
-        		} catch (InvalidInputException e) {
-        			error = e.getMessage();
-        		}
-        		
-        		tableField.setText("");
-        		RestoApp restoapp = RestoAppApplication.getRestoapp();
-        		restoVisualizer.setResto(restoapp);
+        		startOrderActionPerformed(evt, tableNumbers);
+        		orderPopup();
         	}
         });
-        
-        /*JLabel instructions2 = new JLabel();
-        instructions.setBackground(new Color(255,230,153));
-        instructions.setOpaque(true);
-        instructions.setText("End order? (enter order number)");
-        
-        JTextField orderField = new JTextField();
-        tableField.setBackground(new Color(255,230,153));
-        
-        JButton endOrderButton = new JButton();
-        startOrderButton.setBackground(new Color(255,230,153));
-        startOrderButton.setText("End order");
-        startOrderButton.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		
-        		try {
-        			RestoAppController.endOrder();
-        		} catch (InvalidInputException e) {
-        			error = e.getMessage();
-        		}
-        		
-        		tableField.setText("");
-        		RestoApp restoapp = RestoAppApplication.getRestoapp();
-        		restoVisualizer.setResto(restoapp);
-        	}
-        }); */
         
         popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
 	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
 	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
-	    /*popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
-	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
-	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));*/
+	   
 	    
 	    popupMenuItem1.add(orderLabel);
 	    popupMenuItem2.add(instructions);
 	    popupMenuItem3.add(tableField);
 	    popupMenuItem4.add(startOrderButton);
-	    /*popupMenuItem5.add(instructions2);
-	    popupMenuItem6.add(orderField);
-	    popupMenuItem7.add(endOrderButton);*/
+	    
+	   
 	    
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    popupMenu.add(popupMenuItem3);
 	    popupMenu.add(popupMenuItem4);
-	    /*popupMenu.add(popupMenuItem5);
-	    popupMenu.add(popupMenuItem6);
-	    popupMenu.add(popupMenuItem7);*/
+        
+	    JPanel popupMenuItem5 = new JPanel();
+        popupMenuItem5.setBackground(new Color(255,230,153));
+        popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
+ 	    JLabel orderString = new JLabel();
+ 	    orderString.setText("Current Orders");
+        orderString.setFont(new Font(orderString.getFont().getName(), Font.PLAIN, 20));
+        popupMenuItem5.add(orderString);
+        popupMenu.add(popupMenuItem5);
+	    
+        List<Order> orders = RestoAppApplication.getRestoapp().getCurrentOrders();
+        
+        for(Order order : orders) {
+        	JLabel orderDescriptionLabel = new JLabel();
+        	orderDescriptionLabel.setBackground(new Color(255,230,153));
+        	orderDescriptionLabel.setOpaque(true);
+        	
+        	String tablesList = "";
+        	for(Table table : order.getTables()) {
+        		tablesList = tablesList+table.getNumber()+", ";
+        	}
+        	
+        	orderDescriptionLabel.setText("Number: "+order.getNumber()+" for Tables: "+tablesList);
+        	
+        	JButton endOrderButton = new JButton();
+            endOrderButton.setBackground(new Color(255,230,153));
+            endOrderButton.setText("End order");
+             
+            endOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            	public void actionPerformed(java.awt.event.ActionEvent evt) {
+             		endOrderActionPerformed(evt, order);
+             		orderPopup();
+             	}
+            });
+             
+            JPanel popupMenuItem6 = new JPanel();
+            popupMenuItem6.setBackground(new Color(255,230,153));
+            popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+     	    popupMenuItem6.add(orderDescriptionLabel);
+     	    popupMenuItem6.add(endOrderButton);
+     	    popupMenu.add(popupMenuItem6);
+        }
 	    
 	    popupMenu.show(Image_panel, 2, 2);
 	}

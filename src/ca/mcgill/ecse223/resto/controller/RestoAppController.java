@@ -423,7 +423,7 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
-	public void endOrder(Order order) throws InvalidInputException{
+	public static void endOrder(Order order) throws InvalidInputException{
 
 		if(order == null){
 			throw new InvalidInputException("no order selected");
@@ -438,18 +438,24 @@ public class RestoAppController {
 		}
 		
 		List<Table> tables = order.getTables();
+		List<Table> toDelete = new ArrayList<Table>();
 		for(Table table : tables){
 			if(table.numberOfOrders()>0 && table.getOrder(table.numberOfOrders()-1).equals(order)){
-				table.endOrder(order);
+				toDelete.add(table);
 			}
 		}
+		
+		for(Table table : toDelete){
+			table.endOrder(order);
+		}
+		
 		if(allTablesAvailableOrDifferentCurrentOrder(tables, order)){
 			r.removeCurrentOrder(order);
 		}
 		RestoAppApplication.save();
 	}
 	
-	public boolean allTablesAvailableOrDifferentCurrentOrder(List<Table> tables, Order order){
+	public static boolean allTablesAvailableOrDifferentCurrentOrder(List<Table> tables, Order order){
 		boolean flag = true;
 		for(Table table : tables){
 			if(!(table.getStatus() == Status.Available) || table.getOrder(table.numberOfOrders()-1).equals(order)) {
