@@ -49,6 +49,7 @@ public class RestoAppPage extends JFrame {
     private JPanel buttons_panel;
     private JLabel jLabel2;
     private JPanel scroll_panel;
+    private Integer selectedWaiter = -1;
     private JScrollPane scroll_layout;
     private RestoVisualizer restoVisualizer;
     // UI elements
@@ -339,6 +340,18 @@ public class RestoAppPage extends JFrame {
 		}
     }
     
+    private void addWaiterButtonActionPerformed(java.awt.event.ActionEvent evt, String waiterName) {
+		/* error = null;
+		try {
+			
+			//TODO 
+			
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		} 
+		*/
+    }
+    
     private void addOrderItemActionPerformed(java.awt.event.ActionEvent evt, String seatNumber, Table table){
     	String[] seatNumbers = {seatNumber}; 
 		menuPopUp2(0,0,RestoAppController.getItemCategories(), null, seatNumbers, table);
@@ -566,7 +579,19 @@ public class RestoAppPage extends JFrame {
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
-	
+private void removeWaiterActionPerformed(ActionEvent evt) {
+	/*
+	 	TODO	
+		try {
+			
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+		
+		*/
+	}
 	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
 		try {
 			RestoAppController.cancelOrder(table);
@@ -1050,30 +1075,125 @@ public class RestoAppPage extends JFrame {
 	}
 	
 	public void waiterPopUp(int x, int y) {
-		final JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.setMinimumSize(new Dimension(3,3));
-        popupMenu.setBackground(new Color(255,230,153));
+		final JPopupMenu popUpWaiter = new JPopupMenu();
+        popUpWaiter.setMinimumSize(new Dimension(3,3));
+        popUpWaiter.setBackground(new Color(255,230,153));
         
-        JPanel popupMenuItem1 = new JPanel();
+        JPanel popUpItem1 = new JPanel();
 
         
-        JLabel errorLabel = new JLabel();
-        errorLabel.setBackground(new Color(255,230,153));
-        errorLabel.setOpaque(true);
-        errorLabel.setText("                              Waiter Management                              ");
+        JLabel waiterManagementLabel = new JLabel();
+        waiterManagementLabel.setBackground(new Color(255,230,153));
+        waiterManagementLabel.setOpaque(true);
+        waiterManagementLabel.setText("                              Waiter Management                              ");
         
 
         
-        popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
-	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+        popUpWaiter.setLayout(new BoxLayout(popUpWaiter, BoxLayout.PAGE_AXIS));
+	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.LINE_AXIS));
 
         
-	    popupMenuItem1.add(errorLabel);
+	    popUpItem1.add(waiterManagementLabel);
 	    
-	    popupMenu.add(popupMenuItem1);
+	    popUpWaiter.add(popUpItem1);
 
 	    
-	    popupMenu.show(Image_panel, 0, 0);
+	    popUpWaiter.show(Image_panel, 0, 0);
+	    
+//--------------------------------------------------------------//
+	    //Panels
+		
+	    JPanel popUpItem2 = new JPanel();
+	    popUpItem2.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popUpItem3 = new JPanel();
+	    popUpItem3.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popUpItem4 = new JPanel();
+	    popUpItem4.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popUpItem5 = new JPanel();
+	    popUpItem5.setBackground(new Color(255, 230, 153));
+	    
+	    JPanel popUpItem6 = new JPanel();
+	    popUpItem6.setBackground(new Color(255, 230, 153));
+
+	    
+	    //Labels
+	   
+	    
+	    JLabel nameLabel = new JLabel();
+	    nameLabel.setBackground(new Color(255,230,153));
+	    nameLabel.setOpaque(true);
+	    nameLabel.setText("Name: ");
+	        
+	    JLabel removeWaiterLabel = new JLabel();
+	    removeWaiterLabel.setBackground(new Color(255,230,153));
+	    removeWaiterLabel.setOpaque(true);
+	    removeWaiterLabel.setText("Remove Waiter: ");
+	    
+	    
+	    //Text Fields
+	    
+	    JTextField addWaiterField = new JTextField();
+	    addWaiterField.setBackground(new Color(255, 255, 255));
+	    
+	    
+	    PlaceholderTextField removeWaiterField = new PlaceholderTextField("Enter table number");
+	    removeWaiterField.setBackground(new Color(255, 230, 253));
+	    
+	    JComboBox<String> waiterList = new JComboBox<String>(new String[0]);
+	    waiterList.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
+		        selectedWaiter = cb.getSelectedIndex();
+			}
+		});
+	    
+	    //Buttons
+	    
+	    JButton deleteWaiterButton = new JButton();
+	    deleteWaiterButton.setBackground(new Color(255, 255, 255));
+	    deleteWaiterButton.setText("Delete Waiter");
+	    deleteWaiterButton.addActionListener(new java.awt.event.ActionListener() {
+	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    			removeWaiterActionPerformed(evt);
+	    		}
+	    });
+	    
+	    JButton addWaiterButton = new JButton();
+	    addWaiterButton.setBackground(new Color(255, 255,255));
+	    addWaiterButton.setText("Add Waiter");
+	    addWaiterButton.addActionListener(new java.awt.event.ActionListener() {
+	    	public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    		addWaiterButtonActionPerformed(evt, addWaiterField.getText());
+	    	}
+	    });
+	    
+	    
+	    popUpWaiter.setLayout(new BoxLayout(popUpWaiter, BoxLayout.PAGE_AXIS));
+	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.LINE_AXIS));
+	    popUpItem3.setLayout(new BoxLayout(popUpItem3, BoxLayout.LINE_AXIS));
+	    popUpItem4.setLayout(new BoxLayout(popUpItem4, BoxLayout.LINE_AXIS));
+	    popUpItem5.setLayout(new BoxLayout(popUpItem5, BoxLayout.LINE_AXIS));
+	    popUpItem6.setLayout(new BoxLayout(popUpItem6, BoxLayout.LINE_AXIS));
+  
+	   
+	    popUpItem3.add(nameLabel);
+	    popUpItem3.add(addWaiterField);
+	    popUpItem4.add(addWaiterButton);
+	    popUpItem5.add(removeWaiterLabel);
+	    popUpItem5.add(waiterList);
+	    popUpItem6.add(deleteWaiterButton);    
+	    
+	    popUpWaiter.add(popUpItem1);
+	    popUpWaiter.add(popUpItem3);
+	    popUpWaiter.add(popUpItem4);
+	    popUpWaiter.add(popUpItem5);
+	    popUpWaiter.add(popUpItem6);
+   
+    	
+	    popUpWaiter.show(Image_panel, 2, 2);
 	}
 	
 	public void errorPopUp(String errorMessage) {
@@ -1082,7 +1202,7 @@ public class RestoAppPage extends JFrame {
         popupMenu.setMinimumSize(new Dimension(3,3));
         popupMenu.setBackground(new Color(255,230,153));
         
-        JPanel popupMenuItem1 = new JPanel();
+        JPanel popupMenuItem6 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
         
         JLabel errorLabel = new JLabel();
@@ -1096,13 +1216,13 @@ public class RestoAppPage extends JFrame {
         errorText.setText(errorMessage);
         
         popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
-	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
         
-	    popupMenuItem1.add(errorLabel);
+	    popupMenuItem6.add(errorLabel);
 	    popupMenuItem2.add(errorText);
 	    
-	    popupMenu.add(popupMenuItem1);
+	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem2);
 	    
 	    popupMenu.show(Image_panel, 0, 0);
