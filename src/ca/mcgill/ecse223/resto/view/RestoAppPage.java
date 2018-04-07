@@ -368,8 +368,7 @@ public class RestoAppPage extends JFrame {
     		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
     		RestoAppController.issueBill(seat_list);
     	} catch (InvalidInputException e) {
-    		error = e.getMessage();
-    		errorPopUp(error);
+    		errorPopUp(e.getMessage());
     	}
     
     	
@@ -408,7 +407,7 @@ public class RestoAppPage extends JFrame {
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
 			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
     }
     
@@ -418,7 +417,7 @@ public class RestoAppPage extends JFrame {
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
 			restoVisualizer.setResto(restoapp);
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
     }
     
@@ -467,7 +466,7 @@ public class RestoAppPage extends JFrame {
 		// clear error message and basic input validation
 		error = "";
 		if (!(selectedTable.getNumber() > 0))
-			error = "Table needs to be selected for deletion!";
+			errorPopUp("Table needs to be selected for deletion!");
 		
 		if (error.length() == 0) {
 			// call the controller
@@ -483,7 +482,6 @@ public class RestoAppPage extends JFrame {
 				RestoApp restoapp = RestoAppApplication.getRestoapp();
 				restoVisualizer.setResto(restoapp);
 			} catch (InvalidInputException e) {
-				error = e.getMessage();
 				errorPopUp(e.getMessage());
 			}
 		}
@@ -495,7 +493,7 @@ public class RestoAppPage extends JFrame {
 	private void rotateTableButtonActionPerformed(ActionEvent evt) {
 		error = "";
 		if (!(selectedTable.getNumber() > 0))
-			error = "Table needs to be selected for deletion!";
+			errorPopUp("Table needs to be selected for rotation");
 		
 		if (error.length() == 0) {
 			Table toRotate = null;
@@ -524,7 +522,7 @@ public class RestoAppPage extends JFrame {
 		try {
 			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
 		
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -535,7 +533,7 @@ public class RestoAppPage extends JFrame {
 		try {
 			menuPopUp2(0, 0, i, RestoAppController.getMenuItems(itemCategory), seatNumbers, table);
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
 		
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -558,7 +556,7 @@ public class RestoAppPage extends JFrame {
 		try {
 			RestoAppController.orderMenuItem(menuItem, quantity, seats);
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
 		
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -580,7 +578,8 @@ public class RestoAppPage extends JFrame {
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
-private void removeWaiterActionPerformed(ActionEvent evt) {
+	
+	private void removeWaiterActionPerformed(ActionEvent evt) {
 	/*
 	 	TODO	
 		try {
@@ -593,6 +592,7 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
 		
 		*/
 	}
+	
 	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
 		try {
 			RestoAppController.cancelOrder(table);
@@ -625,7 +625,7 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
 			RestoAppController.startOrder(tables);
 			orderPopup();
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorPopUp(e.getMessage());
 		}
 		
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
@@ -811,6 +811,8 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
         JLabel menuName = new JLabel();
         menuName.setBackground(new Color(255,230,153));
         menuName.setOpaque(true);
+        menuName.setText("Menu");
+		menuName.setFont(new Font(menuName.getFont().getName(), Font.PLAIN, 20));
         
         //Category1
         JButton Category1Button = new JButton();
@@ -886,9 +888,6 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
 				}
 			}
 		}
-		
-		menuName.setText("MENU ");
-		
 		
 		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
@@ -1725,7 +1724,8 @@ private void removeWaiterActionPerformed(ActionEvent evt) {
         JLabel menuName = new JLabel();
         menuName.setBackground(new Color(255,230,153));
         menuName.setOpaque(true);
-        menuName.setText("MENU ");
+        menuName.setText("Menu");
+		menuName.setFont(new Font(menuName.getFont().getName(), Font.PLAIN, 20));
 		
 		JLabel seatsLabel = new JLabel();
 		seatsLabel.setBackground(new Color(255,230,153));
