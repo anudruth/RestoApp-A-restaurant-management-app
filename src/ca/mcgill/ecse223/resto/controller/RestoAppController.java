@@ -90,7 +90,6 @@ public class RestoAppController {
 					aY =lastTable.getY();
 				}
 
-
 			}
 
 			Table newTable;
