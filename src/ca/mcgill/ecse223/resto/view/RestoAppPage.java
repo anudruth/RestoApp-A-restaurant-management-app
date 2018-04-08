@@ -1662,7 +1662,7 @@ public class RestoAppPage extends JFrame {
 	    JLabel header_lable = new JLabel();
 	    header_lable.setBackground(new Color(255,230,153));
 	    header_lable.setOpaque(true);
-	    header_lable.setText("Quantity            Price                 Food        ");
+	    header_lable.setText("Quantity          Food                 Price        ");
 	    header_lable.setFont(new Font(header_lable.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel seperator_lable = new JLabel();
