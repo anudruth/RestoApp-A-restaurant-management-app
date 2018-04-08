@@ -101,6 +101,9 @@ public class RestoAppController {
 				newTable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength, 0);
 			}
 			
+			newTable.setX(aX);
+			newTable.setY(aY);
+			
 			restoapp.addCurrentTable(newTable);
 
 			RestoAppController.updateTable(newTable, newTableNumber, 4);
