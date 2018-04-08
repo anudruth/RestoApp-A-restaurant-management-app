@@ -593,6 +593,7 @@ public class RestoAppController {
 		if(billCreated == false) {
 			throw new InvalidInputException("Error with bill creation.");
 		}
+		//System.out.println(newBill.toString());
 		RestoAppApplication.save();
 	}
 	

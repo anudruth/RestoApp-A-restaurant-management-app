@@ -78,11 +78,34 @@ class Table {
             // create a new bill with the provided order and seat; if the provided seat is already assigned to
             // another bill for the current order, then the seat is first removed from the other bill and if no seats
             // are left for the bill, the bill is deleted
+            List <Bill> curBills = o.getBills();
+    	for(Bill bill: curBills) {
+    		if (bill.getIssuedForSeats().contains(s)) {
+    			bill.removeIssuedForSeat(s);
+    		}
+    		if(!bill.hasIssuedForSeats()) {
+    			bill.delete();
+    		}
+    	}
+    	Bill newBill = new Bill(o,restoApp, s);
          } -> Ordered;
          addToBill(Bill b, Seat s) / {
             // add provided seat to provided bill unless seat has already been added, in which case nothing needs
             // to be done; if the provided seat is already assigned to another bill for the current order, then the
             // seat is first removed from the other bill and if no seats are left for the bill, the bill is deleted
+            if(!b.getIssuedForSeats().contains(s)) {
+    		Order o =b.getOrder();
+    		List<Bill> curBills= o.getBills();
+    		for(Bill bill: curBills) {
+        		if (bill.getIssuedForSeats().contains(s)) {
+        			bill.removeIssuedForSeat(s);
+        		}
+        		if(!bill.hasIssuedForSeats()) {
+        			bill.delete();
+        		}
+        	}
+    		b.addIssuedForSeat(s);
+    	}
          } -> Ordered;
          endOrder(Order o) [allSeatsBilled()] / {
 	         if (!o.removeTable(this)) {
