@@ -1527,6 +1527,7 @@ public class RestoAppPage extends JFrame {
 	    issue_bill_title.setBackground(new Color(255,230,153));
 	    issue_bill_title.setOpaque(true);
 	    issue_bill_title.setText("              Prepare Bill              ");
+	    issue_bill_title.setFont(new Font(issue_bill_title.getFont().getName(), Font.PLAIN, 30));
 	    
 	    JLabel seat_nums = new JLabel();
 	    seat_nums.setBackground(new Color(255,230,153));
@@ -1645,21 +1646,25 @@ public class RestoAppPage extends JFrame {
 	    bill_title.setBackground(new Color(255,230,153));
 	    bill_title.setOpaque(true);
 	    bill_title.setText("                 Bill                 ");
+	    bill_title.setFont(new Font(bill_title.getFont().getName(), Font.PLAIN, 30));
 	    
 	    JLabel waiter_title = new JLabel();
 	    waiter_title.setBackground(new Color(255,230,153));
 	    waiter_title.setOpaque(true);
 	    waiter_title.setText("Waiter: ");
+	    waiter_title.setFont(new Font(waiter_title.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel waiter_name_title = new JLabel();
 	    waiter_name_title.setBackground(new Color(255,230,153));
 	    waiter_name_title.setOpaque(true);
 	    waiter_name_title.setText(waiter);
 	    
+	    
 	    JLabel header_lable = new JLabel();
 	    header_lable.setBackground(new Color(255,230,153));
 	    header_lable.setOpaque(true);
-	    header_lable.setText("Quantity            Food                     Price        ");
+	    header_lable.setText("Quantity            Price                 Food        ");
+	    header_lable.setFont(new Font(header_lable.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel seperator_lable = new JLabel();
 	    seperator_lable.setBackground(new Color(255,230,153));
@@ -1674,12 +1679,14 @@ public class RestoAppPage extends JFrame {
 	    JLabel total_lable = new JLabel();
 	    total_lable.setBackground(new Color(255,230,153));
 	    total_lable.setOpaque(true);
-	    total_lable.setText("Total                                $ ");
+	    total_lable.setText("Total                    $ ");
+	    total_lable.setFont(new Font(total_lable.getFont().getName(), Font.PLAIN, 20));
 	    
 	    JLabel total_price = new JLabel();
 	    total_price.setBackground(new Color(255,230,153));
 	    total_price.setOpaque(true);
 	    total_price.setText(price);
+	    total_price.setFont(new Font(total_price.getFont().getName(), Font.PLAIN, 20));
 	    
 	    
 	    
