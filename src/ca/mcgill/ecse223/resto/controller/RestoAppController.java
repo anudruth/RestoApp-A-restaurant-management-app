@@ -520,8 +520,8 @@ public class RestoAppController {
 		List<Table> currentTables = restoapp.getCurrentTables();
 		List<Seat> currentSeats = null;
 		Order lastOrder=null, comparedOrder;
-		Boolean billCreated = false;
-		Bill newBill = null;
+		Boolean billCreated;
+		Bill newBill;
 		Bill lastBill;
 		
 		for(Seat seat : seats) {
@@ -556,13 +556,20 @@ public class RestoAppController {
 					throw new InvalidInputException("No orders for table.");
 				}
 				
-				if (!comparedOrder.equals(lastOrder));{
+				if (!comparedOrder.equals(lastOrder)){
 					throw new InvalidInputException("Error with orders.");
 				}
 				
 			}
 			
 		}
+		
+		if (lastOrder == null) {
+			throw new InvalidInputException("lastOrder is null.");
+		}
+		
+		billCreated = false;
+		newBill = null;
 		
 		for(Seat seat: seats) {
 			Table table = seat.getTable();
@@ -575,12 +582,16 @@ public class RestoAppController {
 				if(lastOrder.numberOfBills()>0) {
 					lastBill = lastOrder.getBill(lastOrder.numberOfBills()-1);
 				}
+				table.billForSeat(lastOrder, seat);
 				
 				if(lastOrder.numberOfBills()>0 && !lastOrder.getBill(lastOrder.numberOfBills()-1).equals(lastBill)) {
 					billCreated = true;
 					newBill = lastOrder.getBill(lastOrder.numberOfBills()-1);
 				}
 			}
+		}
+		if(billCreated == false) {
+			throw new InvalidInputException("Error with bill creation.");
 		}
 		RestoAppApplication.save();
 	}
