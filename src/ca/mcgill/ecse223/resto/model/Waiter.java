@@ -6,9 +6,15 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 23 "../../../../../RestoAppPersistence.ump"
-// line 149 "../../../../../RestoApp.ump"
+// line 148 "../../../../../RestoApp.ump"
 public class Waiter implements Serializable
 {
+
+  //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  private static int nextId = 1;
 
   //------------------------
   // MEMBER VARIABLES
@@ -16,6 +22,8 @@ public class Waiter implements Serializable
 
   //Waiter Attributes
   private String name;
+
+  //Autounique Attributes
   private int id;
 
   //Waiter Associations
@@ -26,10 +34,10 @@ public class Waiter implements Serializable
   // CONSTRUCTOR
   //------------------------
 
-  public Waiter(String aName, int aId, RestoApp aRestoApp)
+  public Waiter(String aName, RestoApp aRestoApp)
   {
     name = aName;
-    id = aId;
+    id = nextId++;
     order = new ArrayList<Order>();
     boolean didAddRestoApp = setRestoApp(aRestoApp);
     if (!didAddRestoApp)
@@ -46,14 +54,6 @@ public class Waiter implements Serializable
   {
     boolean wasSet = false;
     name = aName;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setId(int aId)
-  {
-    boolean wasSet = false;
-    id = aId;
     wasSet = true;
     return wasSet;
   }
@@ -211,8 +211,8 @@ public class Waiter implements Serializable
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
-            "id" + ":" + getId()+ "]" + System.getProperties().getProperty("line.separator") +
+            "id" + ":" + getId()+ "," +
+            "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
   }  
   //------------------------

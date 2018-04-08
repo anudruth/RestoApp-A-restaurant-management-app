@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 
+import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.model.Order;
 import ca.mcgill.ecse223.resto.model.OrderItem;
@@ -19,6 +20,7 @@ import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.model.Table.Status;
+import ca.mcgill.ecse223.resto.model.Waiter;
 import ca.mcgill.ecse223.resto.model.Bill;
 import ca.mcgill.ecse223.resto.model.Menu;
 import ca.mcgill.ecse223.resto.model.MenuItem;
@@ -464,6 +466,10 @@ public class RestoAppController {
 		return flag;
 	}
 	
+	public static List<Waiter> getWaiters() {
+		return RestoAppApplication.getRestoapp().getWaiters();
+	}
+	
 	public static Map<String,List<OrderItem>> getOrderItems(Table table) throws InvalidInputException {
 		
 		List<Seat> seats = table.getCurrentSeats();
@@ -757,5 +763,18 @@ public class RestoAppController {
 		}
 		if(!itemCreated) throw new InvalidInputException("Could not add item to order");
 		RestoAppApplication.save();
+	}
+
+
+	public static void createWaiter(String name) throws InvalidInputException {
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		try {
+			restoapp.addWaiter(name);
+			RestoAppApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
+		
 	}
 }

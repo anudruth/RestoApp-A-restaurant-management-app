@@ -17,6 +17,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ import ca.mcgill.ecse223.resto.model.RestoApp;
 import ca.mcgill.ecse223.resto.model.Seat;
 import ca.mcgill.ecse223.resto.model.Table;
 import ca.mcgill.ecse223.resto.model.Table.Status;
+import ca.mcgill.ecse223.resto.model.Waiter;
 import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 
@@ -60,6 +62,8 @@ public class RestoAppPage extends JFrame {
   	private String error = null;
   	// table assignment
   	//...
+  	 private JTextField addWaiterField = new JTextField();
+  	 private JComboBox <String> waiterList;
 	
  	public RestoAppPage() {
  		initComponents();
@@ -319,7 +323,7 @@ public class RestoAppPage extends JFrame {
 		// error
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
-			//TODO: Implement error messages on screen
+		
 		}
 		// this is needed because the size of the window changes depending on whether an error message is shown or not
 		pack();
@@ -341,15 +345,18 @@ public class RestoAppPage extends JFrame {
     }
     
     private void addWaiterButtonActionPerformed(java.awt.event.ActionEvent evt, String waiterName) {
-		/* error = null;
+		// clear error message
+		error = null;
+		
+		// call the controller
 		try {
-			
-			//TODO 
-			
+			RestoAppController.createWaiter(addWaiterField.getText());
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
-		} 
-		*/
+		}
+		
+		// update visuals
+		refreshData();
     }
     
     private void addOrderItemActionPerformed(java.awt.event.ActionEvent evt, String seatNumber, Table table){
@@ -1121,7 +1128,7 @@ public class RestoAppPage extends JFrame {
 	
 	public void waiterPopUp(int x, int y) {
 		final JPopupMenu popUpWaiter = new JPopupMenu();
-        popUpWaiter.setMinimumSize(new Dimension(3,3));
+        popUpWaiter.setPopupSize(300,150);
         popUpWaiter.setBackground(new Color(255,230,153));
         
         JPanel popUpItem1 = new JPanel();
@@ -1142,8 +1149,6 @@ public class RestoAppPage extends JFrame {
 	    
 	    popUpWaiter.add(popUpItem1);
 
-	    
-	    popUpWaiter.show(Image_panel, 0, 0);
 	    
 //--------------------------------------------------------------//
 	    //Panels
@@ -1180,20 +1185,25 @@ public class RestoAppPage extends JFrame {
 	    
 	    //Text Fields
 	    
-	    JTextField addWaiterField = new JTextField();
+	  //  private JTextField addWaiterField = new JTextField();
 	    addWaiterField.setBackground(new Color(255, 255, 255));
 	    
 	    
 	    PlaceholderTextField removeWaiterField = new PlaceholderTextField("Enter table number");
 	    removeWaiterField.setBackground(new Color(255, 230, 253));
 	    
-	    JComboBox<String> waiterList = new JComboBox<String>(new String[0]);
+	    waiterList = new JComboBox<String>(new String[0]);
 	    waiterList.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
 		        selectedWaiter = cb.getSelectedIndex();
+		        System.out.println(selectedWaiter);
 			}
 		});
+	    waiterList.setBackground(new Color(255, 255, 255));
+	    waiterList.addItem("Test");
+	    waiterList.addItem("Test2");
+	    waiterList.addItem("Test3");
 	    
 	    //Buttons
 	    
@@ -1239,6 +1249,8 @@ public class RestoAppPage extends JFrame {
    
     	
 	    popUpWaiter.show(Image_panel, 2, 2);
+	    
+	  
 	}
 	
 	public void errorPopUp(String errorMessage) {

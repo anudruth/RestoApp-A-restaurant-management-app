@@ -26,7 +26,6 @@ public class RestoApp implements Serializable
   private List<PricedMenuItem> pricedMenuItems;
   private List<Bill> bills;
   private List<Waiter> waiters;
-  private List<Waiter> currentWaiter;
 
   //------------------------
   // CONSTRUCTOR
@@ -47,7 +46,6 @@ public class RestoApp implements Serializable
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
     waiters = new ArrayList<Waiter>();
-    currentWaiter = new ArrayList<Waiter>();
   }
 
   public RestoApp()
@@ -61,7 +59,6 @@ public class RestoApp implements Serializable
     pricedMenuItems = new ArrayList<PricedMenuItem>();
     bills = new ArrayList<Bill>();
     waiters = new ArrayList<Waiter>();
-    currentWaiter = new ArrayList<Waiter>();
   }
 
   //------------------------
@@ -319,36 +316,6 @@ public class RestoApp implements Serializable
   public int indexOfWaiter(Waiter aWaiter)
   {
     int index = waiters.indexOf(aWaiter);
-    return index;
-  }
-
-  public Waiter getCurrentWaiter(int index)
-  {
-    Waiter aCurrentWaiter = currentWaiter.get(index);
-    return aCurrentWaiter;
-  }
-
-  public List<Waiter> getCurrentWaiter()
-  {
-    List<Waiter> newCurrentWaiter = Collections.unmodifiableList(currentWaiter);
-    return newCurrentWaiter;
-  }
-
-  public int numberOfCurrentWaiter()
-  {
-    int number = currentWaiter.size();
-    return number;
-  }
-
-  public boolean hasCurrentWaiter()
-  {
-    boolean has = currentWaiter.size() > 0;
-    return has;
-  }
-
-  public int indexOfCurrentWaiter(Waiter aCurrentWaiter)
-  {
-    int index = currentWaiter.indexOf(aCurrentWaiter);
     return index;
   }
 
@@ -831,9 +798,9 @@ public class RestoApp implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Waiter addWaiter(String aName, int aId)
+  public Waiter addWaiter(String aName)
   {
-    return new Waiter(aName, aId, this);
+    return new Waiter(aName, this);
   }
 
   public boolean addWaiter(Waiter aWaiter)
@@ -898,63 +865,6 @@ public class RestoApp implements Serializable
     return wasAdded;
   }
 
-  public static int minimumNumberOfCurrentWaiter()
-  {
-    return 0;
-  }
-
-  public boolean addCurrentWaiter(Waiter aCurrentWaiter)
-  {
-    boolean wasAdded = false;
-    if (currentWaiter.contains(aCurrentWaiter)) { return false; }
-    currentWaiter.add(aCurrentWaiter);
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeCurrentWaiter(Waiter aCurrentWaiter)
-  {
-    boolean wasRemoved = false;
-    if (currentWaiter.contains(aCurrentWaiter))
-    {
-      currentWaiter.remove(aCurrentWaiter);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-
-  public boolean addCurrentWaiterAt(Waiter aCurrentWaiter, int index)
-  {  
-    boolean wasAdded = false;
-    if(addCurrentWaiter(aCurrentWaiter))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfCurrentWaiter()) { index = numberOfCurrentWaiter() - 1; }
-      currentWaiter.remove(aCurrentWaiter);
-      currentWaiter.add(index, aCurrentWaiter);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveCurrentWaiterAt(Waiter aCurrentWaiter, int index)
-  {
-    boolean wasAdded = false;
-    if(currentWaiter.contains(aCurrentWaiter))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfCurrentWaiter()) { index = numberOfCurrentWaiter() - 1; }
-      currentWaiter.remove(aCurrentWaiter);
-      currentWaiter.add(index, aCurrentWaiter);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addCurrentWaiterAt(aCurrentWaiter, index);
-    }
-    return wasAdded;
-  }
-
   public void delete()
   {
     while (reservations.size() > 0)
@@ -1007,7 +917,6 @@ public class RestoApp implements Serializable
       waiters.remove(aWaiter);
     }
     
-    currentWaiter.clear();
   }
 
   // line 11 "../../../../../RestoAppPersistence.ump"
@@ -1017,7 +926,7 @@ public class RestoApp implements Serializable
     MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
   }
 
-  // line 19 "../../../../../RestoApp.ump"
+  // line 18 "../../../../../RestoApp.ump"
    public Seat getSeatByNum(int number){
     List<Table> tables = this.getCurrentTables();
 	  for(Table table : tables) {
