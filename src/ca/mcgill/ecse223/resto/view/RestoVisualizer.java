@@ -89,6 +89,8 @@ public class RestoVisualizer extends JPanel {
 	}
 	private void doDrawing(Graphics g)
 	{
+		Color higlighted = new Color(255,255,102);
+		
 		if(restoapp != null)
 		{			
 			Graphics2D g2d = (Graphics2D) g.create();	
@@ -131,7 +133,11 @@ public class RestoVisualizer extends JPanel {
 				rectangles.add(rectangle);
 				
 				tables.put(rectangle, table);
-				g2d.setColor(Color.GRAY);
+				if(table.hasOrders()) {
+					g2d.setColor(new Color(255,255,102));
+				}else {
+					g2d.setColor(higlighted);
+				}
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
 				g2d.setColor(Color.BLACK);
@@ -222,7 +228,11 @@ public class RestoVisualizer extends JPanel {
 					
 					seats.put(circle, seat);
 					
-					g2d.setColor(Color.GRAY);
+					if(seat.hasOrderItems()) {
+						g2d.setColor(higlighted);
+					}else {
+						g2d.setColor(Color.GRAY);
+					}
 					g2d.fill(circle);
 					g2d.draw(circle);
 					g2d.setColor(Color.BLACK);

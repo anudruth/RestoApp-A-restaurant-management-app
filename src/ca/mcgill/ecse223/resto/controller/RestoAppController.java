@@ -48,7 +48,7 @@ public class RestoAppController {
 		try
 		{
 
-			int newTableNumber =0;
+			int newTableNumber = 0;
 			int aX;
 			int aY;
 			Table lastTable;

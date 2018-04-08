@@ -48,7 +48,6 @@ public class RestoAppApplication {
 			// load model
 			
 			restoapp = load();
-			
 		}
  		return restoapp;
 	}
