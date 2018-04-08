@@ -366,7 +366,22 @@ public class RestoAppPage extends JFrame {
     		//billPopup("hi", "bye", "100.45");
     	try {
     		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
-    		RestoAppController.issueBill(seat_list);
+    		List<OrderItem> orderItems = RestoAppController.issueBill(seat_list);
+    		String[] orderItemsArray = new String[(orderItems.size())];
+    		int k = 0;
+    		Double price = 0.0;
+    		String waiter= "";
+    		for(OrderItem oItem: orderItems) {
+    			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
+    			orderItemsArray[k] = oItem.toString();
+    			//waiter = oItem.getOrder().getWaiter().getName();
+    			k++;
+    			
+    		}
+    		
+    		billPopup(orderItemsArray, waiter, Double.toString(price));
+    		
+    		
     	} catch (InvalidInputException e) {
     		errorPopUp(e.getMessage());
     	}
@@ -1587,7 +1602,7 @@ public class RestoAppPage extends JFrame {
 	}
 	
 	
-	public void billPopup(String bill, String waiter, String price) {
+	public void billPopup(String[] orderItems, String waiter, String price) {
 		final JPopupMenu bill_popup = new JPopupMenu();
 		bill_popup.setSize(300, 300);
 		bill_popup.setBackground(new Color(255,230,153));
@@ -1617,6 +1632,11 @@ public class RestoAppPage extends JFrame {
 	    JPanel popupMenuItem7 = new JPanel();
 	    popupMenuItem7.setBackground(new Color(255, 230, 153));
 	    
+	    //JLists
+	    
+	    JList<String> list = new JList<String>(orderItems);
+	    list.setBackground(new Color(255,230,153));
+	    list.setOpaque(true);
 	    
 	    
 	    //Labels
@@ -1639,7 +1659,7 @@ public class RestoAppPage extends JFrame {
 	    JLabel header_lable = new JLabel();
 	    header_lable.setBackground(new Color(255,230,153));
 	    header_lable.setOpaque(true);
-	    header_lable.setText("Food                Quantity                     Price");
+	    header_lable.setText("Quantity            Food                     Price        ");
 	    
 	    JLabel seperator_lable = new JLabel();
 	    seperator_lable.setBackground(new Color(255,230,153));
@@ -1654,7 +1674,7 @@ public class RestoAppPage extends JFrame {
 	    JLabel total_lable = new JLabel();
 	    total_lable.setBackground(new Color(255,230,153));
 	    total_lable.setOpaque(true);
-	    total_lable.setText("Total                                ");
+	    total_lable.setText("Total                                $ ");
 	    
 	    JLabel total_price = new JLabel();
 	    total_price.setBackground(new Color(255,230,153));
@@ -1679,6 +1699,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.add(waiter_name_title);
 	    popupMenuItem3.add(header_lable);
 	    popupMenuItem4.add(seperator_lable);
+	    popupMenuItem5.add(list);
 	    popupMenuItem6.add(lower_seperator_lable);
 	    popupMenuItem7.add(total_lable);
 	    popupMenuItem7.add(total_price);

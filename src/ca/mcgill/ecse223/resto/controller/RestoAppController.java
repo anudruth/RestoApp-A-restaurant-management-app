@@ -515,8 +515,9 @@ public class RestoAppController {
 		return resultMap;
 	}
 	
-	public static void issueBill(List<Seat> seats) throws InvalidInputException{
+	public static List<OrderItem> issueBill(List<Seat> seats) throws InvalidInputException{
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		List<Table> currentTables = restoapp.getCurrentTables();
 		List<Seat> currentSeats = null;
 		Order lastOrder=null, comparedOrder;
@@ -593,8 +594,12 @@ public class RestoAppController {
 		if(billCreated == false) {
 			throw new InvalidInputException("Error with bill creation.");
 		}
+		for(Seat seat:newBill.getIssuedForSeats()) {
+			orderItems.addAll(seat.getOrderItems());
+		}
 		//System.out.println(newBill.toString());
 		RestoAppApplication.save();
+		return orderItems;
 	}
 	
 	public static void cancelOrderItem(OrderItem orderItem, String seatNumber) throws InvalidInputException{

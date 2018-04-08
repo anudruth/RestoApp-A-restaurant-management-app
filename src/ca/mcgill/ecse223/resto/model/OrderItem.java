@@ -312,7 +312,7 @@ public class OrderItem implements Serializable
   @Override
    public String toString () 
   {
-    String result = this.getQuantity() + " " + getPricedMenuItem().getMenuItem().getName() + " " + String.valueOf(getPricedMenuItem().getPrice());
+    String result = this.getQuantity() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t " + getPricedMenuItem().getMenuItem().getName() + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t $ " + String.valueOf(getPricedMenuItem().getPrice());
     List<Seat> seats = this.getSeats();
     if (seats.size() > 1) {
 		result = result + " (shared with: ";
