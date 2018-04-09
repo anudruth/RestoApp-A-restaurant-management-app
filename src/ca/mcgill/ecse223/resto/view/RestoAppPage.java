@@ -47,6 +47,7 @@ public class RestoAppPage extends JFrame {
 	
     /************DECLARATIONS******************/
 	private Color mainPopUpColor = new Color(246,245,202);
+	private Color secondaryPopUpColor = new Color(255, 230, 153);
     private JPanel Image_panel;
     private JPanel app_panel;
     private JPanel buttons_panel;
@@ -1010,25 +1011,25 @@ public class RestoAppPage extends JFrame {
         reservationField.setOpaque(true);
         
         PlaceholderTextField tableField = new PlaceholderTextField("Enter Table Numbers seperated by commas");
-        tableField.setBackground(new Color(255, 230, 253));
+        tableField.setBackground(secondaryPopUpColor);
         
         PlaceholderTextField dateField = new PlaceholderTextField("Enter Date (MM/DD/YYYY)");
-        dateField.setBackground(new Color(255, 230, 253));
+        dateField.setBackground(secondaryPopUpColor);
         
         PlaceholderTextField timeField = new PlaceholderTextField("Enter Time (HH:MM)/(H:MM)");
-        timeField.setBackground(new Color(255, 230, 253));
+        timeField.setBackground(secondaryPopUpColor);
 
         PlaceholderTextField sizeField = new PlaceholderTextField("Enter Party Size");
-        sizeField.setBackground(new Color(255, 230, 253));
+        sizeField.setBackground(secondaryPopUpColor);
         
         PlaceholderTextField nameField = new PlaceholderTextField("Enter Reservation Name");
-        nameField.setBackground(new Color(255, 230, 253));
+        nameField.setBackground(secondaryPopUpColor);
         
         PlaceholderTextField mailField = new PlaceholderTextField("Enter Reservation Email");
-        mailField.setBackground(new Color(255, 230, 253));
+        mailField.setBackground(secondaryPopUpColor);
         
         PlaceholderTextField phoneField = new PlaceholderTextField("Enter Reservation Phone Number");
-        phoneField.setBackground(new Color(255, 230, 253));
+        phoneField.setBackground(secondaryPopUpColor);
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
@@ -1158,19 +1159,19 @@ public class RestoAppPage extends JFrame {
 	    //Panels
 		
 	    JPanel popUpItem2 = new JPanel();
-	    popUpItem2.setBackground(new Color(255, 230, 153));
+	    popUpItem2.setBackground(mainPopUpColor);
 	    
 	    JPanel popUpItem3 = new JPanel();
-	    popUpItem3.setBackground(new Color(255, 230, 153));
+	    popUpItem3.setBackground(mainPopUpColor);
 	    
 	    JPanel popUpItem4 = new JPanel();
-	    popUpItem4.setBackground(new Color(255, 230, 153));
+	    popUpItem4.setBackground(mainPopUpColor);
 	    
 	    JPanel popUpItem5 = new JPanel();
-	    popUpItem5.setBackground(new Color(255, 230, 153));
+	    popUpItem5.setBackground(mainPopUpColor);
 	    
 	    JPanel popUpItem6 = new JPanel();
-	    popUpItem6.setBackground(new Color(255, 230, 153));
+	    popUpItem6.setBackground(mainPopUpColor);
 
 	    
 	    //Labels
@@ -1194,7 +1195,7 @@ public class RestoAppPage extends JFrame {
 	    
 	    
 	    PlaceholderTextField removeWaiterField = new PlaceholderTextField("Enter table number");
-	    removeWaiterField.setBackground(new Color(255, 230, 253));
+	    removeWaiterField.setBackground(secondaryPopUpColor);
 	    
 	    waiterList = new JComboBox<String>(new String[0]);
 	    waiterList.addActionListener(new java.awt.event.ActionListener() {
@@ -1519,19 +1520,19 @@ public class RestoAppPage extends JFrame {
 	    //Panels
 		
 	    JPanel popupMenuItem1 = new JPanel();
-	    popupMenuItem1.setBackground(new Color(255, 230, 153));
+	    popupMenuItem1.setBackground(mainPopUpColor);
 	    
 	    JPanel popupMenuItem2 = new JPanel();
-	    popupMenuItem2.setBackground(new Color(255, 230, 153));
+	    popupMenuItem2.setBackground(mainPopUpColor);
 	    
 	    JPanel popupMenuItem3 = new JPanel();
-	    popupMenuItem3.setBackground(new Color(255, 230, 153));
+	    popupMenuItem3.setBackground(mainPopUpColor);
 	    
 	    JPanel popupMenuItem4 = new JPanel();
-	    popupMenuItem4.setBackground(new Color(255, 230, 153));
+	    popupMenuItem4.setBackground(mainPopUpColor);
 	    
 	    JPanel popupMenuItem5 = new JPanel();
-	    popupMenuItem5.setBackground(new Color(255, 230, 153));
+	    popupMenuItem5.setBackground(mainPopUpColor);
 
 	    
 
@@ -1563,17 +1564,17 @@ public class RestoAppPage extends JFrame {
 	    //Text Fields
 	    
 	    PlaceholderTextField seat_field = new PlaceholderTextField("Enter comma seperated list of seats");
-	    seat_field.setBackground(new Color(255, 230, 253));
+	    seat_field.setBackground(secondaryPopUpColor);
 	    
 	    
 	    
 	    PlaceholderTextField table_field = new PlaceholderTextField("Enter table number");
-	    table_field.setBackground(new Color(255, 230, 253));
+	    table_field.setBackground(secondaryPopUpColor);
 	    
 	    //Buttons
 	    
 	    JButton prepBillButton = new JButton();
-	    prepBillButton.setBackground(new Color(255, 230, 253));
+	    prepBillButton.setBackground(secondaryPopUpColor);
 	    prepBillButton.setText("Prepare Bill");
 	    prepBillButton.addActionListener(new java.awt.event.ActionListener() {
 	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1627,26 +1628,26 @@ public class RestoAppPage extends JFrame {
 		//Panels
 		
 	    JPanel popupMenuItem1 = new JPanel();
-	    popupMenuItem1.setBackground(new Color(255, 230, 153));
+	    popupMenuItem1.setBackground(secondaryPopUpColor);
 	    
 	    JPanel popupMenuItem2 = new JPanel();
-	    popupMenuItem2.setBackground(new Color(255, 230, 153));
+	    popupMenuItem2.setBackground(secondaryPopUpColor);
 	    
 	    JPanel popupMenuItem3 = new JPanel();
-	    popupMenuItem3.setBackground(new Color(255, 230, 153));
+	    popupMenuItem3.setBackground(secondaryPopUpColor);
 	    
 	    JPanel popupMenuItem4 = new JPanel();
-	    popupMenuItem4.setBackground(new Color(255, 230, 153));
+	    popupMenuItem4.setBackground(secondaryPopUpColor);
 
 	    //use for bill content
 	    JPanel popupMenuItem5 = new JPanel();
-	    popupMenuItem5.setBackground(new Color(255, 230, 153));
+	    popupMenuItem5.setBackground(secondaryPopUpColor);
 	    
 	    JPanel popupMenuItem6 = new JPanel();
-	    popupMenuItem6.setBackground(new Color(255, 230, 153));
+	    popupMenuItem6.setBackground(secondaryPopUpColor);
 	    
 	    JPanel popupMenuItem7 = new JPanel();
-	    popupMenuItem7.setBackground(new Color(255, 230, 153));
+	    popupMenuItem7.setBackground(secondaryPopUpColor);
 	    
 	    //JLists
 	    
