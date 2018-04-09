@@ -11,6 +11,9 @@ class RestoApp {
     Table.reinitializeUniqueNumber(this.getTables());
     Order.reinitializeAutouniqueNumber(this.getOrders());
     MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
+    if (this.waiters == null) {
+    	this.waiters = new ArrayList<Waiter>();
+    }
   }
 }
 
@@ -24,6 +27,15 @@ class Waiter {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = -6819781202254769716L;
+  public static void reinitializeAutouniqueNumber(List<Waiter> waiters) {
+    int nextId = 0; 
+    for (Waiter waiter : waiters) {
+      if (waiter.getNumber() > nextId) {
+        nextId = waiter.getNumber();
+      }
+    }
+    nextId++;
+  }
   
 }
 

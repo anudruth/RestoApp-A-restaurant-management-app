@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 23 "../../../../../RestoAppPersistence.ump"
+// line 26 "../../../../../RestoAppPersistence.ump"
 // line 148 "../../../../../RestoApp.ump"
 public class Waiter implements Serializable
 {
@@ -14,7 +14,7 @@ public class Waiter implements Serializable
   // STATIC VARIABLES
   //------------------------
 
-  private static int nextId = 1;
+  private static int nextNumber = 1;
 
   //------------------------
   // MEMBER VARIABLES
@@ -24,7 +24,7 @@ public class Waiter implements Serializable
   private String name;
 
   //Autounique Attributes
-  private int id;
+  private int number;
 
   //Waiter Associations
   private List<Order> order;
@@ -37,7 +37,7 @@ public class Waiter implements Serializable
   public Waiter(String aName, RestoApp aRestoApp)
   {
     name = aName;
-    id = nextId++;
+    number = nextNumber++;
     order = new ArrayList<Order>();
     boolean didAddRestoApp = setRestoApp(aRestoApp);
     if (!didAddRestoApp)
@@ -63,9 +63,9 @@ public class Waiter implements Serializable
     return name;
   }
 
-  public int getId()
+  public int getNumber()
   {
-    return id;
+    return number;
   }
 
   public Order getOrder(int index)
@@ -207,11 +207,22 @@ public class Waiter implements Serializable
     }
   }
 
+  // line 31 "../../../../../RestoAppPersistence.ump"
+   public static  void reinitializeAutouniqueNumber(List<Waiter> waiters){
+    int nextId = 0; 
+    for (Waiter waiter : waiters) {
+      if (waiter.getNumber() > nextId) {
+        nextId = waiter.getNumber();
+      }
+    }
+    nextId++;
+  }
+
 
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
+            "number" + ":" + getNumber()+ "," +
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
   }  
@@ -219,7 +230,7 @@ public class Waiter implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 26 "../../../../../RestoAppPersistence.ump"
+  // line 29 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = -6819781202254769716L ;
 
   

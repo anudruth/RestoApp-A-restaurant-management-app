@@ -149,6 +149,6 @@ class Waiter
 {
   name;
   0..1 -- * Order order;
-  autounique id;
+  autounique number;
 }
 

@@ -924,6 +924,9 @@ public class RestoApp implements Serializable
     Table.reinitializeUniqueNumber(this.getTables());
     Order.reinitializeAutouniqueNumber(this.getOrders());
     MenuItem.reinitializeUniqueName(this.getMenu()); //Menu Items through Menu
+    if (this.waiters == null) {
+    	this.waiters = new ArrayList<Waiter>();
+    }
   }
 
   // line 18 "../../../../../RestoApp.ump"
