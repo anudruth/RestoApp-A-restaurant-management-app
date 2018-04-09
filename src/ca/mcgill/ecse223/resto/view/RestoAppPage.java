@@ -46,6 +46,7 @@ public class RestoAppPage extends JFrame {
 	private static final int MAX_SEATS = 8;
 	
     /************DECLARATIONS******************/
+	private Color mainPopUpColor = new Color(246,245,202);
     private JPanel Image_panel;
     private JPanel app_panel;
     private JPanel buttons_panel;
@@ -660,7 +661,7 @@ public class RestoAppPage extends JFrame {
 		selectedTable = aTable;
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(3,3));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -669,11 +670,11 @@ public class RestoAppPage extends JFrame {
 
         //Table Label
         JLabel tableName = new JLabel();
-        tableName.setBackground(new Color(255,230,153));
+        tableName.setBackground(mainPopUpColor);
         tableName.setOpaque(true);
         
         JTextField tableNumber = new JTextField();
-        tableNumber.setBackground(new Color(255,230,153));
+        tableNumber.setBackground(mainPopUpColor);
         tableNumber.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		String newTableNumber = tableNumber.getText();
@@ -682,7 +683,7 @@ public class RestoAppPage extends JFrame {
         });   
         
         JSlider tableSlider = new JSlider();
-        tableSlider.setBackground(new Color(255,230,153));
+        tableSlider.setBackground(mainPopUpColor);
         tableSlider.setMaximum(MAX_SEATS);
 		tableSlider.setMinimum(1);
 		tableSlider.setMajorTickSpacing(1);
@@ -703,10 +704,10 @@ public class RestoAppPage extends JFrame {
         
 		//Delete Button
         RoundButton removeTableButton = new RoundButton();
-        removeTableButton.setBackground(new Color(255,230,153));
+        removeTableButton.setBackground(mainPopUpColor);
         removeTableButton.setToolTipText("Remove selected Table");
 		try {
-			Image img = ImageIO.read(getClass().getResource("../resources/remove.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/remove_yellow.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			removeTableButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
@@ -721,11 +722,11 @@ public class RestoAppPage extends JFrame {
 		
 		//Move Button
 		RoundButton moveTableButton = new RoundButton();
-        moveTableButton.setBackground(new Color(255,230,153));
+        moveTableButton.setBackground(mainPopUpColor);
         moveTableButton.setToolTipText("Move selected Table");
 
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/move.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/move_green.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			moveTableButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
@@ -740,11 +741,11 @@ public class RestoAppPage extends JFrame {
 
         //Rotate button
         RoundButton rotateTableButton = new RoundButton();
-        rotateTableButton.setBackground(new Color(255,230,153));
+        rotateTableButton.setBackground(mainPopUpColor);
         rotateTableButton.setToolTipText("Rotate selected Table");
 
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/rotate.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/rotate_green.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			rotateTableButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
@@ -758,11 +759,11 @@ public class RestoAppPage extends JFrame {
 
         //viewOrder Button
         RoundButton viewOrderButton = new RoundButton();
-        viewOrderButton.setBackground(new Color(255,230,153));
+        viewOrderButton.setBackground(mainPopUpColor);
         viewOrderButton.setToolTipText("View and manage Orders");
 
         try {
-			Image img = ImageIO.read(getClass().getResource("../resources/order.bmp"));
+			Image img = ImageIO.read(getClass().getResource("../resources/order_yellow.bmp"));
 			Image scaled = img.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 			viewOrderButton.setIcon(new ImageIcon(scaled));
 		} catch (IOException e) {
@@ -813,7 +814,7 @@ public class RestoAppPage extends JFrame {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         String c1 = items.get(0).toString();
         String c2 = items.get(1).toString();
@@ -830,14 +831,14 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem7 = new JPanel();
 
         JLabel menuName = new JLabel();
-        menuName.setBackground(new Color(255,230,153));
+        menuName.setBackground(mainPopUpColor);
         menuName.setOpaque(true);
         menuName.setText("Menu");
 		menuName.setFont(new Font(menuName.getFont().getName(), Font.PLAIN, 20));
         
         //Category1
         JButton Category1Button = new JButton();
-        Category1Button.setBackground(new Color(255,230,153));
+        Category1Button.setBackground(mainPopUpColor);
 		Category1Button.setText(c1);
 		Category1Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -847,7 +848,7 @@ public class RestoAppPage extends JFrame {
         
 		//Category2
         JButton Category2Button = new JButton();
-        Category2Button.setBackground(new Color(255,230,153));
+        Category2Button.setBackground(mainPopUpColor);
 		Category2Button.setText(c2);
 		Category2Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -857,7 +858,7 @@ public class RestoAppPage extends JFrame {
 
 		//Category3
         JButton Category3Button = new JButton();
-        Category3Button.setBackground(new Color(255,230,153));
+        Category3Button.setBackground(mainPopUpColor);
 		Category3Button.setText(c3);
 		Category3Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -867,7 +868,7 @@ public class RestoAppPage extends JFrame {
 
 		//Category4
         JButton Category4Button = new JButton();
-        Category4Button.setBackground(new Color(255,230,153));
+        Category4Button.setBackground(mainPopUpColor);
 		Category4Button.setText(c4);
 		Category4Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -877,7 +878,7 @@ public class RestoAppPage extends JFrame {
         
 		//Category5
         JButton Category5Button = new JButton();
-        Category5Button.setBackground(new Color(255,230,153));
+        Category5Button.setBackground(mainPopUpColor);
 		Category5Button.setText(c5);
 		Category5Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -890,7 +891,7 @@ public class RestoAppPage extends JFrame {
 			for (MenuItem menuItem : menuItems) {
 				j++;
 				JButton MenuItemButton = new JButton();
-				MenuItemButton.setBackground(new Color(255,230,153));
+				MenuItemButton.setBackground(mainPopUpColor);
 				MenuItemButton.setText(menuItem.getName());
 				if (j < 5) {
 					popupMenuItem3.add(MenuItemButton);
@@ -941,7 +942,7 @@ public class RestoAppPage extends JFrame {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(3,3));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -957,52 +958,52 @@ public class RestoAppPage extends JFrame {
         //Reservation Labels
         
         JLabel makeReservation = new JLabel();
-        makeReservation.setBackground(new Color(255,230,153));
+        makeReservation.setBackground(mainPopUpColor);
         makeReservation.setOpaque(true);
         makeReservation.setText("                              Make a Reservation                              ");
         
         JLabel reservationTable = new JLabel();
-        reservationTable.setBackground(new Color(255,230,153));
+        reservationTable.setBackground(mainPopUpColor);
         reservationTable.setOpaque(true);
         reservationTable.setText("Tables: ");
         
         JLabel reservationDate = new JLabel();
-        reservationDate.setBackground(new Color(255,230,153));
+        reservationDate.setBackground(mainPopUpColor);
         reservationDate.setOpaque(true);
         reservationDate.setText("Date (MM/DD/YYYY): ");
         
         JLabel reservationTime = new JLabel();
-        reservationTime.setBackground(new Color(255,230,153));
+        reservationTime.setBackground(mainPopUpColor);
         reservationTime.setOpaque(true);
         reservationTime.setText("Time (HH:MM): ");
         
         JLabel reservationSize = new JLabel();
-        reservationSize.setBackground(new Color(255,230,153));
+        reservationSize.setBackground(mainPopUpColor);
         reservationSize.setOpaque(true);
         reservationSize.setText("Size: ");
         
         JLabel reservationName = new JLabel();
-        reservationName.setBackground(new Color(255,230,153));
+        reservationName.setBackground(mainPopUpColor);
         reservationName.setOpaque(true);
         reservationName.setText("Name: ");
         
         JLabel reservationMail = new JLabel();
-        reservationMail.setBackground(new Color(255,230,153));
+        reservationMail.setBackground(mainPopUpColor);
         reservationMail.setOpaque(true);
         reservationMail.setText("Email Address: ");
         
         JLabel reservationPhone = new JLabel();
-        reservationPhone.setBackground(new Color(255,230,153));
+        reservationPhone.setBackground(mainPopUpColor);
         reservationPhone.setOpaque(true);
         reservationPhone.setText("Phone Number: ");
         
         JLabel reservationNumber = new JLabel();
-        reservationNumber.setBackground(new Color(255,230,153));
+        reservationNumber.setBackground(mainPopUpColor);
         reservationNumber.setOpaque(true);
         reservationNumber.setText("Reservation Number: ");
         
         JLabel reservationField = new JLabel();
-        reservationField.setBackground(new Color(255,230,153));
+        reservationField.setBackground(mainPopUpColor);
         reservationField.setOpaque(true);
         
         PlaceholderTextField tableField = new PlaceholderTextField("Enter Table Numbers seperated by commas");
@@ -1028,7 +1029,7 @@ public class RestoAppPage extends JFrame {
         
 		//Delete Button
         JButton makeReservationButton = new JButton();
-        makeReservationButton.setBackground(new Color(255,230,153));
+        makeReservationButton.setBackground(mainPopUpColor);
         makeReservationButton.setText("Make Reservation");
         makeReservationButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1129,13 +1130,13 @@ public class RestoAppPage extends JFrame {
 	public void waiterPopUp(int x, int y) {
 		final JPopupMenu popUpWaiter = new JPopupMenu();
         popUpWaiter.setPopupSize(300,150);
-        popUpWaiter.setBackground(new Color(255,230,153));
+        popUpWaiter.setBackground(mainPopUpColor);
         
         JPanel popUpItem1 = new JPanel();
 
         
         JLabel waiterManagementLabel = new JLabel();
-        waiterManagementLabel.setBackground(new Color(255,230,153));
+        waiterManagementLabel.setBackground(mainPopUpColor);
         waiterManagementLabel.setOpaque(true);
         waiterManagementLabel.setText("                              Waiter Management                              ");
         
@@ -1173,12 +1174,12 @@ public class RestoAppPage extends JFrame {
 	   
 	    
 	    JLabel nameLabel = new JLabel();
-	    nameLabel.setBackground(new Color(255,230,153));
+	    nameLabel.setBackground(mainPopUpColor);
 	    nameLabel.setOpaque(true);
 	    nameLabel.setText("Name: ");
 	        
 	    JLabel removeWaiterLabel = new JLabel();
-	    removeWaiterLabel.setBackground(new Color(255,230,153));
+	    removeWaiterLabel.setBackground(mainPopUpColor);
 	    removeWaiterLabel.setOpaque(true);
 	    removeWaiterLabel.setText("Remove Waiter: ");
 	    
@@ -1257,18 +1258,18 @@ public class RestoAppPage extends JFrame {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(3,3));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         JPanel popupMenuItem6 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
         
         JLabel errorLabel = new JLabel();
-        errorLabel.setBackground(new Color(255,230,153));
+        errorLabel.setBackground(mainPopUpColor);
         errorLabel.setOpaque(true);
         errorLabel.setText("                              Error:                              ");
         
         JLabel errorText = new JLabel();
-        errorText.setBackground(new Color(255,230,153));
+        errorText.setBackground(mainPopUpColor);
         errorText.setOpaque(true);
         errorText.setText(errorMessage);
         
@@ -1289,7 +1290,7 @@ public class RestoAppPage extends JFrame {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -1297,7 +1298,7 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem4 = new JPanel();
         
         JLabel orderLabel = new JLabel();
-        orderLabel.setBackground(new Color(255,230,153));
+        orderLabel.setBackground(mainPopUpColor);
         orderLabel.setOpaque(true);
         
         orderLabel.setText("Create New Order");
@@ -1305,15 +1306,15 @@ public class RestoAppPage extends JFrame {
 
         
         JLabel instructions = new JLabel();
-        instructions.setBackground(new Color(255,230,153));
+        instructions.setBackground(mainPopUpColor);
         instructions.setOpaque(true);
         instructions.setText("Add other tables to order? (Seperated by commas)");
         
         JTextField tableField = new JTextField();
-        tableField.setBackground(new Color(255,230,153));
+        tableField.setBackground(mainPopUpColor);
         
         JButton startOrderButton = new JButton();
-        startOrderButton.setBackground(new Color(255,230,153));
+        startOrderButton.setBackground(mainPopUpColor);
         startOrderButton.setText("Start Order");
         startOrderButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1343,7 +1344,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem4);
         
 	    JPanel popupMenuItem5 = new JPanel();
-        popupMenuItem5.setBackground(new Color(255,230,153));
+        popupMenuItem5.setBackground(mainPopUpColor);
         popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
  	    JLabel orderString = new JLabel();
  	    orderString.setText("Current Orders");
@@ -1355,7 +1356,7 @@ public class RestoAppPage extends JFrame {
         
         for(Order order : orders) {
         	JLabel orderDescriptionLabel = new JLabel();
-        	orderDescriptionLabel.setBackground(new Color(255,230,153));
+        	orderDescriptionLabel.setBackground(mainPopUpColor);
         	orderDescriptionLabel.setOpaque(true);
         	
         	String tablesList = "";
@@ -1366,7 +1367,7 @@ public class RestoAppPage extends JFrame {
         	orderDescriptionLabel.setText("Number: "+order.getNumber()+" for Tables: "+tablesList);
         	
         	JButton endOrderButton = new JButton();
-            endOrderButton.setBackground(new Color(255,230,153));
+            endOrderButton.setBackground(mainPopUpColor);
             endOrderButton.setText("End order");
              
             endOrderButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1377,7 +1378,7 @@ public class RestoAppPage extends JFrame {
             });
              
             JPanel popupMenuItem6 = new JPanel();
-            popupMenuItem6.setBackground(new Color(255,230,153));
+            popupMenuItem6.setBackground(mainPopUpColor);
             popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
      	    popupMenuItem6.add(orderDescriptionLabel);
      	    popupMenuItem6.add(endOrderButton);
@@ -1392,14 +1393,14 @@ public class RestoAppPage extends JFrame {
 	    final JPanel seatPopupPanel = new JPanel();
 	    seatPopupPanel.setLayout(new BoxLayout(seatPopupPanel, BoxLayout.Y_AXIS));
 	    seatPopupPanel.setSize(300, 300);
-	    seatPopupPanel.setBackground(new Color(255,230,153));
+	    seatPopupPanel.setBackground(mainPopUpColor);
 	    
 	    //Display the Seat Number at the top of panel
 	    JPanel seatNumberPanel = new JPanel();
-	    seatNumberPanel.setBackground(new Color(255,230,153));
+	    seatNumberPanel.setBackground(mainPopUpColor);
 	    
 	    JLabel seatLable = new JLabel();
-	    seatLable.setBackground(new Color(255,230,153));
+	    seatLable.setBackground(mainPopUpColor);
 	    seatLable.setOpaque(true);
 	    seatLable.setText("Seat: " + seatNumber);
 	    seatLable.setFont(new Font(seatLable.getFont().getName(), Font.PLAIN, 20));
@@ -1419,7 +1420,7 @@ public class RestoAppPage extends JFrame {
 	    }
 	
 	    JList<OrderItem> list = new JList<OrderItem>(arrayOrderItem);
-	    list.setBackground(new Color(255,230,153));
+	    list.setBackground(mainPopUpColor);
 	    list.setOpaque(true);
 	    seatPopupPanel.add(list);
 	    
@@ -1445,7 +1446,7 @@ public class RestoAppPage extends JFrame {
 	    JPanel buttonPanel = new JPanel();
 	    buttonPanel.add(addOrderItem);
 	    buttonPanel.add(removeSelectedOrderItem);
-	    buttonPanel.setBackground(new Color(255,230,153));
+	    buttonPanel.setBackground(mainPopUpColor);
 	    
 	    seatPopupPanel.add(buttonPanel);
 	    
@@ -1456,15 +1457,15 @@ public class RestoAppPage extends JFrame {
 
 	    final JPopupMenu viewOrderPopUp = new JPopupMenu();
 	    viewOrderPopUp.setSize(300, 300);
-	    viewOrderPopUp.setBackground(new Color(255,230,153));
+	    viewOrderPopUp.setBackground(mainPopUpColor);
 	    viewOrderPopUp.setOpaque(true);
 	    
 	    //Display the table number at the top of popup
 	    JPanel tableNumberPanel = new JPanel();
-	    tableNumberPanel.setBackground(new Color(255,230,153));
+	    tableNumberPanel.setBackground(mainPopUpColor);
 	    
 	    JLabel tableLable = new JLabel();
-	    tableLable.setBackground(new Color(255,230,153));
+	    tableLable.setBackground(mainPopUpColor);
 	    tableLable.setOpaque(true);
 	    tableLable.setText("Table: " + table.getNumber());
 	    tableLable.setFont(new Font(tableLable.getFont().getName(), Font.PLAIN, 30));
@@ -1510,7 +1511,7 @@ public class RestoAppPage extends JFrame {
 	public void issueBillPopUp() {
 		final JPopupMenu issue_bill_popup = new JPopupMenu();
 		issue_bill_popup.setSize(300, 300);
-		issue_bill_popup.setBackground(new Color(255,230,153));
+		issue_bill_popup.setBackground(mainPopUpColor);
 		
 	    //Panels
 		
@@ -1535,23 +1536,23 @@ public class RestoAppPage extends JFrame {
 	    //Labels
 	    
 	    JLabel issue_bill_title = new JLabel();
-	    issue_bill_title.setBackground(new Color(255,230,153));
+	    issue_bill_title.setBackground(mainPopUpColor);
 	    issue_bill_title.setOpaque(true);
 	    issue_bill_title.setText("              Prepare Bill              ");
 	    issue_bill_title.setFont(new Font(issue_bill_title.getFont().getName(), Font.PLAIN, 30));
 	    
 	    JLabel seat_nums = new JLabel();
-	    seat_nums.setBackground(new Color(255,230,153));
+	    seat_nums.setBackground(mainPopUpColor);
 	    seat_nums.setOpaque(true);
 	    seat_nums.setText("Seat numbers: ");
 	    
 	    JLabel or_table = new JLabel();
-	    or_table.setBackground(new Color(255,230,153));
+	    or_table.setBackground(mainPopUpColor);
 	    or_table.setOpaque(true);
 	    or_table.setText("---------- OR ENTER TABLE NUMBER ---------- ");
 	    
 	    JLabel table_num = new JLabel();
-	    table_num.setBackground(new Color(255,230,153));
+	    table_num.setBackground(mainPopUpColor);
 	    table_num.setOpaque(true);
 	    table_num.setText("Table Number: ");
 	    
@@ -1617,7 +1618,7 @@ public class RestoAppPage extends JFrame {
 	public void billPopup(String[] orderItems, String waiter, String price) {
 		final JPopupMenu bill_popup = new JPopupMenu();
 		bill_popup.setSize(300, 300);
-		bill_popup.setBackground(new Color(255,230,153));
+		bill_popup.setBackground(mainPopUpColor);
 		
 		
 		//Panels
@@ -1647,54 +1648,54 @@ public class RestoAppPage extends JFrame {
 	    //JLists
 	    
 	    JList<String> list = new JList<String>(orderItems);
-	    list.setBackground(new Color(255,230,153));
+	    list.setBackground(mainPopUpColor);
 	    list.setOpaque(true);
 	    
 	    
 	    //Labels
 	    
 	    JLabel bill_title = new JLabel();
-	    bill_title.setBackground(new Color(255,230,153));
+	    bill_title.setBackground(mainPopUpColor);
 	    bill_title.setOpaque(true);
 	    bill_title.setText("                 Bill                 ");
 	    bill_title.setFont(new Font(bill_title.getFont().getName(), Font.PLAIN, 30));
 	    
 	    JLabel waiter_title = new JLabel();
-	    waiter_title.setBackground(new Color(255,230,153));
+	    waiter_title.setBackground(mainPopUpColor);
 	    waiter_title.setOpaque(true);
 	    waiter_title.setText("Waiter: ");
 	    waiter_title.setFont(new Font(waiter_title.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel waiter_name_title = new JLabel();
-	    waiter_name_title.setBackground(new Color(255,230,153));
+	    waiter_name_title.setBackground(mainPopUpColor);
 	    waiter_name_title.setOpaque(true);
 	    waiter_name_title.setText(waiter);
 	    
 	    
 	    JLabel header_lable = new JLabel();
-	    header_lable.setBackground(new Color(255,230,153));
+	    header_lable.setBackground(mainPopUpColor);
 	    header_lable.setOpaque(true);
 	    header_lable.setText("Quantity          Food                 Price        ");
 	    header_lable.setFont(new Font(header_lable.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel seperator_lable = new JLabel();
-	    seperator_lable.setBackground(new Color(255,230,153));
+	    seperator_lable.setBackground(mainPopUpColor);
 	    seperator_lable.setOpaque(true);
 	    seperator_lable.setText("------------------------------------------");
 	   
 	    JLabel lower_seperator_lable = new JLabel();
-	    lower_seperator_lable.setBackground(new Color(255,230,153));
+	    lower_seperator_lable.setBackground(mainPopUpColor);
 	    lower_seperator_lable.setOpaque(true);
 	    lower_seperator_lable.setText("=======================================");
 	    
 	    JLabel total_lable = new JLabel();
-	    total_lable.setBackground(new Color(255,230,153));
+	    total_lable.setBackground(mainPopUpColor);
 	    total_lable.setOpaque(true);
 	    total_lable.setText("Total                    $ ");
 	    total_lable.setFont(new Font(total_lable.getFont().getName(), Font.PLAIN, 20));
 	    
 	    JLabel total_price = new JLabel();
-	    total_price.setBackground(new Color(255,230,153));
+	    total_price.setBackground(mainPopUpColor);
 	    total_price.setOpaque(true);
 	    total_price.setText(price);
 	    total_price.setFont(new Font(total_price.getFont().getName(), Font.PLAIN, 20));
@@ -1741,7 +1742,7 @@ public class RestoAppPage extends JFrame {
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
-        popupMenu.setBackground(new Color(255,230,153));
+        popupMenu.setBackground(mainPopUpColor);
         
         String c1 = items.get(0).toString();
         String c2 = items.get(1).toString();
@@ -1761,23 +1762,23 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem10 = new JPanel();
 
         JLabel menuName = new JLabel();
-        menuName.setBackground(new Color(255,230,153));
+        menuName.setBackground(mainPopUpColor);
         menuName.setOpaque(true);
         menuName.setText("Menu");
 		menuName.setFont(new Font(menuName.getFont().getName(), Font.PLAIN, 20));
 		
 		JLabel seatsLabel = new JLabel();
-		seatsLabel.setBackground(new Color(255,230,153));
+		seatsLabel.setBackground(mainPopUpColor);
         seatsLabel.setOpaque(true);
         seatsLabel.setText("Order for Seats: ");
         
         JLabel quantityLabel = new JLabel();
-        quantityLabel.setBackground(new Color(255,230,153));
+        quantityLabel.setBackground(mainPopUpColor);
         quantityLabel.setOpaque(true);
         quantityLabel.setText("Quantity: ");
         
         JTextField seatsField = new JTextField();
-        seatsField.setBackground(new Color(255,230,153));
+        seatsField.setBackground(mainPopUpColor);
         StringBuilder seatsText = new StringBuilder();
         for(int i = 0; i < seatNumbers.length; i++) {
     		seatsText.append(seatNumbers[i] + ",");
@@ -1786,14 +1787,14 @@ public class RestoAppPage extends JFrame {
         seatsField.setText(seatsText.toString());
         
         JTextField quantityField = new JTextField();
-        quantityField.setBackground(new Color(255,230,153));
+        quantityField.setBackground(mainPopUpColor);
         quantityField.setText("1");
         
         int quantity = Integer.parseInt(quantityField.getText());
         
         //Category1
         JButton Category1Button = new JButton();
-        Category1Button.setBackground(new Color(255,230,153));
+        Category1Button.setBackground(mainPopUpColor);
 		Category1Button.setText(c1);
 		Category1Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1803,7 +1804,7 @@ public class RestoAppPage extends JFrame {
         
 		//Category2
         JButton Category2Button = new JButton();
-        Category2Button.setBackground(new Color(255,230,153));
+        Category2Button.setBackground(mainPopUpColor);
 		Category2Button.setText(c2);
 		Category2Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1813,7 +1814,7 @@ public class RestoAppPage extends JFrame {
 
 		//Category3
         JButton Category3Button = new JButton();
-        Category3Button.setBackground(new Color(255,230,153));
+        Category3Button.setBackground(mainPopUpColor);
 		Category3Button.setText(c3);
 		Category3Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1823,7 +1824,7 @@ public class RestoAppPage extends JFrame {
 
 		//Category4
         JButton Category4Button = new JButton();
-        Category4Button.setBackground(new Color(255,230,153));
+        Category4Button.setBackground(mainPopUpColor);
 		Category4Button.setText(c4);
 		Category4Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1833,7 +1834,7 @@ public class RestoAppPage extends JFrame {
         
 		//Category5
         JButton Category5Button = new JButton();
-        Category5Button.setBackground(new Color(255,230,153));
+        Category5Button.setBackground(mainPopUpColor);
 		Category5Button.setText(c5);
 		Category5Button.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1846,7 +1847,7 @@ public class RestoAppPage extends JFrame {
 			for (MenuItem menuItem : menuItems) {
 				j++;
 				JButton MenuItemButton = new JButton();
-				MenuItemButton.setBackground(new Color(255,230,153));
+				MenuItemButton.setBackground(mainPopUpColor);
 				MenuItemButton.setText(menuItem.getName());
 				MenuItemButton.addActionListener(new java.awt.event.ActionListener() {
 		        	public void actionPerformed(java.awt.event.ActionEvent evt) {
