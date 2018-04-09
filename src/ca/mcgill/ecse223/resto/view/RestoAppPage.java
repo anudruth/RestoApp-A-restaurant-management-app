@@ -323,7 +323,7 @@ public class RestoAppPage extends JFrame {
 		// error
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
-		
+			
 		}
 		// this is needed because the size of the window changes depending on whether an error message is shown or not
 		pack();
@@ -351,6 +351,9 @@ public class RestoAppPage extends JFrame {
 		// call the controller
 		try {
 			RestoAppController.createWaiter(addWaiterField.getText());
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+			
 		} catch (InvalidInputException e) {
 			error = e.getMessage();
 		}
@@ -402,7 +405,7 @@ public class RestoAppPage extends JFrame {
     
     private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	waiterPopUp(2,2);
-    	RestoApp restoapp= RestoAppApplication.getRestoapp();
+    	RestoApp restoapp = RestoAppApplication.getRestoapp();
     	restoVisualizer.setResto(restoapp);
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {

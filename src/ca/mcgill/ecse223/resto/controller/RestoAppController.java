@@ -466,9 +466,7 @@ public class RestoAppController {
 		return flag;
 	}
 	
-	public static List<Waiter> getWaiters() {
-		return RestoAppApplication.getRestoapp().getWaiters();
-	}
+	
 	
 	public static Map<String,List<OrderItem>> getOrderItems(Table table) throws InvalidInputException {
 		
@@ -771,6 +769,7 @@ public class RestoAppController {
 		try {
 			restoapp.addWaiter(name);
 			RestoAppApplication.save();
+			
 		}
 		catch (RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
