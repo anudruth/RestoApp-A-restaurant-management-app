@@ -24,6 +24,7 @@ class Waiter {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = -6819781202254769716L;
+  
 }
 
 class Menu {
