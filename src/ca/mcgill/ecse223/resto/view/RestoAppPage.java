@@ -50,8 +50,8 @@ public class RestoAppPage extends JFrame {
 	private static final int MAX_SEATS = 8;
 	
     /************DECLARATIONS******************/
-	private Color mainPopUpColor = new Color(246,245,202);
-	private Color secondaryPopUpColor = new Color(255, 230, 153);
+	private Color mainPopUpColor = new Color(240,240,240);
+	private Color secondaryPopUpColor = new Color(74,186,186);
 	
     private JPanel Image_panel;
     private JPanel app_panel;
