@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -439,7 +440,7 @@ public class RestoAppPage extends JFrame {
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		menuPopUp(2,2,RestoAppController.getItemCategories(), null);
+		menuPopUp(2,2,RestoAppController.getItemCategories(), null, null);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
@@ -569,7 +570,7 @@ public class RestoAppPage extends JFrame {
 	 */
 	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
 		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory));
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory);
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
@@ -677,6 +678,16 @@ public class RestoAppPage extends JFrame {
 			errorPopUp(e.getMessage());
 		}
 		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void addToMenuButtonActionPerformed(String itemName, ItemCategory itemCategory, double itemPrice) throws InvalidInputException{
+		try {
+			RestoAppController.addMenuItem(itemName, itemCategory, itemPrice);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
@@ -831,13 +842,13 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem3);
 	    popupMenu.add(popupMenuItem4);
 	        
-		popupMenu.show(Image_panel, 0, 0);
+		popupMenu.show(Image_panel, x, y);
 	}
 
 	/**
 	 * Is called whenever a menu is selected. Makes the list of items for that menu appear.
 	 */
-	public void menuPopUp(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems) {
+	public void menuPopUp(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems, ItemCategory category){
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
@@ -848,7 +859,7 @@ public class RestoAppPage extends JFrame {
         String c3 = items.get(2).toString();
         String c4 = items.get(3).toString();
         String c5 = items.get(4).toString();
-        
+      
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
         JPanel popupMenuItem3 = new JPanel();
@@ -856,6 +867,9 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem5 = new JPanel();
         JPanel popupMenuItem6 = new JPanel();
         JPanel popupMenuItem7 = new JPanel();
+        JPanel popupMenuItem8 = new JPanel();
+        JPanel popupMenuItem9 = new JPanel();
+        JPanel popupMenuItem10 = new JPanel();
 
         JLabel menuName = new JLabel();
         menuName.setBackground(mainPopUpColor);
@@ -919,7 +933,12 @@ public class RestoAppPage extends JFrame {
 				j++;
 				JButton MenuItemButton = new JButton();
 				MenuItemButton.setBackground(mainPopUpColor);
-				MenuItemButton.setText(menuItem.getName());
+				MenuItemButton.setText(menuItem.getName() + " - $" + menuItem.getCurrentPricedMenuItem().getPrice());
+				MenuItemButton.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						//MenuItemButtonActionPerformed(menuItem.getName(), menuItem.getItemCategory());
+					}
+				});
 				if (j < 5) {
 					popupMenuItem3.add(MenuItemButton);
 				}
@@ -938,6 +957,41 @@ public class RestoAppPage extends JFrame {
 			}
 		}
 		
+		JLabel nameLable = new JLabel();
+	    nameLable.setBackground(mainPopUpColor);
+	    nameLable.setOpaque(true);
+	    nameLable.setText("Name :");
+	    nameLable.setFont(new Font(nameLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField nameField = new PlaceholderTextField("Enter item name :");
+        nameField.setBackground(secondaryPopUpColor);
+	    
+        JLabel priceLable = new JLabel();
+	    priceLable.setBackground(mainPopUpColor);
+	    priceLable.setOpaque(true);
+	    priceLable.setText("Price :");
+	    priceLable.setFont(new Font(priceLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField priceField = new PlaceholderTextField("Enter item price :");
+        priceField.setBackground(secondaryPopUpColor);
+                
+        JButton addButton = new JButton();
+        addButton.setBackground(new Color(0,255,0));;
+		addButton.setText("Add to menu");
+		addButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		try {
+        		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
+        		} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
+					e.printStackTrace();
+				}
+            }
+        });
+        
 		popupMenu.setLayout(new BoxLayout(popupMenu, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
@@ -946,6 +1000,9 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
 	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
 	    popupMenuItem7.setLayout(new BoxLayout(popupMenuItem7, BoxLayout.LINE_AXIS));
+	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
+	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
+	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(menuName);
 	    popupMenuItem2.add(Category1Button);
@@ -953,7 +1010,12 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.add(Category3Button);
 	    popupMenuItem2.add(Category4Button);
 	    popupMenuItem2.add(Category5Button);
-	        
+	    popupMenuItem8.add(nameLable);
+	    popupMenuItem8.add(nameField);
+	    popupMenuItem9.add(priceLable);
+	    popupMenuItem9.add(priceField);
+	    popupMenuItem10.add(addButton);
+	    
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    popupMenu.add(popupMenuItem3);
@@ -961,8 +1023,96 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem5);
 	    popupMenu.add(popupMenuItem6);
 	    popupMenu.add(popupMenuItem7);
+	    popupMenu.add(popupMenuItem8);
+	    popupMenu.add(popupMenuItem9);
+	    popupMenu.add(popupMenuItem10);
 	    
 		popupMenu.show(Image_panel, x, y);
+	}
+	
+	public JPanel MenuItemPanel(String itemName, double itemPrice, ItemCategory itemCategory) {
+
+	    final JPanel MenuItemPanel = new JPanel();
+	    MenuItemPanel.setLayout(new BoxLayout(MenuItemPanel, BoxLayout.Y_AXIS));
+	    MenuItemPanel.setSize(300, 300);
+	    MenuItemPanel.setBackground(mainPopUpColor);
+	    
+	    //Display the Seat Number at the top of panel
+	    JPanel namePanel = new JPanel();
+	    namePanel.setBackground(mainPopUpColor);
+	    JPanel categoryPanel = new JPanel();
+	    categoryPanel.setBackground(mainPopUpColor);
+	    JPanel pricePanel = new JPanel();
+	    pricePanel.setBackground(mainPopUpColor);
+	    
+	    JLabel nameLable = new JLabel();
+	    nameLable.setBackground(mainPopUpColor);
+	    nameLable.setOpaque(true);
+	    nameLable.setText("Name :");
+	    nameLable.setFont(new Font(nameLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField nameField = new PlaceholderTextField();
+        nameField.setBackground(secondaryPopUpColor);
+        nameField.setText(itemName);
+        
+        JLabel categoryLable = new JLabel();
+	    categoryLable.setBackground(mainPopUpColor);
+	    categoryLable.setOpaque(true);
+	    categoryLable.setText("Price :");
+	    categoryLable.setFont(new Font(categoryLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField categoryField = new PlaceholderTextField();
+        categoryField.setBackground(secondaryPopUpColor);
+        categoryField.setText(String.valueOf(itemPrice));
+
+	    
+        JLabel priceLable = new JLabel();
+	    priceLable.setBackground(mainPopUpColor);
+	    priceLable.setOpaque(true);
+	    priceLable.setText("Price :");
+	    priceLable.setFont(new Font(priceLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField priceField = new PlaceholderTextField();
+        priceField.setBackground(secondaryPopUpColor);
+        priceField.setText(String.valueOf(itemPrice));
+        
+	    //Add two buttons at the bottom of the panel (Add Order Item) and (Delete Order Item)
+	    JButton updateMenuItem = new JButton();
+	    updateMenuItem.setBackground(new Color(255,174,11));
+	    updateMenuItem.setText("Update Menu Item");
+	    updateMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		//updateMenuItemActionPerformed();
+            }
+        });
+	    
+	    JButton removeMenuItem = new JButton();
+	    removeMenuItem.setBackground(new Color(247,58,0));
+	    removeMenuItem.setText("Remove Menu Item");
+	    removeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		//removeMenuItemActionPerformed();
+            }
+        });
+	    
+	    JPanel buttonPanel = new JPanel();
+	    buttonPanel.add(updateMenuItem);
+	    buttonPanel.add(removeMenuItem);
+	    buttonPanel.setBackground(mainPopUpColor);
+	    
+	    namePanel.add(nameLable);
+	    namePanel.add(nameField);
+	    categoryPanel.add(categoryLable);
+	    categoryPanel.add(categoryField);
+	    pricePanel.add(priceLable);
+	    pricePanel.add(priceField);
+	    
+	    MenuItemPanel.add(namePanel);
+	    MenuItemPanel.add(categoryPanel);
+	    MenuItemPanel.add(pricePanel);
+	    MenuItemPanel.add(buttonPanel);
+	    
+	    return MenuItemPanel;
 	}
 	
 	public void reservePopUp(int x, int y) {
