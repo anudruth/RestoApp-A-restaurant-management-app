@@ -982,6 +982,7 @@ public class RestoAppPage extends JFrame {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		try {
         		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
+        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category);
         		} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
