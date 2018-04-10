@@ -41,25 +41,21 @@ public class RestoAppController {
 	 * Creates a 4 seated table with a width of three times the diameter of a seat such that it doesn't overlap with other tables
 	 * @throws InvalidInputException
 	 */
-	public static void createTable() throws InvalidInputException
-	{	
-		try
-		{
-
-			int newTableNumber = 0;
-			int aX;
-			int aY;
+	public static void createTable() throws InvalidInputException {	
+		try {
+			int aX,aY;
 			Table lastTable;
-//			Table secondLastTable;
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			List<Table> currentTables = restoapp.getCurrentTables();
-			if(currentTables.size() != 0) {
-				Table highestNumberedTable = currentTables.stream().max(Comparator.comparing(Table::getNumber)).get();
-				newTableNumber = highestNumberedTable.getNumber() + 1;
+			
+			int lowestNonUsedTableNumber = 1;
+			for(int i=0; i<restoapp.getCurrentTables().size(); i++) {
+				for(Table table : restoapp.getCurrentTables()) {
+					if(lowestNonUsedTableNumber == table.getNumber()) {
+						lowestNonUsedTableNumber++;
+					}
+				}
 			}
-			else {
-				newTableNumber =1 ;
-			}
+
 			int numberOfSeats = 4;
 			int tableWidth = 3*SEAT_DIAMETER;
 			int tableLength;
@@ -76,8 +72,7 @@ public class RestoAppController {
 			}
 			else {
 				lastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-1);
-				//secondLastTable = restoapp.getCurrentTables().get(restoapp.getCurrentTables().size()-2);
-				if(newTableNumber%3==0) 
+				if(lowestNonUsedTableNumber%3==0) 
 				{
 					aX= 30;
 					aY =lastTable.getY()+lastTable.getLength()+TABLE_SPACING;
@@ -92,7 +87,7 @@ public class RestoAppController {
 
 			Table newTable;
 			
-			Table existingTable = tableExists(newTableNumber, restoapp);
+			Table existingTable = tableExists(lowestNonUsedTableNumber, restoapp);
 			
 			
 			if(existingTable != null)
@@ -100,7 +95,7 @@ public class RestoAppController {
 				newTable = existingTable;
 			}
 			else {
-				newTable = restoapp.addTable(newTableNumber, aX,aY, tableWidth, tableLength, 0);
+				newTable = restoapp.addTable(lowestNonUsedTableNumber, aX,aY, tableWidth, tableLength, 0);
 			}
 			
 			newTable.setX(aX);
@@ -108,12 +103,11 @@ public class RestoAppController {
 			
 			restoapp.addCurrentTable(newTable);
 
-			RestoAppController.updateTable(newTable, newTableNumber, 4);
+			RestoAppController.updateTable(newTable, lowestNonUsedTableNumber, 4);
 			
 			RestoAppApplication.save();
 		}
-		catch (RuntimeException e)
-		{
+		catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}
 
@@ -246,12 +240,17 @@ public class RestoAppController {
 		int n = table.numberOfCurrentSeats();
 		
 		for (int k = 1; k <= (numberOfSeats - n); k++) {
-			Seat seat = table.addSeat();
+			Seat seat;
+			if(table.getSeats().size() > table.getCurrentSeats().size()) {
+				seat = table.getSeat(table.getCurrentSeats().size());
+			}else {
+				seat = table.addSeat();
+			}
 			table.addCurrentSeat(seat);
 		}
 		
 		for (int k = 1; k <= (n - numberOfSeats); k++) {
-			Seat seat = table.getCurrentSeat(0);
+			Seat seat = table.getCurrentSeat(table.getCurrentSeats().size()-1);
 			table.removeCurrentSeat(seat);
 		}
 		

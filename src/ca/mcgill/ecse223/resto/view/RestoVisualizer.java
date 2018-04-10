@@ -135,9 +135,9 @@ public class RestoVisualizer extends JPanel {
 				
 				tables.put(rectangle, table);
 				if(table.hasOrders()) {
-					g2d.setColor(new Color(255,255,102));
-				}else {
 					g2d.setColor(higlighted);
+				}else {
+					g2d.setColor(Color.gray);
 				}
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
