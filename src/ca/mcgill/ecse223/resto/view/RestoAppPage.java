@@ -440,7 +440,7 @@ public class RestoAppPage extends JFrame {
     }
     
     private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		menuPopUp(2,2,RestoAppController.getItemCategories(), null, null);
+		menuPopUp(2,2,RestoAppController.getItemCategories(), null, null, null);
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
 	}
@@ -570,7 +570,7 @@ public class RestoAppPage extends JFrame {
 	 */
 	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
 		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory);
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, null);
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
@@ -688,8 +688,22 @@ public class RestoAppPage extends JFrame {
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void MenuItemButtonActionPerformed(List<ItemCategory> i, MenuItem menuItem, ItemCategory itemCategory) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, menuItem);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
+	
+	private void removeButtonActionPerformed(MenuItem menuItem) {
+		try {
+			RestoAppController.removeMenuItem(menuItem);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
 	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
@@ -848,7 +862,7 @@ public class RestoAppPage extends JFrame {
 	/**
 	 * Is called whenever a menu is selected. Makes the list of items for that menu appear.
 	 */
-	public void menuPopUp(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems, ItemCategory category){
+	public void menuPopUp(int x, int y, List<ItemCategory> items, List<MenuItem> menuItems, ItemCategory category, MenuItem selectedMenuItem){
 
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
@@ -870,6 +884,7 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem8 = new JPanel();
         JPanel popupMenuItem9 = new JPanel();
         JPanel popupMenuItem10 = new JPanel();
+        JPanel popupMenuItem11 = new JPanel();
 
         JLabel menuName = new JLabel();
         menuName.setBackground(mainPopUpColor);
@@ -936,7 +951,7 @@ public class RestoAppPage extends JFrame {
 				MenuItemButton.setText(menuItem.getName() + " - $" + menuItem.getCurrentPricedMenuItem().getPrice());
 				MenuItemButton.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						//MenuItemButtonActionPerformed(menuItem.getName(), menuItem.getItemCategory());
+						MenuItemButtonActionPerformed(items, menuItem, category);
 					}
 				});
 				if (j < 5) {
@@ -963,7 +978,7 @@ public class RestoAppPage extends JFrame {
 	    nameLable.setText("Name :");
 	    nameLable.setFont(new Font(nameLable.getFont().getName(), Font.PLAIN, 14));
 	    
-	    PlaceholderTextField nameField = new PlaceholderTextField("Enter item name :");
+	    PlaceholderTextField nameField = new PlaceholderTextField();
         nameField.setBackground(secondaryPopUpColor);
 	    
         JLabel priceLable = new JLabel();
@@ -972,17 +987,69 @@ public class RestoAppPage extends JFrame {
 	    priceLable.setText("Price :");
 	    priceLable.setFont(new Font(priceLable.getFont().getName(), Font.PLAIN, 14));
 	    
-	    PlaceholderTextField priceField = new PlaceholderTextField("Enter item price :");
+	    PlaceholderTextField priceField = new PlaceholderTextField();
         priceField.setBackground(secondaryPopUpColor);
-                
+        
+        JLabel categoryLable = new JLabel();
+	    categoryLable.setBackground(mainPopUpColor);
+	    categoryLable.setOpaque(true);
+	    categoryLable.setText("Category :");
+	    categoryLable.setFont(new Font(categoryLable.getFont().getName(), Font.PLAIN, 14));
+	    
+	    PlaceholderTextField categoryField = new PlaceholderTextField();
+        categoryField.setBackground(secondaryPopUpColor);
+        categoryField.setEditable(false);
+        
+        if(selectedMenuItem != null) {
+        	nameField.setText(selectedMenuItem.getName());
+        	priceField.setText(String.valueOf(selectedMenuItem.getCurrentPricedMenuItem().getPrice()));
+        	categoryField.setText(selectedMenuItem.getItemCategory().toString());
+        }
+        
         JButton addButton = new JButton();
-        addButton.setBackground(new Color(0,255,0));;
+        addButton.setBackground(new Color(5,245,0));;
 		addButton.setText("Add to menu");
 		addButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		try {
         		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
-        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category);
+        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
+        		} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
+					e.printStackTrace();
+				}
+            }
+        });
+		
+		JButton removeButton = new JButton();
+        removeButton.setBackground(new Color(245,5,0));;
+		removeButton.setText("Remove from menu");
+		removeButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		try {
+        		removeButtonActionPerformed(selectedMenuItem);
+        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
+        		} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
+					e.printStackTrace();
+				}
+            }
+        });
+		
+		JButton updateButton = new JButton();
+        updateButton.setBackground(new Color(255,155,3));;
+		updateButton.setText("Update item");
+		updateButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		try {
+        		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
+        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
         		} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -1004,6 +1071,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem8.setLayout(new BoxLayout(popupMenuItem8, BoxLayout.LINE_AXIS));
 	    popupMenuItem9.setLayout(new BoxLayout(popupMenuItem9, BoxLayout.LINE_AXIS));
 	    popupMenuItem10.setLayout(new BoxLayout(popupMenuItem10, BoxLayout.LINE_AXIS));
+	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(menuName);
 	    popupMenuItem2.add(Category1Button);
@@ -1015,7 +1083,10 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem8.add(nameField);
 	    popupMenuItem9.add(priceLable);
 	    popupMenuItem9.add(priceField);
-	    popupMenuItem10.add(addButton);
+	    popupMenuItem10.add(categoryLable);
+	    popupMenuItem10.add(categoryField);
+	    popupMenuItem11.add(addButton);
+	    popupMenuItem11.add(removeButton);
 	    
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
@@ -1027,6 +1098,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem8);
 	    popupMenu.add(popupMenuItem9);
 	    popupMenu.add(popupMenuItem10);
+	    popupMenu.add(popupMenuItem11);
 	    
 		popupMenu.show(Image_panel, x, y);
 	}

@@ -796,9 +796,8 @@ public class RestoAppController {
 		}	
 	}
 	
-	public static void removeMenuItem(String menuItemName) throws InvalidInputException{
-		if(menuItemName.equals(null)) throw new InvalidInputException("No item name selected, cannot remove item");
-		MenuItem menuItem = MenuItem.getWithName(menuItemName);
+	public static void removeMenuItem(MenuItem menuItem) throws InvalidInputException{
+		if(menuItem.equals(null)) throw new InvalidInputException("No item name selected, cannot remove item");
 		boolean current = menuItem.hasCurrentPricedMenuItem();
 		if(!current) {
 			throw new InvalidInputException("item does not have a priced menu item");
