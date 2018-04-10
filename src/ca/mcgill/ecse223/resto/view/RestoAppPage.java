@@ -7,6 +7,7 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -58,6 +59,7 @@ public class RestoAppPage extends JFrame {
     private JPanel app_panel;
     private JPanel buttons_panel;
     private JLabel jLabel2;
+    private JDialog popUpWaiter;
     private JPanel scroll_panel;
     private Integer selectedWaiter = -1;
     private JScrollPane scroll_layout;
@@ -70,9 +72,9 @@ public class RestoAppPage extends JFrame {
   	private String error = null;
   	// table assignment
   	//...
-  	 private JTextField addWaiterField = new JTextField();
-  	 private JComboBox <String> waiterList;
+  	private JComboBox <String> waiterList;
   	private HashMap<Integer, Waiter> waiters;
+  	private JTextField addWaiterField;
 	
  	public RestoAppPage() {
  		initComponents();
@@ -1153,31 +1155,16 @@ public class RestoAppPage extends JFrame {
 	}
 	
 	public void waiterPopUp(int x, int y) {
-		final JPopupMenu popUpWaiter = new JPopupMenu();
-        popUpWaiter.setPopupSize(300,150);
+		popUpWaiter = new JDialog();
+        popUpWaiter.setSize(300,200);
         popUpWaiter.setBackground(mainPopUpColor);
+        popUpWaiter.setLocation(600,0);
         
-        JPanel popUpItem1 = new JPanel();
-
-        
-        JLabel waiterManagementLabel = new JLabel();
-        waiterManagementLabel.setBackground(mainPopUpColor);
-        waiterManagementLabel.setOpaque(true);
-        waiterManagementLabel.setText("                              Waiter Management                              ");
-        
-
-        
-        popUpWaiter.setLayout(new BoxLayout(popUpWaiter, BoxLayout.PAGE_AXIS));
-	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.LINE_AXIS));
-
-        
-	    popUpItem1.add(waiterManagementLabel);
-	    
-	    popUpWaiter.add(popUpItem1);
-
-	    
 //--------------------------------------------------------------//
 	    //Panels
+	    JPanel popUpItem1 = new JPanel();
+	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.PAGE_AXIS));
+	    popUpItem1.setBackground(mainPopUpColor);
 		
 	    JPanel popUpItem2 = new JPanel();
 	    popUpItem2.setBackground(mainPopUpColor);
@@ -1196,7 +1183,11 @@ public class RestoAppPage extends JFrame {
 
 	    
 	    //Labels
-	   
+	    
+	    JLabel waiterManagementLabel = new JLabel();
+        waiterManagementLabel.setBackground(mainPopUpColor);
+        waiterManagementLabel.setOpaque(true);
+        waiterManagementLabel.setText("                              Waiter Management                              ");
 	    
 	    JLabel nameLabel = new JLabel();
 	    nameLabel.setBackground(mainPopUpColor);
@@ -1211,15 +1202,10 @@ public class RestoAppPage extends JFrame {
 	    
 	    //Text Fields
 	    
-	  //  private JTextField addWaiterField = new JTextField();
-	    addWaiterField.setBackground(new Color(255, 255, 255));
-	    
-	    
-	    PlaceholderTextField removeWaiterField = new PlaceholderTextField("Enter table number");
-	    removeWaiterField.setBackground(secondaryPopUpColor);
+	    addWaiterField = new JTextField();
+	    addWaiterField.setBackground(new Color(255, 255, 255));	
 	    
 	    waiterList = new JComboBox<String>(new String[0]);
-
 	    waiterList.setBackground(new Color(255, 255, 255));
 	    
 	    //Buttons
@@ -1243,14 +1229,13 @@ public class RestoAppPage extends JFrame {
 	    });
 	    
 	    
-	    popUpWaiter.setLayout(new BoxLayout(popUpWaiter, BoxLayout.PAGE_AXIS));
-	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.LINE_AXIS));
+	    
 	    popUpItem3.setLayout(new BoxLayout(popUpItem3, BoxLayout.LINE_AXIS));
 	    popUpItem4.setLayout(new BoxLayout(popUpItem4, BoxLayout.LINE_AXIS));
 	    popUpItem5.setLayout(new BoxLayout(popUpItem5, BoxLayout.LINE_AXIS));
 	    popUpItem6.setLayout(new BoxLayout(popUpItem6, BoxLayout.LINE_AXIS));
   
-	   
+	    popUpItem2.add(waiterManagementLabel);
 	    popUpItem3.add(nameLabel);
 	    popUpItem3.add(addWaiterField);
 	    popUpItem4.add(addWaiterButton);
@@ -1258,14 +1243,18 @@ public class RestoAppPage extends JFrame {
 	    popUpItem5.add(waiterList);
 	    popUpItem6.add(deleteWaiterButton);    
 	    
+	    popUpItem1.add(popUpItem2);
+	    popUpItem1.add(popUpItem3);
+	    popUpItem1.add(popUpItem4);
+	    popUpItem1.add(popUpItem5);
+	    popUpItem1.add(popUpItem6);
+	    
 	    popUpWaiter.add(popUpItem1);
-	    popUpWaiter.add(popUpItem3);
-	    popUpWaiter.add(popUpItem4);
-	    popUpWaiter.add(popUpItem5);
-	    popUpWaiter.add(popUpItem6);
    
     	
-	    popUpWaiter.show(Image_panel, 2, 2);
+	   // popUpWaiter.show(Image_panel, 2, 2);
+	    popUpWaiter.setVisible(true);
+	    System.out.println(popUpWaiter.isVisible());
 	    
 	  
 	}
