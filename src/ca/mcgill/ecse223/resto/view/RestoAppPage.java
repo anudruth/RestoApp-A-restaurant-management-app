@@ -53,6 +53,7 @@ public class RestoAppPage extends JFrame {
 	private Color mainPopUpColor = new Color(240,240,240);
 	private Color secondaryPopUpColor = new Color(255,255,255);
 	
+	
     private JPanel Image_panel;
     private JPanel app_panel;
     private JPanel buttons_panel;
@@ -71,6 +72,7 @@ public class RestoAppPage extends JFrame {
   	//...
   	 private JTextField addWaiterField = new JTextField();
   	 private JComboBox <String> waiterList;
+  	private HashMap<Integer, Waiter> waiters;
 	
  	public RestoAppPage() {
  		initComponents();
@@ -331,6 +333,8 @@ public class RestoAppPage extends JFrame {
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
 			
+			
+			
 		}
 		// this is needed because the size of the window changes depending on whether an error message is shown or not
 		pack();
@@ -359,6 +363,10 @@ public class RestoAppPage extends JFrame {
 		try {
 			RestoAppController.createWaiter(addWaiterField.getText());
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			waiterList.removeAllItems();
+			for (Waiter waiter : restoapp.getWaiters()) {
+				waiterList.addItem(waiter.getName());
+			};
 			restoVisualizer.setResto(restoapp);
 			
 		} catch (InvalidInputException e) {
@@ -417,6 +425,10 @@ public class RestoAppPage extends JFrame {
     private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	waiterPopUp(2,2);
     	RestoApp restoapp = RestoAppApplication.getRestoapp();
+		waiterList.removeAllItems();
+		for (Waiter waiter : restoapp.getWaiters()) {
+			waiterList.addItem(waiter.getName());
+		};
     	restoVisualizer.setResto(restoapp);
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -817,7 +829,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem3);
 	    popupMenu.add(popupMenuItem4);
 	        
-		popupMenu.show(Image_panel, x, y);
+		popupMenu.show(Image_panel, 0, 0);
 	}
 
 	/**
@@ -1207,17 +1219,8 @@ public class RestoAppPage extends JFrame {
 	    removeWaiterField.setBackground(secondaryPopUpColor);
 	    
 	    waiterList = new JComboBox<String>(new String[0]);
-	    waiterList.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-		        JComboBox<String> cb = (JComboBox<String>) evt.getSource();
-		        selectedWaiter = cb.getSelectedIndex();
-		        System.out.println(selectedWaiter);
-			}
-		});
+
 	    waiterList.setBackground(new Color(255, 255, 255));
-	    waiterList.addItem("Test");
-	    waiterList.addItem("Test2");
-	    waiterList.addItem("Test3");
 	    
 	    //Buttons
 	    
