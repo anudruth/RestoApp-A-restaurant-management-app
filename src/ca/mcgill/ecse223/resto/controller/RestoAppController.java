@@ -776,4 +776,36 @@ public class RestoAppController {
 		}
 		
 	}
+	
+	public static void addMenuItem(String name, ItemCategory category, double price) throws InvalidInputException {
+		if (name.equals(null)) throw new InvalidInputException("No name entered, cannot add item");
+		if (category.equals(null)) throw new InvalidInputException("No category selected, cannot add item");
+		if (price < 0) throw new InvalidInputException("Price is invalid, please enter a positive number");
+		RestoApp r = RestoAppApplication.getRestoapp();
+		Menu currentMenu = r.getMenu();
+		
+		try {
+			MenuItem menuItem = new MenuItem(name, currentMenu);
+			menuItem.setItemCategory(category);
+			PricedMenuItem pmi = menuItem.addPricedMenuItem(price, r);
+			menuItem.setCurrentPricedMenuItem(pmi);
+			RestoAppApplication.save();
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}	
+	}
+	
+	public static void removeMenuItem(String menuItemName) throws InvalidInputException{
+		if(menuItemName.equals(null)) throw new InvalidInputException("No item name selected, cannot remove item");
+		MenuItem menuItem = MenuItem.getWithName(menuItemName);
+		boolean current = menuItem.hasCurrentPricedMenuItem();
+		if(!current) {
+			throw new InvalidInputException("item does not have a priced menu item");
+		}
+		else {
+			menuItem.setCurrentPricedMenuItem(null);
+		}
+		RestoAppApplication.save();
+	}
 }
