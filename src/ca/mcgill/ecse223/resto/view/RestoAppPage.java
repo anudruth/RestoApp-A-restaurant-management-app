@@ -48,6 +48,7 @@ public class RestoAppPage extends JFrame {
     /************DECLARATIONS******************/
 	private Color mainPopUpColor = new Color(246,245,202);
 	private Color secondaryPopUpColor = new Color(255, 230, 153);
+	
     private JPanel Image_panel;
     private JPanel app_panel;
     private JPanel buttons_panel;

@@ -30,6 +30,8 @@ public class RestoVisualizer extends JPanel {
 	private static final long serialVersionUID = 3046970097697621942L;
 	
 	//UI elements
+	private Color higlighted = new Color(255,255,102);
+
 	private List<RoundRectangle2D> rectangles = new ArrayList<RoundRectangle2D>();
 	private List<Ellipse2D> circles = new ArrayList<Ellipse2D>();
 	private int seatPlacementOffsetLength, seatPlacementOffsetWidth;
@@ -89,7 +91,6 @@ public class RestoVisualizer extends JPanel {
 	}
 	private void doDrawing(Graphics g)
 	{
-		Color higlighted = new Color(255,255,102);
 		
 		if(restoapp != null)
 		{			
