@@ -38,7 +38,7 @@ public class RestoAppController {
 
 	
 	/**
-	 * Creates a 4 seated table with a width of three times the diameter of a seat such that it doesn't overlap with other tables
+	 * Creates a four seated table with a width of three times the diameter of a seat such that it doesn't overlap with other tables
 	 * @throws InvalidInputException
 	 */
 	public static void createTable() throws InvalidInputException {	
