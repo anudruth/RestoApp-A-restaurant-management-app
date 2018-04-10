@@ -597,10 +597,11 @@ public class RestoAppController {
 		if(billCreated == false) {
 			throw new InvalidInputException("Error with bill creation.");
 		}
-		for(Seat seat:newBill.getIssuedForSeats()) {
-			orderItems.addAll(seat.getOrderItems());
-		}
+		//for(Seat seat:newBill.getIssuedForSeats()) {
+		//	orderItems.addAll(seat.getOrderItems());
+		//}
 		//System.out.println(newBill.toString());
+		orderItems.addAll(newBill.getOrder().getOrderItems());
 		RestoAppApplication.save();
 		return orderItems;
 	}

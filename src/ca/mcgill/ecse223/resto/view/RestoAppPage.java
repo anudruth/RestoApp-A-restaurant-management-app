@@ -13,7 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.sql.Time;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +43,8 @@ import ca.mcgill.ecse223.resto.application.RestoAppApplication;
 import ca.mcgill.ecse223.resto.controller.InvalidInputException;
 
 public class RestoAppPage extends JFrame {
+	
+	DecimalFormat df = new DecimalFormat(".##");
 
 	private static final long serialVersionUID = -2702005067769134471L;
 	private static final int MAX_SEATS = 8;
@@ -390,8 +394,12 @@ public class RestoAppPage extends JFrame {
     			k++;
     			
     		}
+    		df.setRoundingMode(RoundingMode.FLOOR);
+
+    	    double roundedPrice = new Double(df.format(price));
+
     		
-    		billPopup(orderItemsArray, waiter, Double.toString(price));
+    		billPopup(orderItemsArray, waiter, Double.toString(roundedPrice));
     		
     		
     	} catch (InvalidInputException e) {
