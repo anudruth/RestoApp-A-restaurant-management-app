@@ -13,7 +13,7 @@ public class PersistenceObjectStream {
 	private static String filename = "menu.resto";
 
 	/**
-	 * Saves data to filename
+	 * Saves data to filename 
 	 */
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
