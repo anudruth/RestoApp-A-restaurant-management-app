@@ -714,6 +714,7 @@ public class RestoAppPage extends JFrame {
         popupMenu.setMinimumSize(new Dimension(3,3));
         popupMenu.setBackground(mainPopUpColor);
         
+        
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
         JPanel popupMenuItem3 = new JPanel();
@@ -855,7 +856,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem3);
 	    popupMenu.add(popupMenuItem4);
 	        
-		popupMenu.show(Image_panel, x, y);
+		popupMenu.show(Image_panel, 0, 0);
 	}
 
 	/**
