@@ -213,8 +213,8 @@ public class RestoAppController {
 	 */
 	public static void removeWaiter(Waiter waiter) throws InvalidInputException {
 		if(waiter == null) throw new InvalidInputException("Invalid Waiter");
-		boolean hasorder = waiter.hasOrder();
-		if(hasorder == true) throw new InvalidInputException("Waiter is taking care of an order"); //if table reserved throw exception
+		boolean hasbill = waiter.hasBill();
+		if(hasbill == true) throw new InvalidInputException("Waiter is taking care of an order"); //if table reserved throw exception
 		try {		
 			waiter.delete();
 			RestoAppApplication.save();
@@ -669,6 +669,7 @@ public class RestoAppController {
 	 * returns a Strign of the name of the waiter for the given OrderItem's Order
 	 * @throws InvalidInputException
 	 */
+	/*
 	public static String setWaiterForBill(OrderItem oItem) throws InvalidInputException{
 		Waiter waiter = oItem.getOrder().getWaiter();
 		if (waiter == null) {
@@ -677,7 +678,7 @@ public class RestoAppController {
 		String waiterName= waiter.getName();
 		return waiterName;
 	}
-	
+	*/
 	/**
 	 * delete an OrderItem for a specific seat. If the OrderItem is shared just remove it from that seat.
 	 * @throws InvalidInputException

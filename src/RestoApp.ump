@@ -148,7 +148,7 @@ class Bill {
 class Waiter
 {
   name;
-  0..1 -- * Order order;
-  autounique id;
+  0..1 -- * Bill bill;
+  autounique number;
 }
 
