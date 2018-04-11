@@ -7,10 +7,8 @@ package ca.mcgill.ecse223.resto.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,7 +19,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,11 +48,12 @@ public class RestoAppPage extends JFrame {
 	private static final long serialVersionUID = -2702005067769134471L;
 	private static final int MAX_SEATS = 8;
 	
-    /************DECLARATIONS******************/
+	//mainPopUpColor is background of all popUps
 	private Color mainPopUpColor = new Color(240,240,240);
+	//secondaryPopUpColor is background of text boxes
 	private Color secondaryPopUpColor = new Color(255,255,255);
 	
-	
+	//Declarations for main window
     private JPanel Image_panel;
     private JPanel app_panel;
     private JPanel buttons_panel;
@@ -65,8 +63,6 @@ public class RestoAppPage extends JFrame {
     private Integer selectedWaiter = -1;
     private JScrollPane scroll_layout;
     private RestoVisualizer restoVisualizer;
-    // UI elements
-  	private JLabel errorMessage;
   	// table
 	private Table selectedTable = null;
   	// data elements
@@ -78,16 +74,12 @@ public class RestoAppPage extends JFrame {
 	
  	public RestoAppPage() {
  		initComponents();
- 		refreshData();
  	}
  	
  	/** This method is called from within the constructor to initialize the form.
 	 */
     private void initComponents() {
-    	
-    	errorMessage = new JLabel();
-		errorMessage.setForeground(Color.RED);
-		
+    			
         app_panel = new JPanel();
         scroll_panel = new JPanel();
         restoVisualizer = new RestoVisualizer();
@@ -329,392 +321,7 @@ public class RestoAppPage extends JFrame {
 
         pack();
     }
-
-    private void refreshData() {
-		// error
-		errorMessage.setText(error);
-		if (error == null || error.length() == 0) {
-			
-			
-			
-		}
-		// this is needed because the size of the window changes depending on whether an error message is shown or not
-		pack();
-	}
     
-    
-    /**************ACTIONS*****************/
-    private void addTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		error = null;
-		try {
-			
-			RestoAppController.createTable();
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-			
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-    }
-    
-    private void addWaiterButtonActionPerformed(java.awt.event.ActionEvent evt, String waiterName) {
-		// clear error message
-		error = null;
-		
-		// call the controller
-		try {
-			RestoAppController.createWaiter(addWaiterField.getText());
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-			
-		} catch (InvalidInputException e) {
-			error = e.getMessage();
-		}
-		
-		// update visuals
-		refreshData();
-    }
-    
-    private void addOrderItemActionPerformed(java.awt.event.ActionEvent evt, String seatNumber, Table table){
-    	String[] seatNumbers = {seatNumber}; 
-		menuPopUp2(0,0,RestoAppController.getItemCategories(), null, seatNumbers, table);
-		
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-    
-    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt, String tables, String seats) {
-    	
-    		//billPopup("hi", "bye", "100.45");
-    	try {
-    		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
-    		List<OrderItem> orderItems = RestoAppController.issueBill(seat_list);
-    		String[] orderItemsArray = new String[(orderItems.size())];
-    		int k = 0;
-    		Double price = 0.0;
-    		String waiter= "";
-    		//waiter= RestoAppController.setWaiterForBill(seat_list.get(0));
-    		for(OrderItem oItem: orderItems) {
-    			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
-    			orderItemsArray[k] = oItem.toString();
-    			waiter = RestoAppController.setWaiterForBill(oItem);
-    			k++;
-    			
-    		}
-    		df.setRoundingMode(RoundingMode.FLOOR);
-
-    	    double roundedPrice = new Double(df.format(price));
-
-    		
-    		billPopup(orderItemsArray, waiter, Double.toString(roundedPrice));
-    		
-    		
-    	} catch (InvalidInputException e) {
-    		errorPopUp(e.getMessage());
-    	}
-    
-    	
-    }
-    private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	reservePopUp(2,2);
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-    }
-    
-    private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	waiterPopUp(2,2);
-    	RestoApp restoapp = RestoAppApplication.getRestoapp();
-    	restoVisualizer.setResto(restoapp);
-    }
-    private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    	issueBillPopUp();
-    }
-    
-    private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		menuPopUp(2,2,RestoAppController.getItemCategories(), null, null, null);
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-    
-    private void orderButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	orderPopup();
-    	RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-    }
-    
-    private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
-    	try {
-			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-    }
-    
-    private void tableNumberChangeActionPerformed(ActionEvent evt, String newTableNumber) {
-		try {
-			RestoAppController.updateTable(selectedTable, Integer.valueOf(newTableNumber), selectedTable.getCurrentSeats().size());
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-    }
-    
-    private void viewOrderActionPerformed(ActionEvent evt, Table table) {
-		try {
-	    	Map<String, List<OrderItem>> orderMap;
-			try {
-				orderMap = RestoAppController.getOrderItems(table);
-				viewOrderPopUp(table, orderMap);
-			} catch (InvalidInputException e) {
-				errorPopUp(e.getMessage());
-			}
-	    	
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-		} finally {
-			
-		}
-    }
-    
-    private void moveTableButtonActionPerformed(ActionEvent evt) {
-    	error = null;
-		restoVisualizer.addMouseListener(new MouseAdapter(){
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int x_coordinate = e.getX();
-				int y_coordinate= e.getY();
-				try {
-					RestoAppController.moveTable(selectedTable, x_coordinate,y_coordinate);
-					RestoApp restoapp = RestoAppApplication.getRestoapp();
-					restoVisualizer.setResto(restoapp);
-					restoVisualizer.removeMouseListener(this);
-				} catch (InvalidInputException e1) {
-					e1.printStackTrace();
-					errorPopUp(e1.getMessage()); //test
-				} 	
-			}
-		});
-	}
-    
-    /**
-     * If selectedTable (global variable) is in the CurrentTables, calls the Controller method to remove
-     */
-	private void removeTableButtonActionPerformed(ActionEvent evt) {
-		// clear error message and basic input validation
-		error = "";
-		if (!(selectedTable.getNumber() > 0))
-			errorPopUp("Table needs to be selected for deletion!");
-		
-		if (error.length() == 0) {
-			// call the controller
-			try {
-				Table toDelete = null;
-				List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
-				for(Table table : currentTables) {
-					if(table.getNumber() == selectedTable.getNumber()) {
-						toDelete = table;
-					}
-				}
-				RestoAppController.removeTable(toDelete);
-				RestoApp restoapp = RestoAppApplication.getRestoapp();
-				restoVisualizer.setResto(restoapp);
-			} catch (InvalidInputException e) {
-				errorPopUp(e.getMessage());
-			}
-		}
-		
-		// update visuals
-		refreshData();
-	};
-	
-	private void rotateTableButtonActionPerformed(ActionEvent evt) {
-		error = "";
-		if (!(selectedTable.getNumber() > 0))
-			errorPopUp("Table needs to be selected for rotation");
-		
-		if (error.length() == 0) {
-			Table toRotate = null;
-			List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
-			for(Table table : currentTables) {
-				if(table.getNumber() == selectedTable.getNumber()) {
-					toRotate = table;
-				}
-			}
-			if(toRotate.getFlipped()==0) {
-				toRotate.setFlipped(1);
-			}
-			else {
-				toRotate.setFlipped(0);
-			}
-			
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			restoVisualizer.setResto(restoapp);
-		}
-	}
-	
-	/**
-	 * Displays the proper popUp for the category of menu selected
-	 */
-	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, null);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void CategoryButtonActionPerformed2(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i, String[] seatNumbers, Table table) {
-		try {
-			menuPopUp2(0, 0, i, RestoAppController.getMenuItems(itemCategory), seatNumbers, table);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void MenuItemButtonActionPerformed2(ActionEvent evt, MenuItem menuItem, String[] seatNumbers, int quantity, Table table) {
-		List<Seat> currentSeats = table.getCurrentSeats();
-		List<Seat> seats = new ArrayList<Seat>();;
-		for(Seat seat: currentSeats) {
-			for(int i = 0; i < seatNumbers.length; i++) {
-				if(seat.getNumber() == Integer.parseInt(seatNumbers[i])) {
-					seats.add(seat);
-				}
-			}
-		}
-		for(Seat seat: seats) {
-			System.out.println(seat.getNumber());
-		}
-		try {
-			RestoAppController.orderMenuItem(menuItem, quantity, seats);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-
-	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, String seatNumber, JList<OrderItem> list) {
-		
-		OrderItem selectedOrderItem;
-		if((selectedOrderItem = list.getSelectedValue()) == null){
-			errorPopUp("No OrderItem selected");
-		}
-		
-		try {
-			RestoAppController.cancelOrderItem(selectedOrderItem, seatNumber);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void removeWaiterActionPerformed(ActionEvent evt, JList<String> waiterJlist) {
-		String selectedString;
-		if((selectedString = waiterJlist.getSelectedValue()) == null){
-			errorPopUp("No Waiter selected");
-		}
-		
-		try {
-			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			Waiter selectedWaiter = null;
-			for (Waiter waiter: restoapp.getWaiters()){
-				if (waiter.getName() == selectedString) {
-					selectedWaiter = waiter;
-					break;
-				}
-			}
-					
-			RestoAppController.removeWaiter(selectedWaiter);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
-		try {
-			RestoAppController.cancelOrder(table);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void endOrderActionPerformed(ActionEvent evt, Order order) {
-		try {
-			RestoAppController.endOrder(order);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void startOrderActionPerformed(ActionEvent evt, String[] tableNumbers) {
-		List<Table> tables = new ArrayList<Table>();
-		
-		
-		for (int k = 0; k < tableNumbers.length; k++) {
-			int tableNumber = Integer.parseInt(tableNumbers[k]);
-			tables.add(Table.getWithNumber(tableNumber));
-		}
-		try {
-			RestoAppController.startOrder(tables);
-			orderPopup();
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-		
-		RestoApp restoapp = RestoAppApplication.getRestoapp();
-		restoVisualizer.setResto(restoapp);
-	}
-	
-	private void addToMenuButtonActionPerformed(String itemName, ItemCategory itemCategory, double itemPrice) throws InvalidInputException{
-		try {
-			RestoAppController.addMenuItem(itemName, itemCategory, itemPrice);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-	}
-	
-	private void MenuItemButtonActionPerformed(List<ItemCategory> i, MenuItem menuItem, ItemCategory itemCategory) {
-		try {
-			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, menuItem);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-	}
-	
-	private void removeButtonActionPerformed(MenuItem menuItem) {
-		try {
-			RestoAppController.removeMenuItem(menuItem);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-	}
-	
-	private void updateButtonActionPerformed(MenuItem menuItem, String name, ItemCategory category, double price) {
-		try {
-			RestoAppController.updateMenuItem(menuItem, name, category, price);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
-		}
-	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
 	 */
@@ -724,7 +331,6 @@ public class RestoAppPage extends JFrame {
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(3,3));
         popupMenu.setBackground(mainPopUpColor);
-        
         
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -838,7 +444,6 @@ public class RestoAppPage extends JFrame {
             }
         });
         
-        
         String selectedTableNumber = "-1";
 		if(selectedTable != null) {
 			selectedTableNumber = Integer.toString(selectedTable.getNumber());
@@ -878,12 +483,6 @@ public class RestoAppPage extends JFrame {
         final JPopupMenu popupMenu = new JPopupMenu();
         popupMenu.setMinimumSize(new Dimension(50,50));
         popupMenu.setBackground(mainPopUpColor);
-        
-        String c1 = items.get(0).toString();
-        String c2 = items.get(1).toString();
-        String c3 = items.get(2).toString();
-        String c4 = items.get(3).toString();
-        String c5 = items.get(4).toString();
       
         JPanel popupMenuItem1 = new JPanel();
         JPanel popupMenuItem2 = new JPanel();
@@ -903,55 +502,19 @@ public class RestoAppPage extends JFrame {
         menuName.setText("Menu");
 		menuName.setFont(new Font(menuName.getFont().getName(), Font.PLAIN, 20));
         
-        //Category1
-        JButton Category1Button = new JButton();
-        Category1Button.setBackground(mainPopUpColor);
-		Category1Button.setText(c1);
-		Category1Button.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed(evt, items.get(0), items);
-            }
-        });
-        
-		//Category2
-        JButton Category2Button = new JButton();
-        Category2Button.setBackground(mainPopUpColor);
-		Category2Button.setText(c2);
-		Category2Button.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed(evt, items.get(1), items);
-            }
-        });
-
-		//Category3
-        JButton Category3Button = new JButton();
-        Category3Button.setBackground(mainPopUpColor);
-		Category3Button.setText(c3);
-		Category3Button.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed(evt, items.get(2), items);
-            }
-        });
-
-		//Category4
-        JButton Category4Button = new JButton();
-        Category4Button.setBackground(mainPopUpColor);
-		Category4Button.setText(c4);
-		Category4Button.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed(evt, items.get(3), items);
-            }
-        });
-        
-		//Category5
-        JButton Category5Button = new JButton();
-        Category5Button.setBackground(mainPopUpColor);
-		Category5Button.setText(c5);
-		Category5Button.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
-        		CategoryButtonActionPerformed(evt, items.get(4), items);
-            }
-        });
+		//Categories
+		for(int i=0; i<items.size(); i++) {
+			JButton Category1Button = new JButton();
+	        Category1Button.setBackground(mainPopUpColor);
+			Category1Button.setText(items.get(i).toString());
+			ItemCategory itemCategory = items.get(i);
+			Category1Button.addActionListener(new java.awt.event.ActionListener() {
+	        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+	        		CategoryButtonActionPerformed(evt, itemCategory, items);
+	            }
+	        });
+		    popupMenuItem2.add(Category1Button);
+		}
 		
 		if (menuItems != null) {
 			int j = 0;
@@ -1085,11 +648,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem11.setLayout(new BoxLayout(popupMenuItem11, BoxLayout.LINE_AXIS));
 	        
 	    popupMenuItem1.add(menuName);
-	    popupMenuItem2.add(Category1Button);
-	    popupMenuItem2.add(Category2Button);
-	    popupMenuItem2.add(Category3Button);
-	    popupMenuItem2.add(Category4Button);
-	    popupMenuItem2.add(Category5Button);
 	    popupMenuItem8.add(nameLable);
 	    popupMenuItem8.add(nameField);
 	    popupMenuItem9.add(priceLable);
@@ -1218,7 +776,6 @@ public class RestoAppPage extends JFrame {
         JPanel popupMenuItem11 = new JPanel();
 
         //Reservation Labels
-        
         JLabel makeReservation = new JLabel();
         makeReservation.setBackground(mainPopUpColor);
         makeReservation.setOpaque(true);
@@ -1395,7 +952,6 @@ public class RestoAppPage extends JFrame {
         popUpWaiter.setBackground(mainPopUpColor);
         popUpWaiter.setLocation(600,0);
         
-//--------------------------------------------------------------//
 	    //Panels
 	    JPanel popUpItem1 = new JPanel();
 	    popUpItem1.setLayout(new BoxLayout(popUpItem1, BoxLayout.PAGE_AXIS));
@@ -1415,10 +971,8 @@ public class RestoAppPage extends JFrame {
 	    
 	    JPanel popUpItem6 = new JPanel();
 	    popUpItem6.setBackground(mainPopUpColor);
-
 	    
 	    //Labels
-	    
 	    JLabel waiterManagementLabel = new JLabel();
         waiterManagementLabel.setBackground(mainPopUpColor);
         waiterManagementLabel.setOpaque(true);
@@ -1434,9 +988,7 @@ public class RestoAppPage extends JFrame {
 	    removeWaiterLabel.setOpaque(true);
 	    removeWaiterLabel.setText("Remove Waiter: ");
 	    
-	    
 	    //Text Fields
-	    
 	    addWaiterField = new JTextField();
 	    addWaiterField.setBackground(new Color(255, 255, 255));	
 	    
@@ -1448,9 +1000,7 @@ public class RestoAppPage extends JFrame {
 	  
 	    JList <String> waiterJlist = new JList<String>(waiterList); 	   
 	   
-	    
-	    //Buttons
-	    
+	    //Buttons 
 	    JButton deleteWaiterButton = new JButton();
 	    deleteWaiterButton.setBackground(new Color(255, 255, 255));
 	    deleteWaiterButton.setText("Delete Waiter");
@@ -1461,8 +1011,6 @@ public class RestoAppPage extends JFrame {
 	    		}
 	    });
 	    
-	    
-	    
 	    JButton addWaiterButton = new JButton();
 	    addWaiterButton.setBackground(new Color(255, 255,255));
 	    addWaiterButton.setText("Add Waiter");
@@ -1472,9 +1020,7 @@ public class RestoAppPage extends JFrame {
     			waiterPopUp(x,y);
 	    	}
 	    });
-	    
-	    
-	    
+	
 	    popUpItem3.setLayout(new BoxLayout(popUpItem3, BoxLayout.LINE_AXIS));
 	    popUpItem4.setLayout(new BoxLayout(popUpItem4, BoxLayout.LINE_AXIS));
 	    popUpItem5.setLayout(new BoxLayout(popUpItem5, BoxLayout.LINE_AXIS));
@@ -1496,7 +1042,6 @@ public class RestoAppPage extends JFrame {
 	    
 	    popUpWaiter.add(popUpItem1);
    
-    	
 	    popUpWaiter.show(Image_panel, 2, 2);
 	      
 	}
@@ -1576,15 +1121,12 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
 	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
 	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
-	   
-	    
+
 	    popupMenuItem1.add(orderLabel);
 	    popupMenuItem2.add(instructions);
 	    popupMenuItem3.add(tableField);
 	    popupMenuItem4.add(startOrderButton);
-	    
-	   
-	    
+
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
 	    popupMenu.add(popupMenuItem3);
@@ -1733,18 +1275,14 @@ public class RestoAppPage extends JFrame {
     	
 	    //Display all of the seatPopUp from the input map
     	Set<String> seatNumbers = orderMap.keySet();
-    	
     	for(String seatNumber : seatNumbers) {
     		viewOrderPopUp.add(seatPopUp(viewOrderPopUp, table, seatNumber, orderMap.get(seatNumber)));
     	    viewOrderPopUp.add(new JSeparator());
-    	}	
-    	
+    	}
     	viewOrderPopUp.show(Image_panel, 0, 0);
-	    
 	}
 	
 	public void refreshViewOrderPopUp(Table table) {
-
 		Map<String, List<OrderItem>> newOrderMap;
 		try {
 			newOrderMap = RestoAppController.getOrderItems(table);
@@ -1754,34 +1292,24 @@ public class RestoAppPage extends JFrame {
 		}
 	}
 	
-	
 	public void issueBillPopUp() {
 		final JPopupMenu issue_bill_popup = new JPopupMenu();
 		issue_bill_popup.setSize(300, 300);
 		issue_bill_popup.setBackground(mainPopUpColor);
 		
 	    //Panels
-		
 	    JPanel popupMenuItem1 = new JPanel();
 	    popupMenuItem1.setBackground(mainPopUpColor);
-	    
 	    JPanel popupMenuItem2 = new JPanel();
 	    popupMenuItem2.setBackground(mainPopUpColor);
-	    
 	    JPanel popupMenuItem3 = new JPanel();
 	    popupMenuItem3.setBackground(mainPopUpColor);
-	    
 	    JPanel popupMenuItem4 = new JPanel();
 	    popupMenuItem4.setBackground(mainPopUpColor);
-	    
 	    JPanel popupMenuItem5 = new JPanel();
 	    popupMenuItem5.setBackground(mainPopUpColor);
 
-	    
-
-	    
 	    //Labels
-	    
 	    JLabel issue_bill_title = new JLabel();
 	    issue_bill_title.setBackground(mainPopUpColor);
 	    issue_bill_title.setOpaque(true);
@@ -1803,19 +1331,13 @@ public class RestoAppPage extends JFrame {
 	    table_num.setOpaque(true);
 	    table_num.setText("Table Number: ");
 	    
-	    
 	    //Text Fields
-	    
 	    PlaceholderTextField seat_field = new PlaceholderTextField("Enter comma seperated list of seats");
 	    seat_field.setBackground(secondaryPopUpColor);
-	    
-	    
-	    
 	    PlaceholderTextField table_field = new PlaceholderTextField("Enter table number");
 	    table_field.setBackground(secondaryPopUpColor);
 	    
 	    //Buttons
-	    
 	    JButton prepBillButton = new JButton();
 	    prepBillButton.setBackground(secondaryPopUpColor);
 	    prepBillButton.setText("Prepare Bill");
@@ -1825,7 +1347,6 @@ public class RestoAppPage extends JFrame {
 	    		}
 	    });
 	    
-	    
 	    issue_bill_popup.setLayout(new BoxLayout(issue_bill_popup, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
@@ -1833,10 +1354,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
 	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
 
-
-	    
-	    
-	    
 	    popupMenuItem1.add(issue_bill_title);
 	    popupMenuItem2.add(seat_nums);
 	    popupMenuItem2.add(seat_field);
@@ -1845,11 +1362,6 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem4.add(table_field);
 	    popupMenuItem5.add(prepBillButton);
 
-
-	    
-	    
-	    
-	    
 	    issue_bill_popup.add(popupMenuItem1);
 	    issue_bill_popup.add(popupMenuItem2);
 	    issue_bill_popup.add(popupMenuItem3);
@@ -2154,6 +1666,376 @@ public class RestoAppPage extends JFrame {
 	    popupMenu.add(popupMenuItem10);
 	    
 		popupMenu.show(Image_panel, x, y);
+	}
+	
+
+    /**************ACTIONS*****************/
+    private void addTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		error = null;
+		try {
+			
+			RestoAppController.createTable();
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+			
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+    }
+    
+    private void addWaiterButtonActionPerformed(java.awt.event.ActionEvent evt, String waiterName) {
+		// clear error message
+		error = null;
+		
+		// call the controller
+		try {
+			RestoAppController.createWaiter(addWaiterField.getText());
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+			
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
+		
+		// update visuals
+    }
+    
+    private void addOrderItemActionPerformed(java.awt.event.ActionEvent evt, String seatNumber, Table table){
+    	String[] seatNumbers = {seatNumber}; 
+		menuPopUp2(0,0,RestoAppController.getItemCategories(), null, seatNumbers, table);
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+    
+    private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt, String tables, String seats) {
+    	
+    		//billPopup("hi", "bye", "100.45");
+    	try {
+    		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
+    		List<OrderItem> orderItems = RestoAppController.issueBill(seat_list);
+    		String[] orderItemsArray = new String[(orderItems.size())];
+    		int k = 0;
+    		Double price = 0.0;
+    		String waiter= "";
+    		//waiter= RestoAppController.setWaiterForBill(seat_list.get(0));
+    		for(OrderItem oItem: orderItems) {
+    			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
+    			orderItemsArray[k] = oItem.toString();
+    			waiter = RestoAppController.setWaiterForBill(oItem);
+    			k++;
+    			
+    		}
+    		df.setRoundingMode(RoundingMode.FLOOR);
+
+    	    double roundedPrice = new Double(df.format(price));
+
+    		
+    		billPopup(orderItemsArray, waiter, Double.toString(roundedPrice));
+    		
+    		
+    	} catch (InvalidInputException e) {
+    		errorPopUp(e.getMessage());
+    	}
+    
+    	
+    }
+    private void reserveTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	reservePopUp(2,2);
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+    }
+    
+    private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	waiterPopUp(2,2);
+    	RestoApp restoapp = RestoAppApplication.getRestoapp();
+    	restoVisualizer.setResto(restoapp);
+    }
+    private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    	issueBillPopUp();
+    }
+    
+    private void displayMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		menuPopUp(2,2,RestoAppController.getItemCategories(), null, null, null);
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+    
+    private void orderButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    	orderPopup();
+    	RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+    }
+    
+    private void tableCurrentSeatsChangeActionPerformed(ChangeEvent evt, int numSeats) {
+    	try {
+			RestoAppController.updateTable(selectedTable, selectedTable.getNumber(), numSeats);
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+    }
+    
+    private void tableNumberChangeActionPerformed(ActionEvent evt, String newTableNumber) {
+		try {
+			RestoAppController.updateTable(selectedTable, Integer.valueOf(newTableNumber), selectedTable.getCurrentSeats().size());
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+    }
+    
+    private void viewOrderActionPerformed(ActionEvent evt, Table table) {
+		try {
+	    	Map<String, List<OrderItem>> orderMap;
+			try {
+				orderMap = RestoAppController.getOrderItems(table);
+				viewOrderPopUp(table, orderMap);
+			} catch (InvalidInputException e) {
+				errorPopUp(e.getMessage());
+			}
+	    	
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		} finally {
+			
+		}
+    }
+    
+    private void moveTableButtonActionPerformed(ActionEvent evt) {
+    	error = null;
+		restoVisualizer.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int x_coordinate = e.getX();
+				int y_coordinate= e.getY();
+				try {
+					RestoAppController.moveTable(selectedTable, x_coordinate,y_coordinate);
+					RestoApp restoapp = RestoAppApplication.getRestoapp();
+					restoVisualizer.setResto(restoapp);
+					restoVisualizer.removeMouseListener(this);
+				} catch (InvalidInputException e1) {
+					e1.printStackTrace();
+					errorPopUp(e1.getMessage()); //test
+				} 	
+			}
+		});
+	}
+    
+    /**
+     * If selectedTable (global variable) is in the CurrentTables, calls the Controller method to remove
+     */
+	private void removeTableButtonActionPerformed(ActionEvent evt) {
+		// clear error message and basic input validation
+		error = "";
+		if (!(selectedTable.getNumber() > 0))
+			errorPopUp("Table needs to be selected for deletion!");
+		
+		if (error.length() == 0) {
+			// call the controller
+			try {
+				Table toDelete = null;
+				List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
+				for(Table table : currentTables) {
+					if(table.getNumber() == selectedTable.getNumber()) {
+						toDelete = table;
+					}
+				}
+				RestoAppController.removeTable(toDelete);
+				RestoApp restoapp = RestoAppApplication.getRestoapp();
+				restoVisualizer.setResto(restoapp);
+			} catch (InvalidInputException e) {
+				errorPopUp(e.getMessage());
+			}
+		}
+	};
+	
+	private void rotateTableButtonActionPerformed(ActionEvent evt) {
+		error = "";
+		if (!(selectedTable.getNumber() > 0))
+			errorPopUp("Table needs to be selected for rotation");
+		
+		if (error.length() == 0) {
+			Table toRotate = null;
+			List<Table> currentTables = RestoAppApplication.getRestoapp().getCurrentTables();
+			for(Table table : currentTables) {
+				if(table.getNumber() == selectedTable.getNumber()) {
+					toRotate = table;
+				}
+			}
+			if(toRotate.getFlipped()==0) {
+				toRotate.setFlipped(1);
+			}
+			else {
+				toRotate.setFlipped(0);
+			}
+			
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			restoVisualizer.setResto(restoapp);
+		}
+	}
+	
+	/**
+	 * Displays the proper popUp for the category of menu selected
+	 */
+	private void CategoryButtonActionPerformed(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, null);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void CategoryButtonActionPerformed2(ActionEvent evt, ItemCategory itemCategory, List<ItemCategory> i, String[] seatNumbers, Table table) {
+		try {
+			menuPopUp2(0, 0, i, RestoAppController.getMenuItems(itemCategory), seatNumbers, table);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void MenuItemButtonActionPerformed2(ActionEvent evt, MenuItem menuItem, String[] seatNumbers, int quantity, Table table) {
+		List<Seat> currentSeats = table.getCurrentSeats();
+		List<Seat> seats = new ArrayList<Seat>();;
+		for(Seat seat: currentSeats) {
+			for(int i = 0; i < seatNumbers.length; i++) {
+				if(seat.getNumber() == Integer.parseInt(seatNumbers[i])) {
+					seats.add(seat);
+				}
+			}
+		}
+		for(Seat seat: seats) {
+			System.out.println(seat.getNumber());
+		}
+		try {
+			RestoAppController.orderMenuItem(menuItem, quantity, seats);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+
+	private void removeSelectedOrderItemActionPerformed(ActionEvent evt, String seatNumber, JList<OrderItem> list) {
+		
+		OrderItem selectedOrderItem;
+		if((selectedOrderItem = list.getSelectedValue()) == null){
+			errorPopUp("No OrderItem selected");
+		}
+		
+		try {
+			RestoAppController.cancelOrderItem(selectedOrderItem, seatNumber);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void removeWaiterActionPerformed(ActionEvent evt, JList<String> waiterJlist) {
+		String selectedString;
+		if((selectedString = waiterJlist.getSelectedValue()) == null){
+			errorPopUp("No Waiter selected");
+		}
+		
+		try {
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			Waiter selectedWaiter = null;
+			for (Waiter waiter: restoapp.getWaiters()){
+				if (waiter.getName() == selectedString) {
+					selectedWaiter = waiter;
+					break;
+				}
+			}
+					
+			RestoAppController.removeWaiter(selectedWaiter);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
+		try {
+			RestoAppController.cancelOrder(table);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void endOrderActionPerformed(ActionEvent evt, Order order) {
+		try {
+			RestoAppController.endOrder(order);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void startOrderActionPerformed(ActionEvent evt, String[] tableNumbers) {
+		List<Table> tables = new ArrayList<Table>();
+		
+		
+		for (int k = 0; k < tableNumbers.length; k++) {
+			int tableNumber = Integer.parseInt(tableNumbers[k]);
+			tables.add(Table.getWithNumber(tableNumber));
+		}
+		try {
+			RestoAppController.startOrder(tables);
+			orderPopup();
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
+	
+	private void addToMenuButtonActionPerformed(String itemName, ItemCategory itemCategory, double itemPrice) throws InvalidInputException{
+		try {
+			RestoAppController.addMenuItem(itemName, itemCategory, itemPrice);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
+	
+	private void MenuItemButtonActionPerformed(List<ItemCategory> i, MenuItem menuItem, ItemCategory itemCategory) {
+		try {
+			menuPopUp(2, 2, i, RestoAppController.getMenuItems(itemCategory), itemCategory, menuItem);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
+	
+	private void removeButtonActionPerformed(MenuItem menuItem) {
+		try {
+			RestoAppController.removeMenuItem(menuItem);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
+	
+	private void updateButtonActionPerformed(MenuItem menuItem, String name, ItemCategory category, double price) {
+		try {
+			RestoAppController.updateMenuItem(menuItem, name, category, price);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
 	}
 }
 

@@ -49,6 +49,9 @@ public class PersistenceObjectStream {
 		return app;
 	}
 	
+	/**
+	 * set the filename of the file to which the data is saved to 
+	 */
 	public static void setFilename(String newFilename) {
 		filename = newFilename;
 	}

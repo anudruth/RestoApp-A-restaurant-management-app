@@ -24,12 +24,8 @@ import ca.mcgill.ecse223.resto.model.Table.Status;
  */
 public class RestoVisualizer extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3046970097697621942L;
 	
-	//UI elements
 	private Color higlighted = new Color(74,186,186);
 
 	private List<RoundRectangle2D> rectangles = new ArrayList<RoundRectangle2D>();
@@ -38,7 +34,6 @@ public class RestoVisualizer extends JPanel {
 	private int seatCount;
 	private Double sX,sY;
 	private static final Double SEAT_DIAMETER = 20.0;
-	
 	
 	// data elements
 	private RestoApp restoapp;
@@ -75,8 +70,6 @@ public class RestoVisualizer extends JPanel {
 				
 			}
 		});
-		
-		
 	}
 	
 	public void setResto(RestoApp restoapp)
