@@ -621,13 +621,22 @@ public class RestoAppPage extends JFrame {
 		restoVisualizer.setResto(restoapp);
 	}
 	
-	private void removeWaiterActionPerformed(ActionEvent evt, JList<Waiter> waiterJlist) {
-		Waiter selectedWaiter;
-		if((selectedWaiter = waiterJlist.getSelectedValue()) == null){
+	private void removeWaiterActionPerformed(ActionEvent evt, JList<String> waiterJlist) {
+		String selectedString;
+		if((selectedString = waiterJlist.getSelectedValue()) == null){
 			errorPopUp("No Waiter selected");
 		}
 		
 		try {
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			Waiter selectedWaiter = null;
+			for (Waiter waiter: restoapp.getWaiters()){
+				if (waiter.getName() == selectedString) {
+					selectedWaiter = waiter;
+					break;
+				}
+			}
+					
 			RestoAppController.removeWaiter(selectedWaiter);
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
@@ -1434,10 +1443,10 @@ public class RestoAppPage extends JFrame {
 	    waiterList = new DefaultListModel();
 	    RestoApp restoapp = RestoAppApplication.getRestoapp();
 	    for(Waiter waiter: restoapp.getWaiters()) {
-	    	waiterList.addElement(waiter);    	
+	    	waiterList.addElement(waiter.getName());    	
 	    }
 	  
-	    JList <Waiter> waiterJlist = new JList<Waiter>(waiterList); 	   
+	    JList <String> waiterJlist = new JList<String>(waiterList); 	   
 	   
 	    
 	    //Buttons
