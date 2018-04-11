@@ -34,6 +34,7 @@ public class Order implements Serializable
   private List<OrderItem> orderItems;
   private RestoApp restoApp;
   private List<Bill> bills;
+  private Waiter waiter;
 
   //------------------------
   // CONSTRUCTOR
@@ -190,6 +191,17 @@ public class Order implements Serializable
   {
     int index = bills.indexOf(aBill);
     return index;
+  }
+
+  public Waiter getWaiter()
+  {
+    return waiter;
+  }
+
+  public boolean hasWaiter()
+  {
+    boolean has = waiter != null;
+    return has;
   }
 
   public boolean isNumberOfTablesValid()
@@ -489,6 +501,23 @@ public class Order implements Serializable
     return wasAdded;
   }
 
+  public boolean setWaiter(Waiter aWaiter)
+  {
+    boolean wasSet = false;
+    Waiter existingWaiter = waiter;
+    waiter = aWaiter;
+    if (existingWaiter != null && !existingWaiter.equals(aWaiter))
+    {
+      existingWaiter.removeOrder(this);
+    }
+    if (aWaiter != null)
+    {
+      aWaiter.addOrder(this);
+    }
+    wasSet = true;
+    return wasSet;
+  }
+
   public void delete()
   {
     ArrayList<Table> copyOfTables = new ArrayList<Table>(tables);
@@ -515,6 +544,12 @@ public class Order implements Serializable
       Bill aBill = bills.get(i - 1);
       aBill.delete();
     }
+    if (waiter != null)
+    {
+      Waiter placeholderWaiter = waiter;
+      this.waiter = null;
+      placeholderWaiter.removeOrder(this);
+    }
   }
 
   // line 68 "../../../../../RestoAppPersistence.ump"
@@ -535,7 +570,8 @@ public class Order implements Serializable
             "number" + ":" + getNumber()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "time" + "=" + (getTime() != null ? !getTime().equals(this)  ? getTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null");
+            "  " + "restoApp = "+(getRestoApp()!=null?Integer.toHexString(System.identityHashCode(getRestoApp())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "waiter = "+(getWaiter()!=null?Integer.toHexString(System.identityHashCode(getWaiter())):"null");
   }  
   //------------------------
   // DEVELOPER CODE - PROVIDED AS-IS

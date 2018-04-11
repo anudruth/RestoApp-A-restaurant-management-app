@@ -18,7 +18,6 @@ public class Bill implements Serializable
   private Order order;
   private List<Seat> issuedForSeats;
   private RestoApp restoApp;
-  private Waiter waiter;
 
   //------------------------
   // CONSTRUCTOR
@@ -89,17 +88,6 @@ public class Bill implements Serializable
   public RestoApp getRestoApp()
   {
     return restoApp;
-  }
-
-  public Waiter getWaiter()
-  {
-    return waiter;
-  }
-
-  public boolean hasWaiter()
-  {
-    boolean has = waiter != null;
-    return has;
   }
 
   public boolean setOrder(Order aOrder)
@@ -274,23 +262,6 @@ public class Bill implements Serializable
     return wasSet;
   }
 
-  public boolean setWaiter(Waiter aWaiter)
-  {
-    boolean wasSet = false;
-    Waiter existingWaiter = waiter;
-    waiter = aWaiter;
-    if (existingWaiter != null && !existingWaiter.equals(aWaiter))
-    {
-      existingWaiter.removeBill(this);
-    }
-    if (aWaiter != null)
-    {
-      aWaiter.addBill(this);
-    }
-    wasSet = true;
-    return wasSet;
-  }
-
   public void delete()
   {
     Order placeholderOrder = order;
@@ -310,12 +281,6 @@ public class Bill implements Serializable
     if(placeholderRestoApp != null)
     {
       placeholderRestoApp.removeBill(this);
-    }
-    if (waiter != null)
-    {
-      Waiter placeholderWaiter = waiter;
-      this.waiter = null;
-      placeholderWaiter.removeBill(this);
     }
   }
   

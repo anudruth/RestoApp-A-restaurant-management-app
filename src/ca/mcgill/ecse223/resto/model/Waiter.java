@@ -27,7 +27,7 @@ public class Waiter implements Serializable
   private int number;
 
   //Waiter Associations
-  private List<Bill> bill;
+  private List<Order> order;
   private RestoApp restoApp;
 
   //------------------------
@@ -38,7 +38,7 @@ public class Waiter implements Serializable
   {
     name = aName;
     number = nextNumber++;
-    bill = new ArrayList<Bill>();
+    order = new ArrayList<Order>();
     boolean didAddRestoApp = setRestoApp(aRestoApp);
     if (!didAddRestoApp)
     {
@@ -68,33 +68,33 @@ public class Waiter implements Serializable
     return number;
   }
 
-  public Bill getBill(int index)
+  public Order getOrder(int index)
   {
-    Bill aBill = bill.get(index);
-    return aBill;
+    Order aOrder = order.get(index);
+    return aOrder;
   }
 
-  public List<Bill> getBill()
+  public List<Order> getOrder()
   {
-    List<Bill> newBill = Collections.unmodifiableList(bill);
-    return newBill;
+    List<Order> newOrder = Collections.unmodifiableList(order);
+    return newOrder;
   }
 
-  public int numberOfBill()
+  public int numberOfOrder()
   {
-    int number = bill.size();
+    int number = order.size();
     return number;
   }
 
-  public boolean hasBill()
+  public boolean hasOrder()
   {
-    boolean has = bill.size() > 0;
+    boolean has = order.size() > 0;
     return has;
   }
 
-  public int indexOfBill(Bill aBill)
+  public int indexOfOrder(Order aOrder)
   {
-    int index = bill.indexOf(aBill);
+    int index = order.indexOf(aOrder);
     return index;
   }
 
@@ -103,73 +103,73 @@ public class Waiter implements Serializable
     return restoApp;
   }
 
-  public static int minimumNumberOfBill()
+  public static int minimumNumberOfOrder()
   {
     return 0;
   }
 
-  public boolean addBill(Bill aBill)
+  public boolean addOrder(Order aOrder)
   {
     boolean wasAdded = false;
-    if (bill.contains(aBill)) { return false; }
-    Waiter existingWaiter = aBill.getWaiter();
+    if (order.contains(aOrder)) { return false; }
+    Waiter existingWaiter = aOrder.getWaiter();
     if (existingWaiter == null)
     {
-      aBill.setWaiter(this);
+      aOrder.setWaiter(this);
     }
     else if (!this.equals(existingWaiter))
     {
-      existingWaiter.removeBill(aBill);
-      addBill(aBill);
+      existingWaiter.removeOrder(aOrder);
+      addOrder(aOrder);
     }
     else
     {
-      bill.add(aBill);
+      order.add(aOrder);
     }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeBill(Bill aBill)
+  public boolean removeOrder(Order aOrder)
   {
     boolean wasRemoved = false;
-    if (bill.contains(aBill))
+    if (order.contains(aOrder))
     {
-      bill.remove(aBill);
-      aBill.setWaiter(null);
+      order.remove(aOrder);
+      aOrder.setWaiter(null);
       wasRemoved = true;
     }
     return wasRemoved;
   }
 
-  public boolean addBillAt(Bill aBill, int index)
+  public boolean addOrderAt(Order aOrder, int index)
   {  
     boolean wasAdded = false;
-    if(addBill(aBill))
+    if(addOrder(aOrder))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfBill()) { index = numberOfBill() - 1; }
-      bill.remove(aBill);
-      bill.add(index, aBill);
+      if(index > numberOfOrder()) { index = numberOfOrder() - 1; }
+      order.remove(aOrder);
+      order.add(index, aOrder);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveBillAt(Bill aBill, int index)
+  public boolean addOrMoveOrderAt(Order aOrder, int index)
   {
     boolean wasAdded = false;
-    if(bill.contains(aBill))
+    if(order.contains(aOrder))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfBill()) { index = numberOfBill() - 1; }
-      bill.remove(aBill);
-      bill.add(index, aBill);
+      if(index > numberOfOrder()) { index = numberOfOrder() - 1; }
+      order.remove(aOrder);
+      order.add(index, aOrder);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addBillAt(aBill, index);
+      wasAdded = addOrderAt(aOrder, index);
     }
     return wasAdded;
   }
@@ -195,9 +195,9 @@ public class Waiter implements Serializable
 
   public void delete()
   {
-    while( !bill.isEmpty() )
+    while( !order.isEmpty() )
     {
-      bill.get(0).setWaiter(null);
+      order.get(0).setWaiter(null);
     }
     RestoApp placeholderRestoApp = restoApp;
     this.restoApp = null;

@@ -213,8 +213,6 @@ public class RestoAppController {
 	 */
 	public static void removeWaiter(Waiter waiter) throws InvalidInputException {
 		if(waiter == null) throw new InvalidInputException("Invalid Waiter");
-		boolean hasbill = waiter.hasBill();
-		if(hasbill == true) throw new InvalidInputException("Waiter is taking care of an order"); //if table reserved throw exception
 		try {		
 			waiter.delete();
 			RestoAppApplication.save();
