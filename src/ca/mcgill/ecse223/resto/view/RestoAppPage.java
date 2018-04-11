@@ -393,10 +393,11 @@ public class RestoAppPage extends JFrame {
     		int k = 0;
     		Double price = 0.0;
     		String waiter= "";
+    		//waiter= RestoAppController.setWaiterForBill(seat_list.get(0));
     		for(OrderItem oItem: orderItems) {
     			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
     			orderItemsArray[k] = oItem.toString();
-    			//waiter = oItem.getOrder().getWaiter().getName();
+    			waiter = RestoAppController.setWaiterForBill(oItem);
     			k++;
     			
     		}

@@ -613,9 +613,29 @@ public class RestoAppController {
 		//	orderItems.addAll(seat.getOrderItems());
 		//}
 		//System.out.println(newBill.toString());
-		orderItems.addAll(newBill.getOrder().getOrderItems());
+		
+		//orderItems.addAll(newBill.getOrder().getOrderItems());
+		for(Seat seat:newBill.getIssuedForSeats()) {
+			for (OrderItem orderItem: seat.getOrderItems()) {
+				if (orderItem.getSeats().size()>1 && orderItems.contains(orderItem)) {
+					
+				}
+				else {
+					orderItems.add(orderItem);
+				}
+			}
+		}
+		
 		RestoAppApplication.save();
 		return orderItems;
+	}
+	public static String setWaiterForBill(OrderItem oItem) throws InvalidInputException{
+		Waiter waiter = oItem.getOrder().getWaiter();
+		if (waiter == null) {
+			throw new InvalidInputException("Error with waiter");
+		}
+		String waiterName= waiter.getName();
+		return waiterName;
 	}
 	
 	public static void cancelOrderItem(OrderItem orderItem, String seatNumber) throws InvalidInputException{
