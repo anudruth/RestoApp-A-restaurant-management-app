@@ -32,6 +32,8 @@ public class RestoAppController {
 	public static final int SEAT_DIAMETER = 20;
 	
 	public static final int TABLE_SPACING = 5 * SEAT_DIAMETER;
+
+	private static Waiter w;
 	
 	public RestoAppController() {
 	}
@@ -204,7 +206,18 @@ public class RestoAppController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
-	
+	public static void removeWaiter(Waiter waiter) throws InvalidInputException {
+		if(waiter == null) throw new InvalidInputException("Invalid Waiter");
+		boolean hasorder = waiter.hasOrder();
+		if(hasorder == true) throw new InvalidInputException("Waiter is taking care of an order"); //if table reserved throw exception
+		try {		
+			waiter.delete();
+			RestoAppApplication.save();
+			
+		}catch (RuntimeException e){
+			throw new InvalidInputException(e.getMessage());
+		}
+	}
 	/**
 	 * sets number of table to newNumber and adds/removes the correct number of seats to get numberOfSeats
 	 */

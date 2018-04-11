@@ -620,18 +620,19 @@ public class RestoAppPage extends JFrame {
 		restoVisualizer.setResto(restoapp);
 	}
 	
-	private void removeWaiterActionPerformed(ActionEvent evt) {
-	/*
-	 	TODO	
+	private void removeWaiterActionPerformed(ActionEvent evt, JList<Waiter> waiterJlist) {
+		Waiter selectedWaiter;
+		if((selectedWaiter = waiterJlist.getSelectedValue()) == null){
+			errorPopUp("No Waiter selected");
+		}
+		
 		try {
-			
+			RestoAppController.removeWaiter(selectedWaiter);
 		} catch (InvalidInputException e) {
 			errorPopUp(e.getMessage());
 		}
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		restoVisualizer.setResto(restoapp);
-		
-		*/
 	}
 	
 	private void cancelTableOrderItemActionPerformed(ActionEvent evt, Table table) {
@@ -1432,9 +1433,11 @@ public class RestoAppPage extends JFrame {
 	    waiterList = new DefaultListModel();
 	    RestoApp restoapp = RestoAppApplication.getRestoapp();
 	    for(Waiter waiter: restoapp.getWaiters()) {
-	    	waiterList.addElement(waiter.getName());    	
+	    	waiterList.addElement(waiter);    	
 	    }
-	    JList <String> waiterJlist = new JList(waiterList);
+	  
+	    JList <Waiter> waiterJlist = new JList<Waiter>(waiterList); 	   
+	   
 	    
 	    //Buttons
 	    
@@ -1443,9 +1446,11 @@ public class RestoAppPage extends JFrame {
 	    deleteWaiterButton.setText("Delete Waiter");
 	    deleteWaiterButton.addActionListener(new java.awt.event.ActionListener() {
 	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
-	    			removeWaiterActionPerformed(evt);
+	    			removeWaiterActionPerformed(evt, waiterJlist);
 	    		}
 	    });
+	    
+	    
 	    
 	    JButton addWaiterButton = new JButton();
 	    addWaiterButton.setBackground(new Color(255, 255,255));
