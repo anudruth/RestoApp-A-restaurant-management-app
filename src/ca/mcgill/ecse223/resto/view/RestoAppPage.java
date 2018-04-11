@@ -1107,7 +1107,7 @@ public class RestoAppPage extends JFrame {
         instructions.setText("Add other tables to order? (Seperated by commas)");
         
         JTextField tableField = new JTextField();
-        tableField.setBackground(mainPopUpColor);
+        tableField.setBackground(secondaryPopUpColor);
         
         JButton startOrderButton = new JButton();
         startOrderButton.setBackground(mainPopUpColor);
@@ -1576,7 +1576,6 @@ public class RestoAppPage extends JFrame {
         StringBuilder seatsText = new StringBuilder();
         for(int i = 0; i < seatNumbers.length; i++) {
     		seatsText.append(seatNumbers[i] + ",");
-    		System.out.println(i + seatNumbers[i]);
         }
         seatsField.setText(seatsText.toString());
         
@@ -1969,9 +1968,6 @@ public class RestoAppPage extends JFrame {
 					seats.add(seat);
 				}
 			}
-		}
-		for(Seat seat: seats) {
-			System.out.println(seat.getNumber());
 		}
 		try {
 			RestoAppController.orderMenuItem(menuItem, quantity, seats);
