@@ -1448,6 +1448,7 @@ public class RestoAppPage extends JFrame {
 	    deleteWaiterButton.addActionListener(new java.awt.event.ActionListener() {
 	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
 	    			removeWaiterActionPerformed(evt, waiterJlist);
+	    			waiterPopUp(x,y);
 	    		}
 	    });
 	    
@@ -1459,6 +1460,7 @@ public class RestoAppPage extends JFrame {
 	    addWaiterButton.addActionListener(new java.awt.event.ActionListener() {
 	    	public void actionPerformed(java.awt.event.ActionEvent evt) {
 	    		addWaiterButtonActionPerformed(evt, addWaiterField.getText());
+    			waiterPopUp(x,y);
 	    	}
 	    });
 	    
