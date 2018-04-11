@@ -15,12 +15,10 @@ public class RestoAppApplication {
 	private static RestoAppPage restoAppPage;
 	private static String filename = "menu.resto";
 	
-	/**
-	 * @param args
-	 */
+	//start of application
 	public static void main(String[] args) {
-		// start UI
 		
+		// start UI
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 restoAppPage = new RestoAppPage();
@@ -30,9 +28,7 @@ public class RestoAppApplication {
 	}
 
 	public static RestoApp getRestoapp() {
-		if (restoapp == null) {
-			// load model
-			
+		if (restoapp == null) {			
 			restoapp = load();
 		}
  		return restoapp;
@@ -42,10 +38,12 @@ public class RestoAppApplication {
 		return restoAppPage;
 	}
 	
+	//save restoapp to menu.resto
 	public static void save() {
 		PersistenceObjectStream.serialize(restoapp);
 		}
 	
+	//load restoapp from menu.resto
 	public static RestoApp load() {
 		PersistenceObjectStream.setFilename(filename);
 		restoapp = (RestoApp) PersistenceObjectStream.deserialize();

@@ -12,6 +12,9 @@ public class PersistenceObjectStream {
 
 	private static String filename = "menu.resto";
 
+	/**
+	 * Saves data to filename
+	 */
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
 		try {
@@ -26,6 +29,9 @@ public class PersistenceObjectStream {
 
 	}
 
+	/**
+	 * Reads data from filename
+	 */
 	public static Object deserialize() {
 		RestoApp app = null;
 		ObjectInputStream in;

@@ -30,14 +30,11 @@ import ca.mcgill.ecse223.resto.model.MenuItem.ItemCategory;
 public class RestoAppController {
 	
 	public static final int SEAT_DIAMETER = 20;
-	
 	public static final int TABLE_SPACING = 5 * SEAT_DIAMETER;
-
 	private static Waiter w;
 	
 	public RestoAppController() {
 	}
-
 	
 	/**
 	 * Creates a four seated table with a width of three times the diameter of a seat such that it doesn't overlap with other tables
@@ -130,6 +127,7 @@ public class RestoAppController {
 	
 	/**
 	 * Moves table to given x and y coordinates
+	 * @throws InvalidInputException
 	 */
 	public static void moveTable(Table table, int x, int y) throws InvalidInputException {
 		
@@ -186,6 +184,7 @@ public class RestoAppController {
 	
 	/**
 	 * removes table from currentTables list
+	 * @throws InvalidInputException
 	 */
 	public static void removeTable(Table table) throws InvalidInputException {
 		if(table == null) throw new InvalidInputException("Invalid Table");
@@ -206,6 +205,12 @@ public class RestoAppController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+	
+	/**
+	 * removes waiter from restoapp
+	 * @param waiter
+	 * @throws InvalidInputException
+	 */
 	public static void removeWaiter(Waiter waiter) throws InvalidInputException {
 		if(waiter == null) throw new InvalidInputException("Invalid Waiter");
 		boolean hasorder = waiter.hasOrder();
@@ -220,6 +225,7 @@ public class RestoAppController {
 	}
 	/**
 	 * sets number of table to newNumber and adds/removes the correct number of seats to get numberOfSeats
+	 * @throws InvalidInputException
 	 */
 	public static void updateTable(Table table, int newNumber, int numberOfSeats) throws InvalidInputException {
 		
@@ -273,6 +279,7 @@ public class RestoAppController {
 	
 	/**
 	 * does same as updateTable(table,newNumber,numberOfSeats) but gets the table with its number
+	 * @throws InvalidInputException
 	 */
 	public static void updateTable(int number, int newNumber, int numberOfSeats) throws InvalidInputException {
 		
@@ -321,12 +328,19 @@ public class RestoAppController {
 		
 	}
 	
+	/**
+	 * Returns a list of the ItemCategories
+	 */
 	public static List<ItemCategory> getItemCategories(){
 		List<ItemCategory> i;
 		i = Arrays.asList(ItemCategory.values());
 		return i;
 	}
 	
+	/**
+	 * Returns a list of the MenuItems of an ItemCategory
+	 * @throws InvalidInputException
+	 */
 	public static List<MenuItem> getMenuItems(ItemCategory itemCategory) throws InvalidInputException{
 				
 		if(itemCategory == null) {
@@ -347,6 +361,10 @@ public class RestoAppController {
 		return I;
 	}
 	
+	/**
+	 * Reserves a table for a specific Date and Time with the provided information
+	 * @throws InvalidInputException
+	 */
 	public  static  int  reserveTable(Date  date,  Time  time,  int  numberInParty,  String  contactName,  String  contactEmailAddress, String contactPhoneNumber, List<Table> tables) throws InvalidInputException {
 		
 		long currentTime = System.currentTimeMillis();
@@ -402,6 +420,10 @@ public class RestoAppController {
 		return res.getReservationNumber();
 	}
 	
+	/**
+	 * creates an Order for the list of Tables given
+	 * @throws InvalidInputException
+	 */
 	public static void startOrder(List<Table> tables) throws InvalidInputException{
 		RestoApp r = RestoAppApplication.getRestoapp();
 		List<Table> currentTables = r.getCurrentTables();
@@ -436,6 +458,10 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
+	/**
+	 * Ends a specified Order
+	 * @throws InvalidInputException
+	 */
 	public static void endOrder(Order order) throws InvalidInputException{
 
 		if(order == null){
@@ -468,6 +494,9 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
+	/**
+	 * returns false if the order and the tables don't match up
+	 */
 	public static boolean allTablesAvailableOrDifferentCurrentOrder(List<Table> tables, Order order){
 		boolean flag = true;
 		for(Table table : tables){
@@ -478,8 +507,10 @@ public class RestoAppController {
 		return flag;
 	}
 	
-	
-	
+	/**
+	 * returns a map of the Seat number and its associated Order Items for a Table
+	 * @throws InvalidInputException
+	 */
 	public static Map<String,List<OrderItem>> getOrderItems(Table table) throws InvalidInputException {
 		
 		List<Seat> seats = table.getCurrentSeats();
@@ -530,6 +561,10 @@ public class RestoAppController {
 		return resultMap;
 	}
 	
+	/**
+	 * creates a Bill for given Seats
+	 * @throws InvalidInputException
+	 */
 	public static List<OrderItem> issueBill(List<Seat> seats) throws InvalidInputException{
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
@@ -629,6 +664,11 @@ public class RestoAppController {
 		RestoAppApplication.save();
 		return orderItems;
 	}
+	
+	/**
+	 * returns a Strign of the name of the waiter for the given OrderItem's Order
+	 * @throws InvalidInputException
+	 */
 	public static String setWaiterForBill(OrderItem oItem) throws InvalidInputException{
 		Waiter waiter = oItem.getOrder().getWaiter();
 		if (waiter == null) {
@@ -638,6 +678,10 @@ public class RestoAppController {
 		return waiterName;
 	}
 	
+	/**
+	 * delete an OrderItem for a specific seat. If the OrderItem is shared just remove it from that seat.
+	 * @throws InvalidInputException
+	 */
 	public static void cancelOrderItem(OrderItem orderItem, String seatNumber) throws InvalidInputException{
 		
 		List<Seat> seats = orderItem.getSeats();
@@ -668,6 +712,10 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
+	/**
+	 * Cancels all the OrderItems for a Table but not the Order itself
+	 * @throws InvalidInputException
+	 */
 	public static void cancelOrder(Table table) throws InvalidInputException {
 		if(table.equals(null)) throw new InvalidInputException("Table is null. Cannot cancel order");
 		
@@ -682,6 +730,10 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
+	/**
+	 * returns a List of Seats for the given tables and seats
+	 * @throws InvalidInputException
+	 */
 	public static List<Seat> getSeats(String tables, String seats) throws InvalidInputException{
 		
 		RestoApp resto = RestoAppApplication.getRestoapp();
@@ -734,6 +786,10 @@ public class RestoAppController {
 		return seat_list;
 	}
 	
+	/**
+	 * adds a MenuItem in the specified quantity to one or multiple Seats
+	 * @throws InvalidInputException
+	 */
 	public static void orderMenuItem(MenuItem menuItem, int quantity, List<Seat> seats) throws InvalidInputException{
 		if(menuItem.equals(null)) throw new InvalidInputException("No Menu Item selected. Cannot add to order");
 		if(seats.equals(null)) throw new InvalidInputException("No Seat selected. Cannot add to order");
@@ -796,7 +852,10 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 
-
+	/**
+	 * creates a Waiter with the specified name
+	 * @throws InvalidInputException
+	 */
 	public static void createWaiter(String name) throws InvalidInputException {
 		RestoApp restoapp = RestoAppApplication.getRestoapp();
 		try {
@@ -810,6 +869,10 @@ public class RestoAppController {
 		
 	}
 	
+	/**
+	 * adds a new MenuItem to the Menu with the specified name and price and in the specified category
+	 * @throws InvalidInputException
+	 */
 	public static void addMenuItem(String name, ItemCategory category, double price) throws InvalidInputException {
 		if (name.equals(null)) throw new InvalidInputException("No name entered, cannot add item");
 		if (category.equals(null)) throw new InvalidInputException("No category selected, cannot add item");
@@ -830,6 +893,10 @@ public class RestoAppController {
 		}	
 	}
 	
+	/**
+	 * removes a MenuItem from the Menu
+	 * @throws InvalidInputException
+	 */
 	public static void removeMenuItem(MenuItem menuItem) throws InvalidInputException{
 		if(menuItem.equals(null)) throw new InvalidInputException("No item name selected, cannot remove item");
 		boolean current = menuItem.hasCurrentPricedMenuItem();
@@ -842,6 +909,10 @@ public class RestoAppController {
 		RestoAppApplication.save();
 	}
 	
+	/**
+	 * updates the information of an already existing menuItem
+	 * @throws InvalidInputException
+	 */
 	public static void updateMenuItem(MenuItem menuItem, String name, ItemCategory category, double price) throws InvalidInputException{
 		if (menuItem.equals(null)) throw new InvalidInputException("No item selected");
 		if (name.equals(null) || name == "") throw new InvalidInputException("No name entered, cannot add item");
