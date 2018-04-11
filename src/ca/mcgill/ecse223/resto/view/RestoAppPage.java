@@ -1279,11 +1279,20 @@ public class RestoAppPage extends JFrame {
 	    }
 	    
 	    JList <String> waiterJlist = new JList<String>(waiterList2);
+	    JButton chooseWaiterButton = new JButton();
+	    chooseWaiterButton.setText("Choose Waiter");
+	    chooseWaiterButton.addActionListener(new java.awt.event.ActionListener() {
+	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    			chooseWaiterActionPerformed(evt, waiterJlist);
+	    			refreshViewOrderPopUp(table);
+	    		}
+	    });
 
 		
 	    JPanel waiterPanel = new JPanel();
 	    waiterPanel.add(chooseWaiterLabel);
 	    waiterPanel.add(waiterJlist);
+	    waiterPanel.add(chooseWaiterButton);
 	    
 	    tableNumberPanel.add(tableLable);
 	    tableNumberPanel.add(cancelTableOrderButton);
@@ -1736,7 +1745,7 @@ public class RestoAppPage extends JFrame {
     		int k = 0;
     		Double price = 0.0;
     		String waiter= "";
-//    		waiter= RestoAppController.setWaiterForBill();
+ //   		waiter= RestoAppController.setWaiterForBill();
     		for(OrderItem oItem: orderItems) {
     			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
     			orderItemsArray[k] = oItem.toString();
@@ -1871,6 +1880,30 @@ public class RestoAppPage extends JFrame {
 			}
 		}
 	};
+	
+	private void chooseWaiterActionPerformed(ActionEvent evt, JList<String> waiterJlist) {
+		String selectedString;
+		if((selectedString = waiterJlist.getSelectedValue()) == null){
+			errorPopUp("No Waiter selected");
+		}
+		
+		try {
+			RestoApp restoapp = RestoAppApplication.getRestoapp();
+			Waiter selectedWaiter = null;
+			for (Waiter waiter: restoapp.getWaiters()){
+				if (waiter.getName() == selectedString) {
+					selectedWaiter = waiter;
+					break;
+				}
+			}
+					
+		RestoAppController.removeWaiter(null);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+		RestoApp restoapp = RestoAppApplication.getRestoapp();
+		restoVisualizer.setResto(restoapp);
+	}
 	
 	private void rotateTableButtonActionPerformed(ActionEvent evt) {
 		error = "";
