@@ -60,7 +60,7 @@ public class RestoAppPage extends JFrame {
     private JPanel app_panel;
     private JPanel buttons_panel;
     private JLabel jLabel2;
-    private JDialog popUpWaiter;
+    private JPopupMenu popUpWaiter;
     private JPanel scroll_panel;
     private Integer selectedWaiter = -1;
     private JScrollPane scroll_layout;
@@ -73,8 +73,7 @@ public class RestoAppPage extends JFrame {
   	private String error = null;
   	// table assignment
   	//...
-  	private JComboBox <String> waiterList;
-  	private HashMap<Integer, Waiter> waiters;
+  	private DefaultListModel waiterList;
   	private JTextField addWaiterField;
 	
  	public RestoAppPage() {
@@ -366,10 +365,6 @@ public class RestoAppPage extends JFrame {
 		try {
 			RestoAppController.createWaiter(addWaiterField.getText());
 			RestoApp restoapp = RestoAppApplication.getRestoapp();
-			waiterList.removeAllItems();
-			for (Waiter waiter : restoapp.getWaiters()) {
-				waiterList.addItem(waiter.getName());
-			};
 			restoVisualizer.setResto(restoapp);
 			
 		} catch (InvalidInputException e) {
@@ -428,10 +423,6 @@ public class RestoAppPage extends JFrame {
     private void waiter_managementButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	waiterPopUp(2,2);
     	RestoApp restoapp = RestoAppApplication.getRestoapp();
-		waiterList.removeAllItems();
-		for (Waiter waiter : restoapp.getWaiters()) {
-			waiterList.addItem(waiter.getName());
-		};
     	restoVisualizer.setResto(restoapp);
     }
     private void billTableButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1387,7 +1378,7 @@ public class RestoAppPage extends JFrame {
 	}
 	
 	public void waiterPopUp(int x, int y) {
-		popUpWaiter = new JDialog();
+		popUpWaiter = new JPopupMenu();
         popUpWaiter.setSize(300,200);
         popUpWaiter.setBackground(mainPopUpColor);
         popUpWaiter.setLocation(600,0);
@@ -1437,8 +1428,12 @@ public class RestoAppPage extends JFrame {
 	    addWaiterField = new JTextField();
 	    addWaiterField.setBackground(new Color(255, 255, 255));	
 	    
-	    waiterList = new JComboBox<String>(new String[0]);
-	    waiterList.setBackground(new Color(255, 255, 255));
+	    waiterList = new DefaultListModel();
+	    RestoApp restoapp = RestoAppApplication.getRestoapp();
+	    for(Waiter waiter: restoapp.getWaiters()) {
+	    	waiterList.addElement(waiter.getName());    	
+	    }
+	    JList <String> waiterJlist = new JList(waiterList);
 	    
 	    //Buttons
 	    
@@ -1472,7 +1467,7 @@ public class RestoAppPage extends JFrame {
 	    popUpItem3.add(addWaiterField);
 	    popUpItem4.add(addWaiterButton);
 	    popUpItem5.add(removeWaiterLabel);
-	    popUpItem5.add(waiterList);
+	    popUpItem5.add(waiterJlist);
 	    popUpItem6.add(deleteWaiterButton);    
 	    
 	    popUpItem1.add(popUpItem2);
@@ -1484,11 +1479,8 @@ public class RestoAppPage extends JFrame {
 	    popUpWaiter.add(popUpItem1);
    
     	
-	   // popUpWaiter.show(Image_panel, 2, 2);
-	    popUpWaiter.setVisible(true);
-	    System.out.println(popUpWaiter.isVisible());
-	    
-	  
+	    popUpWaiter.show(Image_panel, 2, 2);
+	      
 	}
 	
 	public void errorPopUp(String errorMessage) {
