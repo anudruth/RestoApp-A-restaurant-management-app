@@ -705,6 +705,14 @@ public class RestoAppPage extends JFrame {
 			errorPopUp(e.getMessage());
 		}
 	}
+	
+	private void updateButtonActionPerformed(MenuItem menuItem, String name, ItemCategory category, double price) {
+		try {
+			RestoAppController.updateMenuItem(menuItem, name, category, price);
+		} catch (InvalidInputException e) {
+			errorPopUp(e.getMessage());
+		}
+	}
 	/**
 	 * Is called by the mouseListener in RestoVisualiser whenever a table is clicked. Makes the popup for that table appear
 	 */
@@ -998,7 +1006,7 @@ public class RestoAppPage extends JFrame {
 	    
 	    PlaceholderTextField categoryField = new PlaceholderTextField();
         categoryField.setBackground(secondaryPopUpColor);
-        categoryField.setEditable(false);
+        categoryField.setText("- item will be added to the selected category -");
         
         if(selectedMenuItem != null) {
         	nameField.setText(selectedMenuItem.getName());
@@ -1048,7 +1056,7 @@ public class RestoAppPage extends JFrame {
 		updateButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		try {
-        		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
+        		updateButtonActionPerformed(selectedMenuItem, nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
         		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
         		} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
@@ -1087,6 +1095,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem10.add(categoryField);
 	    popupMenuItem11.add(addButton);
 	    popupMenuItem11.add(removeButton);
+	    popupMenuItem11.add(updateButton);
 	    
 	    popupMenu.add(popupMenuItem1);
 	    popupMenu.add(popupMenuItem2);
