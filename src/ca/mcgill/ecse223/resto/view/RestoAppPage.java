@@ -1268,11 +1268,31 @@ public class RestoAppPage extends JFrame {
             }
         });
 	    
+	    JLabel chooseWaiterLabel = new JLabel();
+	    chooseWaiterLabel.setBackground(mainPopUpColor);
+	    chooseWaiterLabel.setOpaque(true);
+	    chooseWaiterLabel.setText("Choose Waiter: ");
+ 
+	    DefaultListModel waiterList2 = new DefaultListModel();
+	    RestoApp restoapp = RestoAppApplication.getRestoapp();
+	    for(Waiter waiter: restoapp.getWaiters()) {
+	    	waiterList2.addElement(waiter.getName());    	
+	    }
+	    
+	    JList <String> waiterJlist = new JList<String>(waiterList2);
+
+		
+	    JPanel waiterPanel = new JPanel();
+	    waiterPanel.add(chooseWaiterLabel);
+	    waiterPanel.add(waiterJlist);
+	    
 	    tableNumberPanel.add(tableLable);
 	    tableNumberPanel.add(cancelTableOrderButton);
 	    viewOrderPopUp.add(tableNumberPanel);
 	    viewOrderPopUp.add(new JSeparator());
-    	
+	    viewOrderPopUp.add(waiterPanel);
+	    viewOrderPopUp.add(new JSeparator());
+	    
 	    //Display all of the seatPopUp from the input map
     	Set<String> seatNumbers = orderMap.keySet();
     	for(String seatNumber : seatNumbers) {
