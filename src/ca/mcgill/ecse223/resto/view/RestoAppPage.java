@@ -572,7 +572,12 @@ public class RestoAppPage extends JFrame {
 	    
 	    PlaceholderTextField categoryField = new PlaceholderTextField();
         categoryField.setBackground(secondaryPopUpColor);
-        categoryField.setText("- item will be added to the selected category -");
+        if(category != null) {
+        	categoryField.setText(category.toString());
+        } else {
+        	categoryField.setText("Select category above");
+        }
+        
         
         if(selectedMenuItem != null) {
         	nameField.setText(selectedMenuItem.getName());
