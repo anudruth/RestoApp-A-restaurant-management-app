@@ -1751,7 +1751,7 @@ public class RestoAppPage extends JFrame {
     		for(OrderItem oItem: orderItems) {
     			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
     			orderItemsArray[k] = oItem.toString();
-//    			waiter = RestoAppController.setWaiterForBill(oItem);
+    			waiter = RestoAppController.setWaiterForBill(oItem);
     			k++;
     			
     		}
@@ -1897,9 +1897,9 @@ public class RestoAppPage extends JFrame {
 					break;
 				}
 			
-		order.setWaiter(selectedWaiter);			
-	//	RestoAppController.removeWaiter(null);
+					
 		} 
+		order.setWaiter(selectedWaiter);
 
 		
 		restoVisualizer.setResto(restoapp);

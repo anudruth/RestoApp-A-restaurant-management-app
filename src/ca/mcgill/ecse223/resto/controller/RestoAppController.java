@@ -111,7 +111,14 @@ public class RestoAppController {
 		}
 
 	}
-	
+	public static String setWaiterForBill(OrderItem oItem) throws InvalidInputException {
+		Waiter waiter = oItem.getOrder().getWaiter();
+		if(waiter == null) throw new InvalidInputException ("Error with waiter");
+		String waiterName = waiter.getName();
+		
+		return waiterName;
+		
+	}
 	/**
 	 * Used by createTable() to see if the table already exists
 	 */
