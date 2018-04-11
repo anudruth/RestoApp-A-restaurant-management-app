@@ -589,11 +589,11 @@ public class RestoAppPage extends JFrame {
         		addToMenuButtonActionPerformed(nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
         		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
         		} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					errorPopUp("Could not add to Menu");
 				} catch (InvalidInputException e) {
-					errorPopUp(e.getMessage());
-					e.printStackTrace();
+					errorPopUp("Could not add to Menu");
+				} catch (NullPointerException e) {
+					errorPopUp("Could not add to Menu");
 				}
             }
         });
@@ -604,14 +604,15 @@ public class RestoAppPage extends JFrame {
 		removeButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
         		try {
-        		removeButtonActionPerformed(selectedMenuItem);
-        		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
-        		} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+        			removeMenuItemButtonActionPerformed(selectedMenuItem);
+        		} catch (NullPointerException e) {
+					errorPopUp("Could not remove from Menu");
+        		} catch (InvalidInputException e) {
+					errorPopUp(e.getMessage());
+				}try {
+					menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
 				} catch (InvalidInputException e) {
 					errorPopUp(e.getMessage());
-					e.printStackTrace();
 				}
             }
         });
@@ -625,11 +626,9 @@ public class RestoAppPage extends JFrame {
         		updateButtonActionPerformed(selectedMenuItem, nameField.getText(), category, (Double)Double.valueOf(priceField.getText()));
         		menuPopUp(2, 2, items, RestoAppController.getMenuItems(category), category, null);
         		} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					errorPopUp("Could not update Menu");
 				} catch (InvalidInputException e) {
-					errorPopUp(e.getMessage());
-					e.printStackTrace();
+					errorPopUp("Could not update Menu");
 				}
             }
         });
@@ -2010,7 +2009,7 @@ public class RestoAppPage extends JFrame {
 		try {
 			RestoAppController.addMenuItem(itemName, itemCategory, itemPrice);
 		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
+			errorPopUp("Could not add "+itemName);
 		}
 	}
 	
@@ -2022,11 +2021,11 @@ public class RestoAppPage extends JFrame {
 		}
 	}
 	
-	private void removeButtonActionPerformed(MenuItem menuItem) {
+	private void removeMenuItemButtonActionPerformed(MenuItem menuItem) throws InvalidInputException {
 		try {
 			RestoAppController.removeMenuItem(menuItem);
-		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
+		} catch (NullPointerException e) {
+			errorPopUp("Could not remove "+menuItem.getName());
 		}
 	}
 	
@@ -2034,7 +2033,7 @@ public class RestoAppPage extends JFrame {
 		try {
 			RestoAppController.updateMenuItem(menuItem, name, category, price);
 		} catch (InvalidInputException e) {
-			errorPopUp(e.getMessage());
+			errorPopUp("Could not update "+menuItem.getName());
 		}
 	}
 }
