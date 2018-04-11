@@ -781,6 +781,7 @@ public class RestoAppController {
 		if (name.equals(null)) throw new InvalidInputException("No name entered, cannot add item");
 		if (category.equals(null)) throw new InvalidInputException("No category selected, cannot add item");
 		if (price < 0) throw new InvalidInputException("Price is invalid, please enter a positive number");
+		
 		RestoApp r = RestoAppApplication.getRestoapp();
 		Menu currentMenu = r.getMenu();
 		
@@ -813,23 +814,17 @@ public class RestoAppController {
 		if (name.equals(null) || name == "") throw new InvalidInputException("No name entered, cannot add item");
 		if (category.equals(null)) throw new InvalidInputException("No category selected, cannot add item");
 		if (price < 0) throw new InvalidInputException("Price is invalid, please enter a positive number");
-		
 		boolean current = menuItem.hasCurrentPricedMenuItem();
 		if(!current) {
 			throw new InvalidInputException("item does not have a priced menu item");
 		}
-		boolean duplicate = menuItem.setName(name);
-		if(!duplicate) {
-			throw new InvalidInputException("item already exists");
-		}
+		menuItem.setName(name);
 		menuItem.setItemCategory(category);
-		System.out.println(menuItem.getCurrentPricedMenuItem().getPrice());
+		
 		if(price != menuItem.getCurrentPricedMenuItem().getPrice()) {
-			System.out.println(menuItem.getCurrentPricedMenuItem().getPrice());
 			RestoApp r = RestoAppApplication.getRestoapp();
 			PricedMenuItem pmi = menuItem.addPricedMenuItem(price, r);
 			menuItem.setCurrentPricedMenuItem(pmi);
-			System.out.println(menuItem.getCurrentPricedMenuItem().getPrice());
 		}
 		RestoAppApplication.save();
 	}
