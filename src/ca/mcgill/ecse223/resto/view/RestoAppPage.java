@@ -1266,39 +1266,10 @@ public class RestoAppPage extends JFrame {
         		refreshViewOrderPopUp(table);
             }
         });
-	    
-	    JLabel chooseWaiterLabel = new JLabel();
-	    chooseWaiterLabel.setBackground(mainPopUpColor);
-	    chooseWaiterLabel.setOpaque(true);
-	    chooseWaiterLabel.setText("Choose Waiter: ");
- 
-	    DefaultListModel waiterList2 = new DefaultListModel();
-	    RestoApp restoapp = RestoAppApplication.getRestoapp();
-	    for(Waiter waiter: restoapp.getWaiters()) {
-	    	waiterList2.addElement(waiter.getName());    	
-	    }
-	    
-	    JList <String> waiterJlist = new JList<String>(waiterList2);
-	    JButton chooseWaiterButton = new JButton();
-	    chooseWaiterButton.setText("Choose Waiter");
-	    chooseWaiterButton.addActionListener(new java.awt.event.ActionListener() {
-	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
-	    			chooseWaiterActionPerformed(evt, waiterJlist);
-	    			refreshViewOrderPopUp(table);
-	    		}
-	    });
-
-		
-	    JPanel waiterPanel = new JPanel();
-	    waiterPanel.add(chooseWaiterLabel);
-	    waiterPanel.add(waiterJlist);
-	    waiterPanel.add(chooseWaiterButton);
-	    
+	     
 	    tableNumberPanel.add(tableLable);
 	    tableNumberPanel.add(cancelTableOrderButton);
 	    viewOrderPopUp.add(tableNumberPanel);
-	    viewOrderPopUp.add(new JSeparator());
-	    viewOrderPopUp.add(waiterPanel);
 	    viewOrderPopUp.add(new JSeparator());
 	    
 	    //Display all of the seatPopUp from the input map
@@ -1336,6 +1307,8 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem4.setBackground(mainPopUpColor);
 	    JPanel popupMenuItem5 = new JPanel();
 	    popupMenuItem5.setBackground(mainPopUpColor);
+	    JPanel popupMenuItem6 = new JPanel();
+	    popupMenuItem6.setBackground(mainPopUpColor);
 
 	    //Labels
 	    JLabel issue_bill_title = new JLabel();
@@ -1375,14 +1348,38 @@ public class RestoAppPage extends JFrame {
 	    		}
 	    });
 	    
+	    JLabel chooseWaiterLabel = new JLabel();
+	    chooseWaiterLabel.setBackground(mainPopUpColor);
+	    chooseWaiterLabel.setOpaque(true);
+	    chooseWaiterLabel.setText("Choose Waiter: ");
+ 
+	    DefaultListModel waiterList2 = new DefaultListModel();
+	    RestoApp restoapp = RestoAppApplication.getRestoapp();
+	    for(Waiter waiter: restoapp.getWaiters()) {
+	    	waiterList2.addElement(waiter.getName());    	
+	    }
+	    
+	    JList <String> waiterJlist = new JList<String>(waiterList2);
+	    JButton chooseWaiterButton = new JButton();
+	    chooseWaiterButton.setText("Choose Waiter");
+	    chooseWaiterButton.addActionListener(new java.awt.event.ActionListener() {
+	    		public void actionPerformed(java.awt.event.ActionEvent evt) {
+	    			chooseWaiterActionPerformed(evt, waiterJlist);
+	    		}
+	    });
+	    
 	    issue_bill_popup.setLayout(new BoxLayout(issue_bill_popup, BoxLayout.PAGE_AXIS));
 	    popupMenuItem1.setLayout(new BoxLayout(popupMenuItem1, BoxLayout.LINE_AXIS));
 	    popupMenuItem2.setLayout(new BoxLayout(popupMenuItem2, BoxLayout.LINE_AXIS));
 	    popupMenuItem3.setLayout(new BoxLayout(popupMenuItem3, BoxLayout.LINE_AXIS));
 	    popupMenuItem4.setLayout(new BoxLayout(popupMenuItem4, BoxLayout.LINE_AXIS));
 	    popupMenuItem5.setLayout(new BoxLayout(popupMenuItem5, BoxLayout.LINE_AXIS));
-
+	    popupMenuItem6.setLayout(new BoxLayout(popupMenuItem6, BoxLayout.LINE_AXIS));
+	    
 	    popupMenuItem1.add(issue_bill_title);
+	    popupMenuItem6.add(chooseWaiterLabel);
+	    popupMenuItem6.add(waiterJlist);
+	    popupMenuItem6.add(chooseWaiterButton);
 	    popupMenuItem2.add(seat_nums);
 	    popupMenuItem2.add(seat_field);
 	    popupMenuItem3.add(or_table);
@@ -1391,6 +1388,7 @@ public class RestoAppPage extends JFrame {
 	    popupMenuItem5.add(prepBillButton);
 
 	    issue_bill_popup.add(popupMenuItem1);
+	    issue_bill_popup.add(popupMenuItem6);
 	    issue_bill_popup.add(popupMenuItem2);
 	    issue_bill_popup.add(popupMenuItem3);
 	    issue_bill_popup.add(popupMenuItem4);
@@ -1749,7 +1747,7 @@ public class RestoAppPage extends JFrame {
     		for(OrderItem oItem: orderItems) {
     			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
     			orderItemsArray[k] = oItem.toString();
-    			waiter = RestoAppController.setWaiterForBill(oItem);
+   // 			waiter = RestoAppController.setWaiterForBill(oItem);
     			k++;
     			
     		}
