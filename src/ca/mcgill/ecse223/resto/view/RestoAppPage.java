@@ -46,7 +46,7 @@ public class RestoAppPage extends JFrame {
 	DecimalFormat df = new DecimalFormat(".##");
 
 	private static final long serialVersionUID = -2702005067769134471L;
-	private static final int MAX_SEATS = 8;
+	private static final int MAX_SEATS = 12;
 	
 	//mainPopUpColor is background of all popUps
 	private Color mainPopUpColor = new Color(240,240,240);
