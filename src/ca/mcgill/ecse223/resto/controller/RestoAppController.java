@@ -882,7 +882,12 @@ public class RestoAppController {
 		Menu currentMenu = r.getMenu();
 		
 		try {
-			MenuItem menuItem = new MenuItem(name, currentMenu);
+			MenuItem menuItem;
+			if(r.getMenu().getMenuItems().contains(MenuItem.getWithName(name))) {
+				menuItem = MenuItem.getWithName(name);
+			}else {
+				menuItem = new MenuItem(name, currentMenu);
+			}
 			menuItem.setItemCategory(category);
 			PricedMenuItem pmi = menuItem.addPricedMenuItem(price, r);
 			menuItem.setCurrentPricedMenuItem(pmi);

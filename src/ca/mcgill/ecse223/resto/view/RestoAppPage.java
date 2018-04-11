@@ -581,7 +581,7 @@ public class RestoAppPage extends JFrame {
         }
         
         JButton addButton = new JButton();
-        addButton.setBackground(new Color(5,245,0));;
+        addButton.setBackground(mainPopUpColor);
 		addButton.setText("Add to menu");
 		addButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -599,7 +599,7 @@ public class RestoAppPage extends JFrame {
         });
 		
 		JButton removeButton = new JButton();
-        removeButton.setBackground(new Color(245,5,0));;
+        removeButton.setBackground(mainPopUpColor);
 		removeButton.setText("Remove from menu");
 		removeButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -618,7 +618,7 @@ public class RestoAppPage extends JFrame {
         });
 		
 		JButton updateButton = new JButton();
-        updateButton.setBackground(new Color(255,155,3));;
+        updateButton.setBackground(mainPopUpColor);
 		updateButton.setText("Update item");
 		updateButton.addActionListener(new java.awt.event.ActionListener() {
         	public void actionPerformed(java.awt.event.ActionEvent evt) {
