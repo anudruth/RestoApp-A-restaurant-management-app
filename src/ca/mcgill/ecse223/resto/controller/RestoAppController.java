@@ -221,6 +221,7 @@ public class RestoAppController {
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
+	
 	/**
 	 * sets number of table to newNumber and adds/removes the correct number of seats to get numberOfSeats
 	 * @throws InvalidInputException
