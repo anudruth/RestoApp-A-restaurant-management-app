@@ -1729,7 +1729,6 @@ public class RestoAppPage extends JFrame {
     
     private void prepBillButtonActionPerformed(java.awt.event.ActionEvent evt, String tables, String seats) {
     	
-    		//billPopup("hi", "bye", "100.45");
     	try {
     		List<Seat> seat_list= RestoAppController.getSeats(tables, seats);
     		List<OrderItem> orderItems = RestoAppController.issueBill(seat_list);
@@ -1737,7 +1736,7 @@ public class RestoAppPage extends JFrame {
     		int k = 0;
     		Double price = 0.0;
     		String waiter= "";
-    		//waiter= RestoAppController.setWaiterForBill(seat_list.get(0));
+//    		waiter= RestoAppController.setWaiterForBill();
     		for(OrderItem oItem: orderItems) {
     			price += oItem.getPricedMenuItem().getPrice()*oItem.getQuantity();
     			orderItemsArray[k] = oItem.toString();
