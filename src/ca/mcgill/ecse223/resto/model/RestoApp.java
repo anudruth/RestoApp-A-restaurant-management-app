@@ -927,6 +927,9 @@ public class RestoApp implements Serializable
     if (this.waiters == null) {
     	this.waiters = new ArrayList<Waiter>();
     }
+    for(Table table : this.getTables()) {
+    	Seat.reinitializeAutouniqueNumber(table.getSeats());
+    }
   }
 
   // line 18 "../../../../../RestoApp.ump"

@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.resto.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 96 "../../../../../RestoAppPersistence.ump"
+// line 99 "../../../../../RestoAppPersistence.ump"
 // line 91 "../../../../../RestoApp.ump"
 public class Seat implements Serializable
 {
@@ -348,6 +348,16 @@ public class Seat implements Serializable
     }
   }
 
+  // line 94 "../../../../../RestoApp.ump"
+   public static  void reinitializeAutouniqueNumber(List<Seat> seats){
+    for (Seat seat : seats) {
+		  if (seat.getNumber() > nextNumber) {
+			  nextNumber = seat.getNumber();
+		  }
+		}
+		nextNumber++;
+  }
+
 
   public String toString()
   {
@@ -359,7 +369,7 @@ public class Seat implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 99 "../../../../../RestoAppPersistence.ump"
+  // line 102 "../../../../../RestoAppPersistence.ump"
   private static final long serialVersionUID = 386717977557499839L ;
 
   

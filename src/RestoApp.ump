@@ -90,6 +90,14 @@ class Table {
 
 class Seat {
 	autounique number;
+	public static void reinitializeAutouniqueNumber(List<Seat> seats){ 
+		for (Seat seat : seats) {
+		  if (seat.getNumber() > nextNumber) {
+			  nextNumber = seat.getNumber();
+		  }
+		}
+		nextNumber++;
+    }
 }
 
 class Order {
