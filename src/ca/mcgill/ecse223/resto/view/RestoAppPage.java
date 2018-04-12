@@ -284,7 +284,7 @@ public class RestoAppPage extends JFrame {
             .addGroup(app_panelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(app_panelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(scroll_layout, GroupLayout.PREFERRED_SIZE, 497, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scroll_layout, GroupLayout.PREFERRED_SIZE, 700, GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttons_panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(Image_panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -1469,7 +1469,7 @@ public class RestoAppPage extends JFrame {
 	    JLabel header_lable = new JLabel();
 	    header_lable.setBackground(mainPopUpColor);
 	    header_lable.setOpaque(true);
-	    header_lable.setText("Quantity          Food                 Price        ");
+	    header_lable.setText("Quantity          Food                 Price         ");
 	    header_lable.setFont(new Font(header_lable.getFont().getName(), Font.PLAIN, 17));
 	    
 	    JLabel seperator_lable = new JLabel();

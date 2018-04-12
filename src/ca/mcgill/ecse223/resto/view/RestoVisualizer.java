@@ -134,7 +134,7 @@ public class RestoVisualizer extends JPanel {
 				}
 				g2d.fill(rectangle);
 				g2d.draw(rectangle);
-				g2d.setColor(Color.BLACK);
+				g2d.setColor(Color.WHITE);
 				
 				//draw Table number and Status
 				g2d.drawString(new Integer(table.getNumber()).toString() ,(int) (x + (table.getWidth()/2.3)), (int)(y + (table.getLength()/1.8)) );
@@ -229,7 +229,7 @@ public class RestoVisualizer extends JPanel {
 					}
 					g2d.fill(circle);
 					g2d.draw(circle);
-					g2d.setColor(Color.BLACK);
+					g2d.setColor(Color.WHITE);
 					g2d.drawString(new Integer(seat.getNumber()).toString(),  (sX.intValue())+4,  (sY.intValue())+15);
 					
 					if (k % 2 == 0) {
